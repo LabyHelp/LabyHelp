@@ -1,0 +1,10 @@
+{
+  "uuid": "%uuid%",
+  "name": "CommunityAddon",
+  "mainClass": "de.marvhuelsmann.labymodaddon.CommunityAddon",
+  "description": "With this addon you can add private friends and much more",
+  "version": 1,
+  "author": "Marvio",
+  "category": 3,
+  "icon": "https://www.gommehd.net/images/brandmark@3x.png"
+}

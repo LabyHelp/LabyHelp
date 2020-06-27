@@ -1,10 +1,11 @@
 {
   "uuid": "%uuid%",
-  "name": "CommunityAddon",
-  "mainClass": "de.marvhuelsmann.labymodaddon.CommunityAddon",
-  "description": "With this addon you can add private friends and much more",
-  "version": 1,
+  "name": "LabyAddon",
+  "mainClass": "de.marvhuelsmann.labymodaddon.LabyAddon",
+  "description": "Allowed User to get the cosmetics from other players",
+  "version": 2,
   "author": "Marvio",
   "category": 3,
-  "icon": "https://www.gommehd.net/images/brandmark@3x.png"
+  "icon": "https://www.labymod.net/page/tpl/assets/images/logo_web.png"
 }
+

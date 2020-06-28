@@ -139,8 +139,6 @@ public class LabyAddon extends net.labymod.api.LabyModAddon {
                         labyPlayer.sendMessage("- /bandana <Spieler>");
                         labyPlayer.sendMessage("- /cape <Spieler>");
                         labyPlayer.sendMessage("- /skin <Spieler>");
-                        labyPlayer.sendMessage("- /danceself | Spiele einen Zuffaelligen Emote ab");
-                        labyPlayer.sendMessage("- /stickerself | Spiele einen Zuffaelligen Sticker ab");
                         labyPlayer.sendMessage("- /dance <Spieler>");
                         labyPlayer.sendMessage("- /cosmeticsCC <Spieler>");
                         labyPlayer.sendMessage("- /playdance | Spiele einen ausgewaehlten Emote ab");

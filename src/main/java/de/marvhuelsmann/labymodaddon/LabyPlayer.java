@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class LabyPlayer {
 
-    private final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Searcher" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
+    private final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
 
 
     public void openCapeUrl(UUID uuid) {

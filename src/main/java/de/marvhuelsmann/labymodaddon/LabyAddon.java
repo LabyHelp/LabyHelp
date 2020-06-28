@@ -124,15 +124,7 @@ public class LabyAddon extends net.labymod.api.LabyModAddon {
                     }
 
 
-                    if (message.equalsIgnoreCase("/danceself")) {
-                        short randomeEmote = (short) getEmoteInRange();
-                        LabyMod.getInstance().getEmoteRegistry().handleEmote(LabyMod.getInstance().getPlayerUUID(), randomeEmote);
-                        return true;
-                    } else if (message.equalsIgnoreCase("/stickerself")) {
-                        short randomeSticker = (short) getStickerInRange();
-                        LabyMod.getInstance().getStickerRegistry().handleSticker(LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()), randomeSticker);
-                        return true;
-                    } else if (message.equalsIgnoreCase("/playdance")) {
+                    if (message.equalsIgnoreCase("/playdance")) {
                         labyPlayer.sendMessage("Schreibe nun die Tanz ID in den Chat!");
                         DanceChat = true;
                         return true;
@@ -153,7 +145,7 @@ public class LabyAddon extends net.labymod.api.LabyModAddon {
                         labyPlayer.sendMessage("- /cosmeticsCC <Spieler>");
                         labyPlayer.sendMessage("- /playdance | Spiele einen ausgewaehlten Emote ab");
                         labyPlayer.sendMessage("- /playsticker | Spiele einen ausgewaehlten Sticker ab");
-                        labyPlayer.sendMessage("Alle Tänze und Sticker Ids hier: https://marvhuelsmann.de/labyaddon");
+                        labyPlayer.sendMessage("Alle Taenze und Sticker Ids hier: https://marvhuelsmann.de/labyaddon");
                         return true;
                     }
                 } else {

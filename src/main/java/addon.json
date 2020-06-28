@@ -3,9 +3,9 @@
   "name": "LabyAddon",
   "mainClass": "de.marvhuelsmann.labymodaddon.LabyAddon",
   "description": "Allowed User to get the cosmetics from other players",
-  "version": 2,
+  "version": 1.4,
   "author": "Marvio",
-  "category": 3,
+  "category": 2,
   "icon": "https://www.labymod.net/page/tpl/assets/images/logo_web.png"
 }
 

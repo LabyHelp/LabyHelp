@@ -1,13 +1,9 @@
 package de.marvhuelsmann.labymodaddon;
 
-import net.labymod.ingamechat.tools.playermenu.PlayerMenu;
 import net.labymod.main.LabyMod;
 import net.minecraft.util.EnumChatFormatting;
 
-import javax.swing.*;
 import java.util.UUID;
-
-import static javax.swing.JComponent.*;
 
 public class LabyPlayer {
 
@@ -30,15 +26,4 @@ public class LabyPlayer {
 
         LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
     }
-
-    public void sendTexturePackRequest() {
-        String texturepack = LabyMod.getInstance().getDynamicTextureManager().getResourceName();
-        LabyMod.getInstance().displayMessageInChat(texturepack);
-    }
-
-    public void sendNoPrefixMessage(String message) {
-        LabyMod.getInstance().displayMessageInChat(message);
-
-    }
-
 }

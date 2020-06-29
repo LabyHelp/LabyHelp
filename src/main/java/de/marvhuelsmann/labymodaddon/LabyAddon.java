@@ -62,6 +62,7 @@ public class LabyAddon extends net.labymod.api.LabyModAddon {
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
 
+
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new DanceMenu());
 
 
@@ -80,15 +81,27 @@ public class LabyAddon extends net.labymod.api.LabyModAddon {
             public boolean onSend(String message) {
                 if (AddonEnable) {
                     if (DanceChat) {
+                        if (message.startsWith("/")) {
+                            labyPlayer.sendMessage("Schreibe die ID ohne / in den Chat");
+                            return true;
+                        }
                         LabyMod.getInstance().getEmoteRegistry().handleEmote(LabyMod.getInstance().getPlayerUUID(), Short.parseShort(message));
                         DanceChat = false;
                         return true;
                     } else if (DanceOtherId) {
+                        if (message.startsWith("/")) {
+                            labyPlayer.sendMessage("Schreibe die ID ohne / in den Chat");
+                            return true;
+                        }
                         labyPlayer.sendMessage("Der Spieler Tanzt nun!");
                         LabyMod.getInstance().getEmoteRegistry().handleEmote(danceUUID, Short.parseShort(message));
                         DanceOtherId = false;
                         return true;
                     } else if (StickerChat) {
+                        if (message.startsWith("/")) {
+                            labyPlayer.sendMessage("Schreibe die ID ohne / in den Chat");
+                            return true;
+                        }
                         LabyMod.getInstance().getStickerRegistry().handleSticker(LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()), Short.parseShort(message));
                         StickerChat = false;
                         return true;

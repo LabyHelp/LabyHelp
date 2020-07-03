@@ -40,8 +40,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
 
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new DanceMenu());
-
 
         this.getApi().getEventManager().registerOnJoin(new Consumer<ServerData>() {
             @Override

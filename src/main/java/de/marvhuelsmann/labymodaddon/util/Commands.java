@@ -36,13 +36,13 @@ public class Commands {
                 LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
-                labyPlayer.sendMessage("- /bandana <Spieler>");
-                labyPlayer.sendMessage("- /cape <Spieler>");
-                labyPlayer.sendMessage("- /skin <Spieler>");
-                labyPlayer.sendMessage("- /cosmeticsCC <Spieler>");
+                labyPlayer.sendMessage("- /bandana <player>");
+                labyPlayer.sendMessage("- /cape <player>");
+                labyPlayer.sendMessage("- /skin <player>");
+                labyPlayer.sendMessage("- /cosmeticsCC <player>");
             }
         } else {
-            labyPlayer.sendMessage(EnumChatFormatting.RED + "Du hast das LabyAddon deaktiviert!");
+            labyPlayer.sendMessage(EnumChatFormatting.RED + "You have deactivated the Addon!");
         }
     }
 }

@@ -15,7 +15,7 @@ public class LabyPlayer {
         if (uuid != null) {
             LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
         } else {
-            sendMessage("Diesen Spieler gibt es nicht!");
+            sendMessage("This Player does not exit!");
         }
     }
 
@@ -23,7 +23,7 @@ public class LabyPlayer {
         if (uuid != null) {
             LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
         } else {
-            sendMessage("Diesen Spieler gibt es nicht!");
+            sendMessage("This Player does not exit!");
         }
     }
 
@@ -31,7 +31,7 @@ public class LabyPlayer {
         if (uuid != null) {
             LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
         } else {
-            sendMessage("Diesen Spieler gibt es nicht!");
+            sendMessage("This Player does not exit!");
         }
     }
 

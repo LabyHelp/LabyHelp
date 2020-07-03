@@ -47,7 +47,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(ServerData serverData) {
                 if (AddonHelpMessage) {
-                    LabyMod.getInstance().notifyMessageRaw("LabyAddon | Help", "Benutze /LhHelp um alle Befehle zu sehen!");
+                    LabyMod.getInstance().notifyMessageRaw("LabyAddon | Help", "Use /LhHelp for all Commands");
                 }
             }
         });
@@ -73,7 +73,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
-        final BooleanElement booleanElement = new BooleanElement("Addon Aktiviert", new ControlElement.IconData(Material.GOLD_INGOT), new Consumer<Boolean>() {
+        final BooleanElement booleanElement = new BooleanElement("Addon activated", new ControlElement.IconData(Material.GOLD_INGOT), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
                 AddonEnable = enable;
@@ -83,7 +83,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             }
         }, AddonEnable);
 
-        final BooleanElement booleanElement2 = new BooleanElement("Hilfe beitritts Nachricht", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
+        final BooleanElement booleanElement2 = new BooleanElement("Join help message", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
                 LabyHelpAddon.this.AddonHelpMessage = enable;

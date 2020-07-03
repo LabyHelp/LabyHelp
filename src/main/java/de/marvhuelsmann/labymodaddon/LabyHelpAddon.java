@@ -54,7 +54,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         this.getApi().getEventManager().register(new MessageSendEvent() {
             @Override
             public boolean onSend(String message) {
-                if (message.startsWith("/bandana") || message.startsWith("/cape") || message.startsWith("/skin") || message.startsWith("cosmeticsCC") || message.equalsIgnoreCase("/LhHelp")) {
+                if (message.startsWith("/bandana") || message.startsWith("/cape") || message.startsWith("/skin") || message.startsWith("/cosmeticsCC") || message.equalsIgnoreCase("/LhHelp")) {
                     Commands.CommandMessage(message);
                     return true;
                 }

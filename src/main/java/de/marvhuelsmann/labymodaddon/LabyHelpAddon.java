@@ -27,7 +27,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
     @Override
     public void onEnable() {
         this.getApi().registerForgeListener(false);
-
         this.getApi().registerModule(new TexturePackModule());
 
 
@@ -45,11 +44,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(ServerData serverData) {
                 if (AddonHelpMessage) {
-                    LabyMod.getInstance().notifyMessageRaw("LabyAddon | Help", "Use /LhHelp for all Commands");
+                    LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "Use /LhHelp for all Commands");
                 }
             }
         });
-
 
         this.getApi().getEventManager().register(new MessageSendEvent() {
             @Override
@@ -90,7 +88,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 LabyHelpAddon.this.saveConfig();
             }
         }, this.AddonHelpMessage);
-
 
         list.add(booleanElement);
         list.add(booleanElement2);

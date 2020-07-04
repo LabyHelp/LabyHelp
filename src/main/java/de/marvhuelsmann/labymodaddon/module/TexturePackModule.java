@@ -10,7 +10,6 @@ import net.minecraft.client.resources.ResourcePackRepository;
 
 public class TexturePackModule extends SimpleModule {
 
-
     private String getTexurePack() {
        for (ResourcePackRepository.Entry entry : Minecraft.getMinecraft().getResourcePackRepository().getRepositoryEntries()) {
            if (entry.getResourcePackName() == null) {
@@ -48,12 +47,12 @@ public class TexturePackModule extends SimpleModule {
 
     @Override
     public String getSettingName() {
-        return "TexurePack Namen";
+        return "TexurePack name";
     }
 
     @Override
     public String getDescription() {
-        return "Zeigt dein aktuelles TexturePack an";
+        return "Shows your TexurePack name";
     }
 
     @Override

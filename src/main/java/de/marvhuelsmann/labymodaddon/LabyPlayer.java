@@ -10,7 +10,6 @@ public class LabyPlayer {
 
     private final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
 
-
     public void openCapeUrl(UUID uuid) {
         if (uuid != null) {
             LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);

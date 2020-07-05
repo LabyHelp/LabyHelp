@@ -2,8 +2,8 @@
   "uuid": "%uuid%",
   "name": "LabyHelp",
   "mainClass": "de.marvhuelsmann.labymodaddon.LabyHelpAddon",
-  "description": "Allowed User to get the cosmetics from other players from the middleclick GUI",
-  "version": 1.4,
+  "description": "Allowed user to get the cosmetics skins from other players from the middleclick GUI or Command",
+  "version": 1.5,
   "author": "Marvio",
   "category": 2,
   "icon": "https://i.imgur.com/cpmyVsd.jpg"

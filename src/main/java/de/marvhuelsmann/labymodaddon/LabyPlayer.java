@@ -3,7 +3,6 @@ package de.marvhuelsmann.labymodaddon;
 import net.labymod.main.LabyMod;
 import net.minecraft.util.EnumChatFormatting;
 
-import javax.swing.text.PlainDocument;
 import java.util.UUID;
 
 public class LabyPlayer {

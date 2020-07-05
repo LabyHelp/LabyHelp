@@ -31,15 +31,15 @@ public class Commands {
                 //SPACE MUST BE THERE
                 UUID uuid = getUUID(message.replaceAll("/skin ", ""));
                 labyPlayer.openSkin(uuid);
-            }  else if (message.startsWith("/cosmeticsCC")) {
-                UUID uuid = getUUID(message.replaceAll("/cosmeticsCC ", ""));
-                LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
+            }  else if (message.startsWith("/cosmeticsC")) {
+                UUID uuid = getUUID(message.replaceAll("/cosmeticsC ", ""));
+                    LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
                 labyPlayer.sendMessage("- /bandana <player>");
                 labyPlayer.sendMessage("- /cape <player>");
                 labyPlayer.sendMessage("- /skin <player>");
-                labyPlayer.sendMessage("- /cosmeticsCC <player>");
+                labyPlayer.sendMessage("- /cosmeticsC <player>");
             }
         } else {
             labyPlayer.sendMessage(EnumChatFormatting.RED + "You have deactivated the Addon!");

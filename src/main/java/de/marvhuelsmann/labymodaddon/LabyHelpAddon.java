@@ -1,6 +1,9 @@
 package de.marvhuelsmann.labymodaddon;
 
-import de.marvhuelsmann.labymodaddon.menu.*;
+import de.marvhuelsmann.labymodaddon.menu.BandanaMenu;
+import de.marvhuelsmann.labymodaddon.menu.CapeMenu;
+import de.marvhuelsmann.labymodaddon.menu.CosmeticsClearerMenu;
+import de.marvhuelsmann.labymodaddon.menu.SkinMenu;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.Commands;
 import net.labymod.api.events.MessageSendEvent;
@@ -11,11 +14,8 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.labymod.utils.ServerData;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
-import java.util.UUID;
 
 
 public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
@@ -28,10 +28,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
     public void onEnable() {
         this.getApi().registerForgeListener(false);
         this.getApi().registerModule(new TexturePackModule());
-
-
-        LabyMod.getInstance().getLabyModAPI().updateCurrentGamemode("LabyHelp");
-
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
@@ -52,7 +48,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         this.getApi().getEventManager().register(new MessageSendEvent() {
             @Override
             public boolean onSend(String message) {
-                if (message.startsWith("/bandana") || message.startsWith("/cape") || message.startsWith("/skin") || message.startsWith("/cosmeticsCC") || message.equalsIgnoreCase("/LhHelp")) {
+                if (message.startsWith("/bandana") || message.startsWith("/cape") || message.startsWith("/skin") || message.startsWith("/cosmeticsC") || message.equalsIgnoreCase("/LhHelp")) {
                     Commands.CommandMessage(message);
                     return true;
                 }
@@ -69,7 +65,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> list) {
-        final BooleanElement booleanElement = new BooleanElement("Addon activated", new ControlElement.IconData(Material.GOLD_INGOT), new Consumer<Boolean>() {
+        final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.LEVER), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
                 AddonEnable = enable;
@@ -79,7 +75,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             }
         }, AddonEnable);
 
-        final BooleanElement booleanElement2 = new BooleanElement("Join help message", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
+        final BooleanElement settingsJoin = new BooleanElement("Join help message", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
                 LabyHelpAddon.this.AddonHelpMessage = enable;
@@ -89,7 +85,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             }
         }, this.AddonHelpMessage);
 
-        list.add(booleanElement);
-        list.add(booleanElement2);
+        list.add(settingsEnabled);
+        list.add(settingsJoin);
     }
 }

@@ -5,6 +5,6 @@ import net.labymod.ingamechat.tools.playermenu.PlayerMenu;
 public class CosmeticsClearerMenu extends PlayerMenu.PlayerMenuEntry {
 
     public CosmeticsClearerMenu() {
-        super("Clear cosmetics", "cosmeticsCC {name}", false);
+        super("Clear cosmetics", "cosmeticsC {name}", false);
     }
 }

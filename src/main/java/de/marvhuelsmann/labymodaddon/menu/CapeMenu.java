@@ -8,3 +8,6 @@ public class CapeMenu extends PlayerMenu.PlayerMenuEntry {
         super("Cape", "cape {name}", false);
     }
 }
+
+
+

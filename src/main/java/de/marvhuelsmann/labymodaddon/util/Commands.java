@@ -3,6 +3,7 @@ package de.marvhuelsmann.labymodaddon.util;
 import de.marvhuelsmann.labymodaddon.LabyHelpAddon;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import net.labymod.main.LabyMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -18,6 +19,8 @@ public class Commands {
 
     public static void CommandMessage(String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
+
+
         if (LabyHelpAddon.AddonEnable) {
             if (message.startsWith("/bandana")) {
                 //SPACE MUST BE THERE

@@ -4,6 +4,7 @@ import de.marvhuelsmann.labymodaddon.menu.BandanaMenu;
 import de.marvhuelsmann.labymodaddon.menu.CapeMenu;
 import de.marvhuelsmann.labymodaddon.menu.CosmeticsClearerMenu;
 import de.marvhuelsmann.labymodaddon.menu.SkinMenu;
+import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.Commands;
 import net.labymod.api.events.MessageSendEvent;
@@ -28,6 +29,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
     public void onEnable() {
         this.getApi().registerForgeListener(false);
         this.getApi().registerModule(new TexturePackModule());
+        this.getApi().registerModule(new DegreeModule());
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());

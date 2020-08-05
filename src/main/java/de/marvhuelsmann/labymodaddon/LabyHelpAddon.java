@@ -45,10 +45,11 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
     public String twitchName;
     public String twitterName;
     public String tiktokName;
+    public String statusName;
 
     public static boolean AddonRankShow = false;
     public static Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9 PRIVATE BETA";
+    public static final String currentVersion = "1.9";
 
     public static boolean onServer = false;
 
@@ -176,7 +177,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
     @SubscribeEvent
     public void onTick(final TickEvent.ClientTickEvent event) {
-        if (tick > 450) {
+        if (tick > 400) {
             threadPool.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -220,7 +221,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
                             if (LabyHelpAddon.onServer) {
                                 if (!enable) {
-                                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Bitte warte ein paar Sekunden um sicher zu gehen, dass dein Subtitle fue alle Spieler entnickt wurde!");
+                                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Bitte warte ein paar Sekunden um sicher zu gehen, dass dein Subtitle fuer alle Spieler entnickt wurde!");
                                 } else {
                                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Bitte warte ein paar Sekunden um sicher zu gehen, dass dein Subtitle fuer alle Spieler genickt wurde!");
                                 }
@@ -317,6 +318,24 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 LabyHelpAddon.this.saveConfig();
             }
         });
+        for (final Map.Entry<UUID, HelpGroups> groupsEntry : groupsMap.entrySet()) {
+            if (groupsEntry.getValue() != null && groupsEntry.getKey() != null) {
+                if (groupsEntry.getValue().getPremium() && groupsEntry.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
+                    StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
+                        @Override
+                        public void accept(String accepted) {
+                            WebServer.sendStatus(LabyMod.getInstance().getPlayerUUID(), accepted);
+
+                            LabyHelpAddon.this.statusName = accepted;
+
+                            LabyHelpAddon.this.getConfig().addProperty("status", accepted);
+                            LabyHelpAddon.this.saveConfig();
+                        }
+                    });
+                    list.add(status);
+                }
+            }
+        }
 
         ////
 

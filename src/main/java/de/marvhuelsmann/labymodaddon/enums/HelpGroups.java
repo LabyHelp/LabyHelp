@@ -8,8 +8,9 @@ import java.util.UUID;
 
 public enum HelpGroups {
 
-    NICK("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.BOLD + " USER" + EnumChatFormatting.DARK_PURPLE + " (NICK)", false, false, false),
-    USER("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.BOLD + " USER", false, false, false),
+    NICK("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER" + EnumChatFormatting.DARK_PURPLE + " (NICK)", false, false, false),
+    USER("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
+    BAN("BAN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.WHITE + " BLOCKED", false, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
     CREATOR("CREATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
@@ -40,8 +41,10 @@ public enum HelpGroups {
 
     public static Boolean isExist(final String name) {
         if (HelpGroups.USER.getName().equalsIgnoreCase(name)
-                || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name)
-                || HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
+                || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
+                HelpGroups.NICK.getName().equalsIgnoreCase(name) ||
+                HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
+                HelpGroups.BAN.getName().equalsIgnoreCase(name) ||
                 HelpGroups.CREATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.LABYTEAM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.PARTNER.getName().equalsIgnoreCase(name) ||

@@ -3,8 +3,8 @@
   "name": "LabyHelp",
   "mainClass": "de.marvhuelsmann.labymodaddon.LabyHelpAddon",
   "description": "Allowed user to get the cosmetics skins from other players from the middleclick GUI or Command",
-  "version": 1.5,
+  "version": 1.9,
   "author": "Marvio",
   "category": 2,
-  "icon": "https://i.imgur.com/cpmyVsd.jpg"
+  "icon": "https://i.imgur.com/dmy65PL.png"
 }

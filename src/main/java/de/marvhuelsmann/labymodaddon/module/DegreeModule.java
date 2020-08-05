@@ -1,8 +1,10 @@
 package de.marvhuelsmann.labymodaddon.module;
 
+import de.marvhuelsmann.labymodaddon.LabyHelpAddon;
 import net.labymod.ingamegui.ModuleCategory;
 import net.labymod.ingamegui.ModuleCategoryRegistry;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
+import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.utils.Material;
 import net.minecraft.client.Minecraft;
@@ -11,16 +13,20 @@ import net.minecraft.util.EnumChatFormatting;
 public class DegreeModule extends SimpleModule {
 
     private String getDegree() {
-        if (Minecraft.getMinecraft().thePlayer.rotationPitch == 90) {
-            return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
-        } else if (Minecraft.getMinecraft().thePlayer.rotationPitch == -90) {
-            return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
-        } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 1 && Minecraft.getMinecraft().thePlayer.rotationPitch > -1) {
-            return EnumChatFormatting.GREEN + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
-        } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 81 && Minecraft.getMinecraft().thePlayer.rotationPitch > 74) {
-            return EnumChatFormatting.YELLOW + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+        if (LabyHelpAddon.onServer) {
+            if (Minecraft.getMinecraft().thePlayer.rotationPitch == 90) {
+                return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            } else if (Minecraft.getMinecraft().thePlayer.rotationPitch == -90) {
+                return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 1 && Minecraft.getMinecraft().thePlayer.rotationPitch > -1) {
+                return EnumChatFormatting.GREEN + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 81 && Minecraft.getMinecraft().thePlayer.rotationPitch > 74) {
+                return EnumChatFormatting.YELLOW + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            } else {
+                return String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            }
         } else {
-            return String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+            return "0";
         }
     }
 

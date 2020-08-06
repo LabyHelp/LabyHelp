@@ -24,22 +24,11 @@ public class Menu {
        }
    }*/
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().clear();
-
-        if (LabyHelpAddon.AddonEnable) {
-            if (LabyHelpAddon.bandanaMenu) {
-                LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(bandanaMenu);
-            }
-            if (LabyHelpAddon.capeMenu) {
-                LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(capeMenu);
-            }
-            if (LabyHelpAddon.skinMenu) {
-                LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(skinMenu);
-            }
-            if (LabyHelpAddon.cosmeticMenu) {
-                LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(cosmeticsClearerMenu);
-            }
-            LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(social);
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(bandanaMenu);
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(capeMenu);
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(skinMenu);
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(cosmeticsClearerMenu);
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(social);
 
             /*     if (LabyHelpAddon.instaMenu) {
                     LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(instaMenu);
@@ -58,6 +47,5 @@ public class Menu {
                 }
 
                 */
-        }
     }
 }

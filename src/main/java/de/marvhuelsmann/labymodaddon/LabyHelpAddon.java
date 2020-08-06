@@ -53,12 +53,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
     public static boolean onServer = false;
 
-    public static boolean bandanaMenu = true;
-    public static boolean capeMenu = true;
-    public static boolean skinMenu = true;
-
-    public static boolean cosmeticMenu = true;
-
     private static final ExecutorService threadPool = Executors.newCachedThreadPool();
     private static final Map<UUID, HelpGroups> groupsMap;
     public static LabyHelpAddon instace;
@@ -85,14 +79,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         }
 
 
-        if (Source.ABOUT_MC_VERSION.startsWith("1.8")) {
-            this.getApi().getEventManager().register(new UserMenuActionEvent() {
-                @Override
-                public void createActions(User user, EntityPlayer entityPlayer, NetworkPlayerInfo networkPlayerInfo, List<UserActionEntry> list) {
-                    Menu.refreshMenu();
-                }
-            });
-        }
+        Menu.refreshMenu();
 
         this.getApi().getEventManager().registerOnJoin(new Consumer<ServerData>() {
             @Override
@@ -110,7 +97,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                     LabyMod.getInstance().openWebpage("https://labyhelp.de", true);
                 }
 
-                Menu.refreshMenu();
                 WebServer.sendClient(LabyMod.getInstance().getPlayerUUID());
 
                     GroupManager.updateSubTitles();
@@ -142,11 +128,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         this.AddonHelpMessage = !this.getConfig().has("join") || this.getConfig().get("join").getAsBoolean();
 
         AddonRankShow = !this.getConfig().has("rankshow") || this.getConfig().get("rankshow").getAsBoolean();
-
-        skinMenu = !this.getConfig().has("skin") || this.getConfig().get("skin").getAsBoolean();
-        cosmeticMenu = !this.getConfig().has("cosmetics") || this.getConfig().get("cosmetics").getAsBoolean();
-        capeMenu = !this.getConfig().has("cape") || this.getConfig().get("cape").getAsBoolean();
-        bandanaMenu = !this.getConfig().has("bandana") || this.getConfig().get("bandana").getAsBoolean();
 
         this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
         this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
@@ -318,6 +299,16 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 LabyHelpAddon.this.saveConfig();
             }
         });
+
+        ////
+
+        list.add(channelStringElement);
+        list.add(stringDiscord);
+        list.add(stringTwitter);
+        list.add(channelTikTok);
+        list.add(stringYoutube);
+        list.add(stringTwitch);
+
         for (final Map.Entry<UUID, HelpGroups> groupsEntry : groupsMap.entrySet()) {
             if (groupsEntry.getValue() != null && groupsEntry.getKey() != null) {
                 if (groupsEntry.getValue().getPremium() && groupsEntry.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
@@ -337,67 +328,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
             }
         }
 
-        ////
 
-        final BooleanElement settingsSkin = new BooleanElement("show Skin in the Menu", new ControlElement.IconData(Material.MOB_SPAWNER), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                skinMenu = enable;
-
-                Menu.refreshMenu();
-
-                LabyHelpAddon.this.getConfig().addProperty("skin", enable);
-                LabyHelpAddon.this.saveConfig();
-            }
-        }, skinMenu);
-
-        final BooleanElement settingsCape = new BooleanElement("show Cape in the Menu", new ControlElement.IconData(Material.BANNER), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                capeMenu = enable;
-
-                Menu.refreshMenu();
-
-                LabyHelpAddon.this.getConfig().addProperty("cape", enable);
-                LabyHelpAddon.this.saveConfig();
-            }
-        }, capeMenu);
-
-        final BooleanElement settingsBandana = new BooleanElement("show Bandana in the Menu", new ControlElement.IconData(Material.WOOL), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                bandanaMenu = enable;
-
-                Menu.refreshMenu();
-
-                LabyHelpAddon.this.getConfig().addProperty("bandana", enable);
-                LabyHelpAddon.this.saveConfig();
-            }
-        }, bandanaMenu);
-
-        final BooleanElement settingsCosmetics = new BooleanElement("show clear Cosmetics in the menu", new ControlElement.IconData(Material.BARRIER), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                cosmeticMenu = enable;
-
-                Menu.refreshMenu();
-
-                LabyHelpAddon.this.getConfig().addProperty("cosmetics", enable);
-                LabyHelpAddon.this.saveConfig();
-            }
-        }, cosmeticMenu);
-
-
-        list.add(settingsCape);
-        list.add(settingsBandana);
-        list.add(settingsSkin);
-        list.add(settingsCosmetics);
-
-        list.add(channelStringElement);
-        list.add(stringDiscord);
-        list.add(stringTwitter);
-        list.add(channelTikTok);
-        list.add(stringYoutube);
-        list.add(stringTwitch);
     }
 }

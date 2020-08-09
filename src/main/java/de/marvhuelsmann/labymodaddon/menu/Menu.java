@@ -13,7 +13,7 @@ public class Menu {
 
     public static SocialMediaMenu social = new SocialMediaMenu();
 
-    public static void refreshMenu() {
+    public void refreshMenu() {
 
 
 /*   for (int i = 0; i < LabyMod.getInstance().getChatToolManager().getPlayerMenu().size(); i++) {

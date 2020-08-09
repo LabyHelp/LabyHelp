@@ -17,10 +17,18 @@ public class Commands {
     private static Map<UUID, String> youtubeMap;
     private static Map<UUID, String> twitchMap;
     private static Map<UUID, String> tiktokMap;
+    private static Map<UUID, String> snapchatMap;
 
     public static void CommandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
+
+        if (GroupManager.isBanned(LabyMod.getInstance().getPlayerUUID())) {
+            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + " You are banned from LabyHelp for 24 Hours...");
+            return;
+        }
+
         if (LabyHelpAddon.AddonEnable) {
+
             if (message.startsWith("/bandana")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/bandana ", ""));
                 if (!GroupManager.isPremium(uuid) || GroupManager.isPremium(LabyMod.getInstance().getPlayerUUID())) {
@@ -137,10 +145,33 @@ public class Commands {
                 } else {
                     labyPlayer.sendMessage("Der Spieler hat nicht sein TikTok hinterlegt!");
                 }
+            } else if (message.startsWith("/snapchat")) {
+                final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/snapchat ", ""));
+                Commands.snapchatMap = WebServer.readSnapchat();
+                if (Commands.snapchatMap.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> snapchatEntry : Commands.snapchatMap.entrySet()) {
+                        if (snapchatEntry.getKey().equals(uuid)) {
+                            labyPlayer.sendSnapchat(snapchatEntry.getValue());
+                        }
+                    }
+                } else {
+                    labyPlayer.sendMessage("Der Spieler hat nicht sein SnapChat hinterlegt!");
+                }
+            } else if (message.startsWith("/lhban")) {
+                final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/lhban ", ""));
+                if (GroupManager.isTeam(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!GroupManager.isTeam(uuid)) {
+                        labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler wurde fuer ein Tag gebannt!");
+                    } else {
+                        labyPlayer.sendMessage("Der Spieler ist im LabyHelp Team!");
+                    }
+                } else {
+                    labyPlayer.sendNoPerms();
+                }
             } else if (message.startsWith("/social")) {
                 final String decode = message.replaceAll("/social ", "");
                 final UUID uuid = UUIDFetcher.getUUID(decode);
-                labyPlayer.openSocial(uuid,decode);
+                labyPlayer.openSocial(uuid, decode);
             } else if (message.startsWith("/lhreload")) {
                 labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Das LabyHelp Addon wurde neugeladen!");
                 GroupManager.updateSubTitles();
@@ -164,6 +195,7 @@ public class Commands {
                 labyPlayer.sendMessage("- /twitch <player>");
                 labyPlayer.sendMessage("- /tiktok <player>");
                 labyPlayer.sendMessage("- /twitter <player>");
+                labyPlayer.sendMessage("- /snapchat <player>");
                 labyPlayer.sendMessage("- /social <player>");
                 labyPlayer.sendMessage("- /lhreload");
             }

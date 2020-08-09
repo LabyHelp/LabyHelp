@@ -1,27 +1,19 @@
 package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
-import net.labymod.api.LabyModAPI;
-import net.labymod.api.events.RenderEntityEvent;
+import de.marvhuelsmann.labymodaddon.menu.LabyHelpMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class GroupManager implements RenderEntityEvent {
-
-    static {
-        GroupManager.groupsMap = WebServer.readGroups();
-        GroupManager.nickMap = WebServer.readNick();
-    }
+public class GroupManager {
 
     private static Map<UUID, HelpGroups> groupsMap;
-    private static Map<UUID, String> nickMap;
+
 
     public static boolean isPremium(final UUID uuid) {
         return GroupManager.groupsMap.containsKey(uuid) && GroupManager.groupsMap.get(uuid).getPremium();
@@ -31,31 +23,27 @@ public class GroupManager implements RenderEntityEvent {
         return GroupManager.groupsMap.containsKey(uuid) && GroupManager.groupsMap.get(uuid).getTeam();
     }
 
-    public static void updateSubTitles() {
+    public static boolean isBanned(final UUID uuid) {
         GroupManager.groupsMap = WebServer.readGroups();
-        GroupManager.nickMap = WebServer.readNick();
 
-        System.out.println(LabyMod.getInstance().getUserManager().getUsers().entrySet());
-        for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-            HelpGroups group = groupsMap.getOrDefault(uuidUserEntry.getKey(), null);
-
-            if (group != null) {
-                String nick = nickMap.getOrDefault(uuidUserEntry.getKey(), null);
-
-                LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(
-                        nick != null && nick.equalsIgnoreCase("true")
-                                ? (groupsMap.getOrDefault(LabyMod.getInstance().getPlayerUUID(), HelpGroups.USER).getTeam()
-                                    ? HelpGroups.NICK.getPrefix()
-                                    : HelpGroups.USER.getPrefix())
-                                : group.getPrefix()
-                );
-                LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
-            }
+        if (groupsMap != null && !groupsMap.isEmpty()) {
+            return groupsMap.containsKey(uuid) && groupsMap.containsValue(HelpGroups.BAN);
         }
+        return false;
     }
 
-    @Override
-    public void onRender(Entity entity, double v, double v1, double v2, float v3) {
+    public static void updateSubTitles() {
+        GroupManager.groupsMap = WebServer.readGroups();
 
+        if (groupsMap != null && !groupsMap.isEmpty()) {
+            for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
+                HelpGroups group = groupsMap.getOrDefault(uuidUserEntry.getKey(), null);
+
+                if (group != null) {
+                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
+                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
+                }
+            }
+        }
     }
 }

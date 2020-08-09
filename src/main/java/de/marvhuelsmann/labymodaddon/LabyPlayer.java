@@ -61,6 +61,15 @@ public class LabyPlayer {
         sendMessage("Der Discord Name lautet: " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + " (Der Namen wurde in deiner Zwischenablage abgespeichert)");
     }
 
+    public void sendSnapchat(String name) {
+
+        StringSelection stringSelection = new StringSelection(name);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+
+        sendMessage("Der SnapChat Name lautet: " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + " (Der Namen wurde in deiner Zwischenablage abgespeichert)");
+    }
+
     public void openSkin(UUID uuid) {
         if (uuid != null) {
             LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
@@ -71,6 +80,10 @@ public class LabyPlayer {
 
     public void sendNoPermsMessage() {
         LabyMod.getInstance().displayMessageInChat(prefix + " Diese Aktion ist bei diesem Spieler deaktiviert, weil er einen Premium LabyHelp Account besitzt!");
+    }
+
+    public void sendNoPerms() {
+        LabyMod.getInstance().displayMessageInChat(prefix + " Du hast keine Berechtigung auf diesem Befehl!");
     }
 
     public void sendMessage(String message) {

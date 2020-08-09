@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public enum HelpGroups {
 
-    NICK("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER" + EnumChatFormatting.DARK_PURPLE + " (NICK)", false, false, false),
+    NICK("NICK", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER" + EnumChatFormatting.DARK_PURPLE + " (NICK)", false, false, false),
     USER("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     BAN("BAN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.WHITE + " BLOCKED", false, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
@@ -64,16 +64,6 @@ public enum HelpGroups {
 
     public String getName() {
         return name;
-    }
-
-    public static boolean hasNicked(UUID uuid) {
-        Map<UUID, String> nickMap = WebServer.readNick();
-        if (!nickMap.isEmpty()) {
-            if (nickMap.containsKey(uuid) && nickMap.containsValue("true")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public String getPrefix() {

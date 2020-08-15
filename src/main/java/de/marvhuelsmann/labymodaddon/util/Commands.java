@@ -22,11 +22,6 @@ public class Commands {
     public static void CommandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
 
-        if (GroupManager.isBanned(LabyMod.getInstance().getPlayerUUID())) {
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + " You are banned from LabyHelp for 24 Hours...");
-            return;
-        }
-
         if (LabyHelpAddon.AddonEnable) {
 
             if (message.startsWith("/bandana")) {
@@ -157,11 +152,25 @@ public class Commands {
                 } else {
                     labyPlayer.sendMessage("Der Spieler hat nicht sein SnapChat hinterlegt!");
                 }
-            } else if (message.startsWith("/lhban")) {
-                final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/lhban ", ""));
+            } else if (message.startsWith("/nametag")) {
+                LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", true);
+                labyPlayer.sendMessage("Die Regel Seite hat sich geoeffnet");
+            }  else if (message.startsWith("/lhban")) {
+                String[] components = message.split(" ");
+
+                final UUID uuid = UUIDFetcher.getUUID(components[1]);
                 if (GroupManager.isTeam(LabyMod.getInstance().getPlayerUUID())) {
                     if (!GroupManager.isTeam(uuid)) {
-                        labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler wurde fuer ein Tag gebannt!");
+                        if (uuid != null) {
+                            if (components[2] != null) {
+                                labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde wegen " + EnumChatFormatting.WHITE + components[2] + EnumChatFormatting.RED + " fuer ein Tag gebannt!");
+                                WebServer.sendBanned(uuid, components[2]);
+                            } else {
+                                labyPlayer.sendMessage("Bitte benutze /lhban <Spieler> <Grund>");
+                            }
+                       } else {
+                            labyPlayer.sendMessage("Der Spieler existiert nicht!");
+                        }
                     } else {
                         labyPlayer.sendMessage("Der Spieler ist im LabyHelp Team!");
                     }
@@ -174,14 +183,17 @@ public class Commands {
                 labyPlayer.openSocial(uuid, decode);
             } else if (message.startsWith("/lhreload")) {
                 labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Das LabyHelp Addon wurde neugeladen!");
-                GroupManager.updateSubTitles();
-                System.out.println("subtitles updating..");
-                final String webVersion = WebServer.readVersion();
-                if (!webVersion.equalsIgnoreCase(LabyHelpAddon.currentVersion)) {
-                    LabyHelpAddon.isNewerVersion = true;
-                } else {
-                    LabyHelpAddon.isNewerVersion = false;
-                }
+                try {
+                    GroupManager.updateSubTitles(true);
+                    GroupManager.updateNameTag(true);
+                    System.out.println("subtitles updating..");
+                    final String webVersion = WebServer.readVersion();
+                    if (!webVersion.equalsIgnoreCase(LabyHelpAddon.currentVersion)) {
+                        LabyHelpAddon.isNewerVersion = true;
+                    } else {
+                        LabyHelpAddon.isNewerVersion = false;
+                    }
+                } catch (Exception ignored) {}
                 System.out.println("version updating..");
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
@@ -197,6 +209,7 @@ public class Commands {
                 labyPlayer.sendMessage("- /twitter <player>");
                 labyPlayer.sendMessage("- /snapchat <player>");
                 labyPlayer.sendMessage("- /social <player>");
+                labyPlayer.sendMessage("- /nametag");
                 labyPlayer.sendMessage("- /lhreload");
             }
         } else {

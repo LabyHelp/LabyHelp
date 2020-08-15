@@ -14,7 +14,11 @@ public class LabyPlayer {
 
     public void openCapeUrl(UUID uuid) {
         if (uuid != null) {
-            LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
+            try {
+                LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
+            } catch (Exception ignored) {
+                sendError();
+            }
         } else {
             sendMessage("This Player does not exit!");
         }
@@ -22,34 +26,62 @@ public class LabyPlayer {
 
     public void openBandanaUrl(UUID uuid) {
         if (uuid != null) {
-            LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
+            try {
+                LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
+            } catch (Exception ignored) {
+                sendError();
+            }
         } else {
             sendMessage("This Player does not exit!");
         }
     }
 
     public void openInsta(String name) {
+        try {
             LabyMod.getInstance().openWebpage("https://www.instagram.com/" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void openTikTok(String name) {
-        LabyMod.getInstance().openWebpage("https://www.tiktok.com/@" + name, false);
+        try {
+            LabyMod.getInstance().openWebpage("https://www.tiktok.com/@" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void openTwitter(String name) {
-        LabyMod.getInstance().openWebpage("https://www.twitter.com/" + name, false);
+        try {
+            LabyMod.getInstance().openWebpage("https://www.twitter.com/" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void openSocial(UUID uuid, String name) {
-        LabyMod.getInstance().openWebpage("https://www.labyhelp.de/profile?uuid=" + uuid + "&name=" + name, false);
+        try {
+            LabyMod.getInstance().openWebpage("https://www.labyhelp.de/profile?uuid=" + uuid + "&name=" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void openTwitch(String name) {
-        LabyMod.getInstance().openWebpage("https://www.twitch.tv/" + name, false);
+        try {
+            LabyMod.getInstance().openWebpage("https://www.twitch.tv/" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void openYoutube(String name) {
-        LabyMod.getInstance().openWebpage("https://www.youtube.com/results?search_query=" + name, false);
+        try {
+            LabyMod.getInstance().openWebpage("https://www.youtube.com/results?search_query=" + name, false);
+        } catch (Exception ignored) {
+            sendError();
+        }
     }
 
     public void sendDiscord(String name) {
@@ -72,7 +104,11 @@ public class LabyPlayer {
 
     public void openSkin(UUID uuid) {
         if (uuid != null) {
-            LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
+            try {
+                LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
+            } catch (Exception ignored) {
+                sendError();
+            }
         } else {
             sendMessage("This Player does not exit!");
         }
@@ -84,6 +120,10 @@ public class LabyPlayer {
 
     public void sendNoPerms() {
         LabyMod.getInstance().displayMessageInChat(prefix + " Du hast keine Berechtigung auf diesem Befehl!");
+    }
+
+    public void sendError() {
+        LabyMod.getInstance().displayMessageInChat(prefix + " LabyHelp has an Error...");
     }
 
     public void sendMessage(String message) {

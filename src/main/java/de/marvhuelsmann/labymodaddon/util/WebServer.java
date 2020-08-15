@@ -1,6 +1,7 @@
 package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
+import net.labymod.addon.AddonLoader;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,20 @@ import java.util.Map;
 import java.util.UUID;
 
 public class WebServer {
+
+    public static boolean existsURL(final String url) {
+        try {
+            final HttpURLConnection con = (HttpURLConnection)new URL(url).openConnection();
+            con.setConnectTimeout(2000);
+            con.setRequestMethod("HEAD");
+            con.setRequestProperty("User-Agent", Source.getUserAgent());
+            con.connect();
+            return con.getResponseCode() / 100 == 2;
+        }
+        catch (IOException e) {
+            return false;
+        }
+    }
 
     public static String sendClient(final UUID uuid) {
         try {
@@ -46,12 +61,31 @@ public class WebServer {
         }
     }
 
+    public static String sendBanned(final UUID uuid, String reason) {
+        try {
+            if (uuid != null) {
+                reason = reason.replace(",", "").replace(":", "");
+
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + URLEncoder.encode(reason, "UTF-8")).openConnection();
+                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                con.setConnectTimeout(3000);
+                con.setReadTimeout(3000);
+                con.connect();
+                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not fetch ban!", e);
+        }
+    }
+
     public static String sendTwitch(final UUID uuid, String name) {
         try {
             if (uuid != null) {
                 name = name.replace(",", "").replace(":", "");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTwitch.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTwitch.php?uuid=" + uuid.toString() + "&name=" +  URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -90,12 +124,56 @@ public class WebServer {
         }
     }
 
+    public static String sendNameTag(final UUID uuid, String name) {
+        try {
+            if (uuid != null) {
+                name = name.replace(",", "").replace(":", "");
+
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendNameTag.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
+                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                con.setConnectTimeout(3000);
+                con.setReadTimeout(3000);
+                con.connect();
+                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not fetch NameTag!", e);
+        }
+    }
+
+    public static Map<UUID, String> readNameTag() {
+        try {
+            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametag.php").openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+            con.setConnectTimeout(3000);
+            con.setReadTimeout(3000);
+            con.connect();
+            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            final Map<UUID, String> tiktokName = new HashMap<UUID, String>();
+            final String[] entries;
+            final String[] array;
+            final String[] split = array = (entries = result.split(","));
+            for (final String entry : array) {
+                final String[] data = entry.split(":");
+                if (data.length == 2) {
+                    tiktokName.put(UUID.fromString(data[0]), String.valueOf(data[1]));
+                }
+            }
+            return tiktokName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not read NameTag!", e);
+        }
+    }
+
     public static String sendTikTok(final UUID uuid, String name) {
         try {
             if (uuid != null) {
                 name = name.replace(",", "").replace(":", "");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTikTok.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTikTok.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -139,7 +217,7 @@ public class WebServer {
             if (uuid != null) {
                 name = name.replace(",", "").replace(":", "");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendInsta.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendInsta.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -183,7 +261,7 @@ public class WebServer {
             if (uuid != null) {
                 name = name.replace(",", "").replace(":", "");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendYoutube.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendYoutube.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -226,7 +304,7 @@ public class WebServer {
         try {
             if (uuid != null) {
                 if (name != null) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendStatus.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendStatus.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                     con.setConnectTimeout(3000);
                     con.setReadTimeout(3000);
@@ -247,7 +325,7 @@ public class WebServer {
 
                 name = name.replace(",", "").replace(":", "").replace("#", "@");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTwitter.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendTwitter.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -291,15 +369,16 @@ public class WebServer {
     public static String sendSnapchat(final UUID uuid, String name) {
         try {
             if (uuid != null) {
+                if (name != null) {
+                    name = name.replace(",", "").replace(":", "").replace("#", "@");
 
-                name = name.replace(",", "").replace(":", "").replace("#", "@");
-
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendSnapchat.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
-                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                con.setConnectTimeout(3000);
-                con.setReadTimeout(3000);
-                con.connect();
-                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendSnapchat.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                    con.setConnectTimeout(3000);
+                    con.setReadTimeout(3000);
+                    con.connect();
+                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                }
             }
             return null;
         } catch (IOException e) {
@@ -341,7 +420,7 @@ public class WebServer {
 
                 name = name.replace(",", "").replace(":", "").replace("#", "@");
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendDiscord.php?uuid=" + uuid.toString() + "&name=" + name).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendDiscord.php?uuid=" + uuid.toString() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
@@ -398,6 +477,7 @@ public class WebServer {
 
     public static Map<UUID, HelpGroups> readGroups() {
         try {
+
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/database.php").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
             con.setConnectTimeout(3000);

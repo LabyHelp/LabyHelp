@@ -18,20 +18,6 @@ import java.util.UUID;
 
 public class WebServer {
 
-    public static boolean existsURL(final String url) {
-        try {
-            final HttpURLConnection con = (HttpURLConnection)new URL(url).openConnection();
-            con.setConnectTimeout(2000);
-            con.setRequestMethod("HEAD");
-            con.setRequestProperty("User-Agent", Source.getUserAgent());
-            con.connect();
-            return con.getResponseCode() / 100 == 2;
-        }
-        catch (IOException e) {
-            return false;
-        }
-    }
-
     public static String sendClient(final UUID uuid) {
         try {
             if (uuid != null) {

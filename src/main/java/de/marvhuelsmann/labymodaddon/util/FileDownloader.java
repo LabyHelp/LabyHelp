@@ -34,7 +34,6 @@ public class FileDownloader implements Runnable {
         }
     }
 
-
     public static void update() {
      new FileDownloader("https://drive.google.com/u/0/uc?id=1_04KoR3sb9CEPQoxffezVsM_8V2G7q1s&export=download", Addon);
 

@@ -1,6 +1,6 @@
 package de.marvhuelsmann.labymodaddon.util;
 
-import de.marvhuelsmann.labymodaddon.LabyHelpAddon;
+import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.UUIDFetcher;
@@ -22,7 +22,7 @@ public class Commands {
     public static void CommandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
 
-        if (LabyHelpAddon.AddonEnable) {
+        if (LabyHelp.AddonEnable) {
 
             if (message.startsWith("/bandana")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/bandana ", ""));
@@ -188,11 +188,7 @@ public class Commands {
                     GroupManager.updateNameTag(true);
                     System.out.println("subtitles updating..");
                     final String webVersion = WebServer.readVersion();
-                    if (!webVersion.equalsIgnoreCase(LabyHelpAddon.currentVersion)) {
-                        LabyHelpAddon.isNewerVersion = true;
-                    } else {
-                        LabyHelpAddon.isNewerVersion = false;
-                    }
+                    LabyHelp.isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
                 } catch (Exception ignored) {}
                 System.out.println("version updating..");
             }

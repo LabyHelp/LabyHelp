@@ -1,6 +1,6 @@
 package de.marvhuelsmann.labymodaddon.module;
 
-import de.marvhuelsmann.labymodaddon.LabyHelpAddon;
+import de.marvhuelsmann.labymodaddon.LabyHelp;
 import net.labymod.ingamegui.ModuleCategory;
 import net.labymod.ingamegui.ModuleCategoryRegistry;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
@@ -13,7 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class DegreeModule extends SimpleModule {
 
     private String getDegree() {
-        if (LabyHelpAddon.onServer) {
+        if (LabyHelp.onServer) {
             if (Minecraft.getMinecraft().thePlayer.rotationPitch == 90) {
                 return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else if (Minecraft.getMinecraft().thePlayer.rotationPitch == -90) {

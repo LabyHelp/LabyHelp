@@ -1,12 +1,12 @@
 package de.marvhuelsmann.labymodaddon.enums;
 
+import net.labymod.utils.Material;
 import net.minecraft.util.EnumChatFormatting;
 
 public enum HelpGroups {
 
     NICK("NICK", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER" + EnumChatFormatting.DARK_PURPLE + " (NICK)", false, false, false),
     USER("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    BAN("BAN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.WHITE + " BLOCKED", false, false, false),
     BANNED("BANNED", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.WHITE + " BLOCKED", false, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
@@ -15,31 +15,31 @@ public enum HelpGroups {
     PARTNER("PARTNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " PARTNER", true, false, true),
     HELPER("HELPER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.BLUE + " HELPER", true, false, true),
     DESIGNER("DESIGNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GREEN + " DESIGNER", true, false, true),
-    SRDESIGNER("HEAD DESIGNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + " H-DESIGNER", true, true, true),
+    SRDESIGNER("SRDESIGNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + " H-DESIGNER", true, true, true),
     CONTENT("CONTENT", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, false, true),
     SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SrCONTENT", true, true, true),
     JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + " JrMOD", true, false, true),
     MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + " MOD", true, true, true),
     SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SrMOD", true, true, true),
     DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " DEVELOPER", true, true, true),
-    ADMIN("ADMIN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " ADMIN", true, true, true),
-    OWNER("OWNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " OWNER", true, true, true);
+    ADMIN("ADMIN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED +" ADMIN", true, true, true),
+    OWNER("OWNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " LEADER", true, true, true);
 
 
     private final String name, prefix;
-    private final Boolean isPremium, isTeam, showTag;
+    private final Boolean isPremium;
+    private final Boolean isTeam;
 
     HelpGroups(String name, String prefix, Boolean isPremium, Boolean isTeam, Boolean showTag) {
         this.name = name;
         this.prefix = prefix;
         this.isPremium = isPremium;
         this.isTeam = isTeam;
-        this.showTag = showTag;
 
     }
 
     public static Boolean isExist(final String name) {
-        if (HelpGroups.USER.getName().equalsIgnoreCase(name)
+        return HelpGroups.USER.getName().equalsIgnoreCase(name)
                 || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.NICK.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
@@ -57,10 +57,7 @@ public enum HelpGroups {
                 HelpGroups.SRMODERATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.DEVELOPER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.ADMIN.getName().equalsIgnoreCase(name) ||
-                HelpGroups.OWNER.getName().equalsIgnoreCase(name)) {
-            return true;
-        }
-        return false;
+                HelpGroups.OWNER.getName().equalsIgnoreCase(name);
     }
 
 
@@ -80,8 +77,5 @@ public enum HelpGroups {
         return isTeam;
     }
 
-    public Boolean getShowTag() {
-        return showTag;
-    }
 
 }

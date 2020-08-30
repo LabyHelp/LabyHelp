@@ -15,6 +15,10 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.settings.elements.StringElement;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,7 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
+public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
     public static boolean AddonEnable = true;
@@ -50,7 +54,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
     private ExecutorService executor;
 
     private static final ExecutorService threadPool = Executors.newCachedThreadPool();
-    public static LabyHelpAddon instace;
+    public static LabyHelp instace;
 
     private boolean addonEnabled = false;
 
@@ -129,8 +133,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 //   FileDownloader.update();
             }
         }));
-
-
     }
 
     @Override
@@ -151,7 +153,7 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
     }
 
-    public static LabyHelpAddon getInstace() {
+    public static LabyHelp getInstace() {
         return instace;
     }
 
@@ -167,7 +169,6 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
 
         return uuid != null;
     }
-
 
     public ExecutorService getExecutor() {
         return this.executor;
@@ -247,8 +248,8 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 AddonEnable = enable;
 
 
-                LabyHelpAddon.this.getConfig().addProperty("enable", enable);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("enable", enable);
+                LabyHelp.this.saveConfig();
             }
         }, AddonEnable);
 
@@ -258,10 +259,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
         final BooleanElement settingsJoin = new BooleanElement("Join help message", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
-                LabyHelpAddon.this.AddonHelpMessage = enable;
+                LabyHelp.this.AddonHelpMessage = enable;
 
-                LabyHelpAddon.this.getConfig().addProperty("join", enable);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("join", enable);
+                LabyHelp.this.saveConfig();
             }
         }, this.AddonHelpMessage);
 
@@ -275,10 +276,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.instaName = accepted;
+                LabyHelp.this.instaName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("instaname", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("instaname", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -290,10 +291,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.tiktokName = accepted;
+                LabyHelp.this.tiktokName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("tiktokname", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("tiktokname", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -305,10 +306,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.twitchName = accepted;
+                LabyHelp.this.twitchName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("twitchname", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("twitchname", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -320,10 +321,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.discordName = accepted;
+                LabyHelp.this.discordName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("discordname", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("discordname", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -335,10 +336,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.youtubeName = accepted;
+                LabyHelp.this.youtubeName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("youtubename", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("youtubename", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -350,10 +351,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.twitterName = accepted;
+                LabyHelp.this.twitterName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("twittername", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("twittername", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -365,10 +366,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.snapchatName = accepted;
+                LabyHelp.this.snapchatName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("snapchatname", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("snapchatname", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
 
@@ -380,10 +381,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.statusName = accepted;
+                LabyHelp.this.statusName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("status", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("status", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
         list.add(status);
@@ -396,10 +397,10 @@ public class LabyHelpAddon extends net.labymod.api.LabyModAddon {
                 } catch (Exception ignored) {
                 }
 
-                LabyHelpAddon.this.statusName = accepted;
+                LabyHelp.this.statusName = accepted;
 
-                LabyHelpAddon.this.getConfig().addProperty("nametag", accepted);
-                LabyHelpAddon.this.saveConfig();
+                LabyHelp.this.getConfig().addProperty("nametag", accepted);
+                LabyHelp.this.saveConfig();
             }
         });
         list.add(nameTag);

@@ -1,6 +1,5 @@
 package de.marvhuelsmann.labymodaddon.enums;
 
-import net.labymod.utils.Material;
 import net.minecraft.util.EnumChatFormatting;
 
 public enum HelpGroups {
@@ -35,7 +34,6 @@ public enum HelpGroups {
         this.prefix = prefix;
         this.isPremium = isPremium;
         this.isTeam = isTeam;
-
     }
 
     public static Boolean isExist(final String name) {

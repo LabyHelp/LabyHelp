@@ -4,7 +4,6 @@ import de.marvhuelsmann.labymodaddon.LabyHelp;
 import net.labymod.ingamegui.ModuleCategory;
 import net.labymod.ingamegui.ModuleCategoryRegistry;
 import net.labymod.ingamegui.moduletypes.SimpleModule;
-import net.labymod.main.LabyMod;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.utils.Material;
 import net.minecraft.client.Minecraft;

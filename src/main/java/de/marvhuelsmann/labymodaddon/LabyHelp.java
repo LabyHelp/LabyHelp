@@ -15,6 +15,7 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.settings.elements.StringElement;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -101,7 +102,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
 
             if (addonEnabled) {
-                WebServer.sendClient(LabyMod.getInstance().getPlayerUUID());
+                WebServer.sendClient();
                 GroupManager.updateSubTitles(true);
                 GroupManager.updateSubTitles(false);
             } else {

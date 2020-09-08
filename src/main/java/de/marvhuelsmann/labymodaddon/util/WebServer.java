@@ -3,14 +3,10 @@ package de.marvhuelsmann.labymodaddon.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
-import net.labymod.addon.AddonLoader;
 import net.labymod.main.LabyMod;
-import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -34,7 +30,6 @@ public class WebServer {
             HttpClient httpClient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("https://sessionserver.mojang.com/session/minecraft/join");
             httpPost.setHeader("Content-Type", "application/json");
-            //httpPost.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 
             JsonObject request = new JsonObject();
             request.addProperty("accessToken", Minecraft.getMinecraft().getSession().getToken());
@@ -476,7 +471,6 @@ public class WebServer {
 
     public static Map<UUID, HelpGroups> readGroups() {
         try {
-
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/database.php").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
             con.setConnectTimeout(3000);

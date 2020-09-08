@@ -13,7 +13,6 @@ public class GroupManager {
     private static Map<UUID, HelpGroups> groupsMap;
     private static Map<UUID, String> nameTagMap;
 
-
     public static boolean isPremium(final UUID uuid) {
         return GroupManager.groupsMap.containsKey(uuid) && GroupManager.groupsMap.get(uuid).getPremium();
     }

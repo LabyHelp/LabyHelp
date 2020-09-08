@@ -1,12 +1,16 @@
 package de.marvhuelsmann.labymodaddon;
 
+import akka.io.Tcp;
+import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
+import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.Commands;
-import de.marvhuelsmann.labymodaddon.util.GroupManager;
+import de.marvhuelsmann.labymodaddon.util.SocialHandler;
 import de.marvhuelsmann.labymodaddon.util.WebServer;
-import net.labymod.api.events.MessageSendEvent;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.labymod.settings.elements.BooleanElement;
@@ -15,11 +19,7 @@ import net.labymod.settings.elements.SettingsElement;
 import net.labymod.settings.elements.StringElement;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,9 +29,18 @@ import java.util.concurrent.Executors;
 
 public class LabyHelp extends net.labymod.api.LabyModAddon {
 
+    private static LabyHelp instace;
 
-    public static boolean AddonEnable = true;
+    public boolean AddonSettingsEnable = true;
     private boolean AddonHelpMessage = true;
+    public Boolean isNewerVersion = false;
+    public static final String currentVersion = "1.9.3";
+    public boolean onServer = false;
+
+    private SocialHandler socialHandler;
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
+    private final Commands commands = new Commands();
+
     public String instaName;
     public String discordName;
     public String youtubeName;
@@ -42,25 +51,17 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public String statusName;
     public String nameTagString;
 
-    public static boolean AddonRankShow = false;
-    public static Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.2";
-
-    public static boolean onServer = false;
-
-    private ExecutorService executor;
-
-    private static final ExecutorService threadPool = Executors.newCachedThreadPool();
-    public static LabyHelp instace;
-
-    private boolean addonEnabled = false;
+    public boolean addonEnabled = false;
 
 
     @Override
     public void onEnable() {
         instace = this;
-        this.getApi().registerForgeListener(false);
-        this.getApi().registerForgeListener(this);
+
+        this.getApi().registerForgeListener(new ClientTickListener());
+        this.getApi().getEventManager().register(new MessageSendListener());
+        this.getApi().getEventManager().registerOnJoin(new ClientJoinListener());
+        this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
 
         if (Source.ABOUT_MC_VERSION.startsWith("1.8")) {
             this.getApi().registerModule(new DegreeModule());
@@ -73,53 +74,18 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 isNewerVersion = true;
             }
             addonEnabled = true;
-
         } catch (Exception ignored) {
             addonEnabled = false;
         }
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().clear();
 
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().clear();
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
 
-
-        this.getApi().getEventManager().registerOnJoin(serverData -> {
-            if (AddonHelpMessage) {
-                LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "Use /LhHelp for all Commands");
-            }
-
-            onServer = true;
-
-            if (isNewerVersion) {
-                LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "Es gibt eine neuere LabyHelp Version!");
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " Es gibt eine neuere LabyHelp Version. Dein Browser wurde geoeffnet!");
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Nichts geoeffnet? https://labyhelp.de");
-                LabyMod.getInstance().openWebpage("https://labyhelp.de", true);
-            }
-
-            if (addonEnabled) {
-                WebServer.sendClient();
-                GroupManager.updateSubTitles(true);
-                GroupManager.updateSubTitles(false);
-            } else {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + " LabyHelp doenst load correctly...");
-            }
-        });
-
-        this.getApi().getEventManager().registerOnQuit(serverData -> onServer = false);
-
-        this.getApi().getEventManager().register((MessageSendEvent) message -> {
-            if (message.startsWith("/bandana") || message.startsWith("/cape") || message.startsWith("/skin") || message.startsWith("/cosmeticsC") || message.equalsIgnoreCase("/LhHelp") || message.equalsIgnoreCase("/lhreload") || message.startsWith("/insta") || message.startsWith("/discord") || message.startsWith("/youtube") || message.startsWith("/twitch") || message.startsWith("/twitter") || message.startsWith("/tiktok") || message.startsWith("/social") || message.startsWith("/snapchat") || message.startsWith("/lhban") || message.startsWith("nametag")) {
-                Commands.CommandMessage(message);
-                return true;
-            } else {
-                return false;
-            }
-        });
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (isNewerVersion) {
@@ -130,24 +96,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 //   FileDownloader.update();
             }
         }));
-    }
-
-    @Override
-    public void loadConfig() {
-        AddonEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
-        this.AddonHelpMessage = !this.getConfig().has("join") || this.getConfig().get("join").getAsBoolean();
-
-        AddonRankShow = !this.getConfig().has("rankshow") || this.getConfig().get("rankshow").getAsBoolean();
-
-        this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
-        this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
-        this.youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
-        this.twitchName = this.getConfig().has("twitchname") ? this.getConfig().get("twitchname").getAsString() : "username";
-        this.twitterName = this.getConfig().has("twittername") ? this.getConfig().get("twittername").getAsString() : "username";
-        this.tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
-        this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
-        this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
-        this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
     }
 
     public static LabyHelp getInstace() {
@@ -161,78 +109,37 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     }
 
     public boolean getUUIDBoolean(String name) {
-
         UUID uuid = MinecraftServer.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(name)).getId();
-
         return uuid != null;
     }
 
-    public ExecutorService getExecutor() {
-        return this.executor;
+    public SocialHandler getSocialHandler() {
+        return socialHandler;
     }
 
-    int tick = 0;
-    int reloadTick = 0;
-    int nameTick = 0;
+    public ExecutorService getExecutor() {
+        return threadPool;
+    }
 
-    @SubscribeEvent
-    public void onTick(final TickEvent.ClientTickEvent event) {
-        if (reloadTick > 930) {
-            threadPool.submit(new Runnable() {
-                @Override
-                public void run() {
+    public Commands getCommands() {
+        return commands;
+    }
 
-                    try {
-                        GroupManager.updateSubTitles(true);
-                        GroupManager.updateNameTag(true);
-                        addonEnabled = true;
-                    } catch (Exception ignored) {
-                        addonEnabled = false;
-                    }
 
-                    System.out.println("update subtitle & nametags");
-                }
-            });
+    @Override
+    public void loadConfig() {
+        AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
+        this.AddonHelpMessage = !this.getConfig().has("join") || this.getConfig().get("join").getAsBoolean();
 
-            reloadTick = 0;
-        }
-        if (nameTagString != null) {
-            if (nameTick > 200) {
-                if (onServer) {
-                    threadPool.submit(new Runnable() {
-                        @Override
-                        public void run() {
-                            GroupManager.updateNameTag(false);
-                        }
-                    });
-
-                    if (nameTick > 400) {
-                        nameTick = 0;
-                    }
-                }
-            } else {
-                if (onServer) {
-                    threadPool.submit(new Runnable() {
-                        @Override
-                        public void run() {
-                            GroupManager.updateSubTitles(false);
-                        }
-                    });
-                }
-            }
-        } else {
-            if (onServer) {
-                threadPool.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        GroupManager.updateSubTitles(false);
-                    }
-                });
-            }
-        }
-        nameTick++;
-        tick++;
-        reloadTick++;
+        this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
+        this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
+        this.youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
+        this.twitchName = this.getConfig().has("twitchname") ? this.getConfig().get("twitchname").getAsString() : "username";
+        this.twitterName = this.getConfig().has("twittername") ? this.getConfig().get("twittername").getAsString() : "username";
+        this.tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
+        this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
+        this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
+        this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
     }
 
     @Override
@@ -242,13 +149,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.GOLD_BARDING), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
-                AddonEnable = enable;
+                LabyHelp.getInstace().AddonSettingsEnable = enable;
 
 
                 LabyHelp.this.getConfig().addProperty("enable", enable);
                 LabyHelp.this.saveConfig();
             }
-        }, AddonEnable);
+        }, LabyHelp.getInstace().AddonSettingsEnable);
 
         list.add(settingsEnabled);
 
@@ -411,6 +318,5 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         list.add(channelTikTok);
         list.add(stringYoutube);
         list.add(stringTwitch);
-
     }
 }

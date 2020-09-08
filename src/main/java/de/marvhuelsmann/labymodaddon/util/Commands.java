@@ -19,10 +19,10 @@ public class Commands {
     private static Map<UUID, String> tiktokMap;
     private static Map<UUID, String> snapchatMap;
 
-    public static void CommandMessage(final String message) {
+    public void commandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
 
-        if (LabyHelp.AddonEnable) {
+        if (LabyHelp.getInstace().AddonSettingsEnable) {
 
             if (message.startsWith("/bandana")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/bandana ", ""));
@@ -152,9 +152,6 @@ public class Commands {
                 } else {
                     labyPlayer.sendMessage("Der Spieler hat nicht sein SnapChat hinterlegt!");
                 }
-            } else if (message.startsWith("/nametag")) {
-                LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", true);
-                labyPlayer.sendMessage("Die Regel Seite hat sich geoeffnet");
             }  else if (message.startsWith("/lhban")) {
                 String[] components = message.split(" ");
 
@@ -188,9 +185,16 @@ public class Commands {
                     GroupManager.updateNameTag(true);
                     System.out.println("subtitles updating..");
                     final String webVersion = WebServer.readVersion();
-                    LabyHelp.isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
+                    LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
                 } catch (Exception ignored) {}
                 System.out.println("version updating..");
+            } else if (message.startsWith("/labyhelp")) {
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Unser Teamspeak: labyhelp.de");
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Unser Discord: https://discord.com/invite/PBqQT9C");
+            } else if (message.startsWith("/nametag")) {
+                LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", false);
+                labyPlayer.sendMessage("Die Regel Seite hat sich geoeffnet");
+                labyPlayer.sendMessage("Nichts geoeffnet? https://labyhelp.de/tag-rules");
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
                 labyPlayer.sendMessage("- /bandana <player>");
@@ -207,6 +211,7 @@ public class Commands {
                 labyPlayer.sendMessage("- /social <player>");
                 labyPlayer.sendMessage("- /nametag");
                 labyPlayer.sendMessage("- /lhreload");
+                labyPlayer.sendMessage("- /labyhelp");
             }
         } else {
             labyPlayer.sendMessage("You have deactivated the Addon!");

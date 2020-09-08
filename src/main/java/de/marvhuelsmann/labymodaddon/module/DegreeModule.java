@@ -12,7 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 public class DegreeModule extends SimpleModule {
 
     private String getDegree() {
-        if (LabyHelp.onServer) {
+        if (LabyHelp.getInstace().onServer) {
             if (Minecraft.getMinecraft().thePlayer.rotationPitch == 90) {
                 return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else if (Minecraft.getMinecraft().thePlayer.rotationPitch == -90) {

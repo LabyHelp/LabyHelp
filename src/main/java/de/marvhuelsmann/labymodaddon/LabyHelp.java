@@ -33,7 +33,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private static LabyHelp instace;
 
     public boolean AddonSettingsEnable = true;
-    private boolean AddonHelpMessage = true;
     public Boolean isNewerVersion = false;
     public static final String currentVersion = "1.9.4";
     public boolean onServer = false;
@@ -126,7 +125,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Override
     public void loadConfig() {
         AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
-        this.AddonHelpMessage = !this.getConfig().has("join") || this.getConfig().get("join").getAsBoolean();
 
         this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
         this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
@@ -156,18 +154,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         list.add(settingsEnabled);
 
-
-        final BooleanElement settingsJoin = new BooleanElement("Join help message", new ControlElement.IconData(Material.REDSTONE_COMPARATOR), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                LabyHelp.this.AddonHelpMessage = enable;
-
-                LabyHelp.this.getConfig().addProperty("join", enable);
-                LabyHelp.this.saveConfig();
-            }
-        }, this.AddonHelpMessage);
-
-        list.add(settingsJoin);
 
         StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), instaName, new Consumer<String>() {
             @Override

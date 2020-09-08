@@ -41,7 +41,6 @@ public class GroupManager {
         if (groupsMap != null && !groupsMap.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
                 HelpGroups group = groupsMap.getOrDefault(uuidUserEntry.getKey(), null);
-
                 if (group != null) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);

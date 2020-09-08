@@ -2,9 +2,11 @@ package de.marvhuelsmann.labymodaddon.enums;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import javax.swing.text.html.parser.Entity;
+
 public enum HelpGroups {
 
-    USER("USER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
+    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD +  "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     BANNED("BANNED", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),

@@ -13,17 +13,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData serverData) {
-        if (LabyHelp.getInstace().AddonSettingsEnable) {
-            LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "Use /LhHelp for all Commands");
-        }
-
         LabyHelp.getInstace().onServer = true;
-
-        if (LabyHelp.getInstace().isNewerVersion) {
-            LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "There is a newer version.");
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " Please restart your game or download it manually");
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Nothing open? https://labyhelp.de");
-        }
 
         if (LabyHelp.getInstace().addonEnabled) {
             LabyHelp.getInstace().getExecutor().submit(new Runnable() {

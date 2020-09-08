@@ -9,6 +9,7 @@ import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.Commands;
+import de.marvhuelsmann.labymodaddon.util.FileDownloader;
 import de.marvhuelsmann.labymodaddon.util.SocialHandler;
 import de.marvhuelsmann.labymodaddon.util.WebServer;
 import net.labymod.main.LabyMod;
@@ -34,7 +35,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean AddonSettingsEnable = true;
     private boolean AddonHelpMessage = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.3";
+    public static final String currentVersion = "1.9.4";
     public boolean onServer = false;
 
     private SocialHandler socialHandler;
@@ -89,11 +90,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (isNewerVersion) {
-                System.out.println("UPDATE IS INSTALLATION");
-                System.out.println("UPDATE IS INSTALLATION");
-                System.out.println("UPDATE IS INSTALLATION");
-                System.out.println("UPDATE IS INSTALLATION");
-                //   FileDownloader.update();
+                FileDownloader.update();
             }
         }));
     }

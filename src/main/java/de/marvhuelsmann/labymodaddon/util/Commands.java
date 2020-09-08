@@ -174,6 +174,7 @@ public class Commands {
                 } else {
                     labyPlayer.sendNoPerms();
                 }
+
             } else if (message.startsWith("/social")) {
                 final String decode = message.replaceAll("/social ", "");
                 final UUID uuid = UUIDFetcher.getUUID(decode);
@@ -189,8 +190,9 @@ public class Commands {
                 } catch (Exception ignored) {}
                 System.out.println("version updating..");
             } else if (message.startsWith("/labyhelp")) {
-                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Unser Teamspeak: labyhelp.de");
-                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Unser Discord: https://discord.com/invite/PBqQT9C");
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion);
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Teamspeak: labyhelp.de");
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Discord: https://discord.com/invite/PBqQT9C");
             } else if (message.startsWith("/nametag")) {
                 LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", false);
                 labyPlayer.sendMessage("Die Regel Seite hat sich geoeffnet");

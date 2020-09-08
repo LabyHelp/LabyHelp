@@ -20,10 +20,9 @@ public class ClientJoinListener implements Consumer<ServerData> {
         LabyHelp.getInstace().onServer = true;
 
         if (LabyHelp.getInstace().isNewerVersion) {
-            LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "Es gibt eine neuere LabyHelp Version!");
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " Es gibt eine neuere LabyHelp Version. Dein Browser wurde geoeffnet!");
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Nichts geoeffnet? https://labyhelp.de");
-            LabyMod.getInstance().openWebpage("https://labyhelp.de", true);
+            LabyMod.getInstance().notifyMessageRaw("LabyHelp | Addon", "There is a newer version.");
+            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " Please restart your game or download it manually");
+            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Nothing open? https://labyhelp.de");
         }
 
         if (LabyHelp.getInstace().addonEnabled) {

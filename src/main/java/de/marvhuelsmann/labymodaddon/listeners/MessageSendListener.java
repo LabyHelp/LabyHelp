@@ -1,13 +1,13 @@
 package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
-import de.marvhuelsmann.labymodaddon.util.Commands;
 import net.labymod.api.events.MessageSendEvent;
 
 public class MessageSendListener implements MessageSendEvent {
 
     @Override
     public boolean onSend(String message) {
+        //TODO ADD /LHIGNORE
         if (
                 message.startsWith("/bandana") || message.startsWith("/cape") ||
                 message.startsWith("/skin") || message.startsWith("/cosmeticsC") ||
@@ -17,7 +17,7 @@ public class MessageSendListener implements MessageSendEvent {
                 message.startsWith("/youtube") || message.startsWith("/twitch") ||
                 message.startsWith("/twitter") || message.startsWith("/tiktok") ||
                 message.startsWith("/social") || message.startsWith("/snapchat") ||
-                message.startsWith("/lhban")) {
+                message.startsWith("/lhban"))  {
             LabyHelp.getInstace().getCommands().commandMessage(message);
             return true;
         } else {

@@ -11,23 +11,26 @@ import java.util.UUID;
 
 public class Commands {
 
-    private static Map<UUID, String> instaMap;
+   /* private static Map<UUID, String> instaMap;
     private static Map<UUID, String> discordMap;
     private static Map<UUID, String> twitterMap;
     private static Map<UUID, String> youtubeMap;
     private static Map<UUID, String> twitchMap;
     private static Map<UUID, String> tiktokMap;
     private static Map<UUID, String> snapchatMap;
+    */
 
     public void commandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
+
+        LabyHelp.getInstace().getSocialHandler().readSocialMedia();
 
         if (LabyHelp.getInstace().AddonSettingsEnable) {
 
             if (message.startsWith("/bandana")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/bandana ", ""));
-                if (!GroupManager.isPremium(uuid) || GroupManager.isPremium(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!GroupManager.isTeam(uuid)) {
+                if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                         labyPlayer.openBandanaUrl(uuid);
                     } else {
                         labyPlayer.sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
@@ -37,8 +40,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/cape")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/cape ", ""));
-                if (!GroupManager.isPremium(uuid) || GroupManager.isPremium(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!GroupManager.isTeam(uuid)) {
+                if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                         labyPlayer.openCapeUrl(uuid);
                     } else {
                         labyPlayer.sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
@@ -48,8 +51,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/skin")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/skin ", ""));
-                if (!GroupManager.isPremium(uuid) || GroupManager.isPremium(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!GroupManager.isTeam(uuid)) {
+                if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                         labyPlayer.openSkin(uuid);
                     } else {
                         labyPlayer.sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
@@ -59,8 +62,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/cosmeticsC")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/cosmeticsC ", ""));
-                if (!GroupManager.isPremium(uuid) || GroupManager.isPremium(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!GroupManager.isTeam(uuid)) {
+                if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                         LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
                     } else {
                         labyPlayer.sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
@@ -70,9 +73,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/insta")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/insta ", ""));
-                Commands.instaMap = WebServer.readInstagram();
-                if (Commands.instaMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> instaEntry : Commands.instaMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().instaName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> instaEntry : LabyHelp.getInstace().getSocialHandler().instaName.entrySet()) {
                         if (instaEntry.getKey().equals(uuid)) {
                             labyPlayer.openInsta(instaEntry.getValue());
                         }
@@ -82,9 +84,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/discord")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/discord ", ""));
-                Commands.discordMap = WebServer.readDiscord();
-                if (Commands.discordMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> discordEntry : Commands.discordMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().discordName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> discordEntry : LabyHelp.getInstace().getSocialHandler().discordName.entrySet()) {
                         if (discordEntry.getKey().equals(uuid)) {
                             labyPlayer.sendDiscord(discordEntry.getValue());
                         }
@@ -94,9 +95,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/youtube")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/youtube ", ""));
-                Commands.youtubeMap = WebServer.readYoutube();
-                if (Commands.youtubeMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> youtubeEntry : Commands.youtubeMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().youtubeName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> youtubeEntry : LabyHelp.getInstace().getSocialHandler().youtubeName.entrySet()) {
                         if (youtubeEntry.getKey().equals(uuid)) {
                             labyPlayer.openYoutube(youtubeEntry.getValue());
                         }
@@ -106,9 +106,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitch")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitch ", ""));
-                Commands.twitchMap = WebServer.readTwitch();
-                if (Commands.twitchMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitchEntry : Commands.twitchMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().twitchName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitchEntry : LabyHelp.getInstace().getSocialHandler().twitchName.entrySet()) {
                         if (twitchEntry.getKey().equals(uuid)) {
                             labyPlayer.openTwitch(twitchEntry.getValue());
                         }
@@ -118,9 +117,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitter")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitter ", ""));
-                Commands.twitterMap = WebServer.readTwitter();
-                if (Commands.twitterMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitterEntry : Commands.twitterMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().twitterName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getSocialHandler().twitterName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
                             labyPlayer.openTwitter(twitterEntry.getValue());
                         }
@@ -130,9 +128,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/tiktok")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/tiktok ", ""));
-                Commands.tiktokMap = WebServer.readTikTok();
-                if (Commands.tiktokMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitterEntry : Commands.tiktokMap.entrySet()) {
+                if (LabyHelp.getInstace().getSocialHandler().tiktokName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getSocialHandler().tiktokName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
                             labyPlayer.openTikTok(twitterEntry.getValue());
                         }
@@ -142,9 +139,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/snapchat")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/snapchat ", ""));
-                Commands.snapchatMap = WebServer.readSnapchat();
-                if (Commands.snapchatMap.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> snapchatEntry : Commands.snapchatMap.entrySet()) {
+                if (!LabyHelp.getInstace().getSocialHandler().snapchatName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> snapchatEntry : LabyHelp.getInstace().getSocialHandler().snapchatName.entrySet()) {
                         if (snapchatEntry.getKey().equals(uuid)) {
                             labyPlayer.sendSnapchat(snapchatEntry.getValue());
                         }
@@ -152,12 +148,12 @@ public class Commands {
                 } else {
                     labyPlayer.sendMessage("Der Spieler hat nicht sein SnapChat hinterlegt!");
                 }
-            }  else if (message.startsWith("/lhban")) {
+            } else if (message.startsWith("/lhban")) {
                 String[] components = message.split(" ");
 
                 final UUID uuid = UUIDFetcher.getUUID(components[1]);
-                if (GroupManager.isTeam(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!GroupManager.isTeam(uuid)) {
+                if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
+                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                         if (uuid != null) {
                             if (components[2] != null) {
                                 labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde wegen " + EnumChatFormatting.WHITE + components[2] + EnumChatFormatting.RED + " fuer ein Tag gebannt!");
@@ -165,7 +161,7 @@ public class Commands {
                             } else {
                                 labyPlayer.sendMessage("Bitte benutze /lhban <Spieler> <Grund>");
                             }
-                       } else {
+                        } else {
                             labyPlayer.sendMessage("Der Spieler existiert nicht!");
                         }
                     } else {
@@ -182,20 +178,39 @@ public class Commands {
             } else if (message.startsWith("/lhreload")) {
                 labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Das LabyHelp Addon wurde neugeladen!");
                 try {
-                    GroupManager.updateSubTitles(true);
-                    GroupManager.updateNameTag(true);
+                    LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
+                    LabyHelp.getInstace().getGroupManager().updateNameTag(false);
                     System.out.println("subtitles updating..");
                     final String webVersion = WebServer.readVersion();
                     LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
                 System.out.println("version updating..");
+            } else if (message.startsWith("/lhignore")) {
+                final String decode = message.replaceAll("/lhignore ", "");
+                final UUID uuid = UUIDFetcher.getUUID(decode);
+                //     if (uuid != null) {
+                //        labyPlayer.block(decode);
+                //    } else {
+                //        labyPlayer.sendMessage("Der Spieler existiert nicht!");
+                //   }
             } else if (message.startsWith("/labyhelp")) {
-                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion);
-                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Teamspeak: labyhelp.de");
-                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Discord: https://discord.com/invite/PBqQT9C");
+                final String webVersion = WebServer.readVersion();
+                LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
+                LabyHelp.getInstace().newestVersion = webVersion;
+                if (!LabyHelp.getInstace().isNewerVersion) {
+                    labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (newest)");
+                }
+                if (LabyHelp.getInstace().isNewerVersion) {
+                    labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (old)");
+                    labyPlayer.sendMessage(EnumChatFormatting.RED + "Newest Version: " + webVersion);
+                    labyPlayer.sendMessage(EnumChatFormatting.RED + "Restart your game to update your version!");
+                }
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Teamspeak: https://labyhelp.de/teamspeak");
+                labyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Discord: https://labyhelp.de/discord");
             } else if (message.startsWith("/nametag")) {
                 LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", false);
-                labyPlayer.sendMessage("Die Regel Seite hat sich geoeffnet");
+                labyPlayer.sendMessage("Die Regel Seite hat sich automatisch geoeffnet");
                 labyPlayer.sendMessage("Nichts geoeffnet? https://labyhelp.de/tag-rules");
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
@@ -211,6 +226,7 @@ public class Commands {
                 labyPlayer.sendMessage("- /twitter <player>");
                 labyPlayer.sendMessage("- /snapchat <player>");
                 labyPlayer.sendMessage("- /social <player>");
+                //    labyPlayer.sendMessage("- /lhignore <player>");
                 labyPlayer.sendMessage("- /nametag");
                 labyPlayer.sendMessage("- /lhreload");
                 labyPlayer.sendMessage("- /labyhelp");

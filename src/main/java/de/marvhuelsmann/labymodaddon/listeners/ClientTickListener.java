@@ -1,7 +1,6 @@
 package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
-import de.marvhuelsmann.labymodaddon.util.GroupManager;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -22,8 +21,8 @@ public class ClientTickListener {
                 public void run() {
 
                     try {
-                        GroupManager.updateSubTitles(true);
-                        GroupManager.updateNameTag(true);
+                        LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
+                        LabyHelp.getInstace().getGroupManager().updateNameTag(true);
                         LabyHelp.getInstace().addonEnabled = true;
                     } catch (Exception ignored) {
                         LabyHelp.getInstace().addonEnabled = false;
@@ -40,7 +39,7 @@ public class ClientTickListener {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            GroupManager.updateNameTag(false);
+                            LabyHelp.getInstace().getGroupManager().updateNameTag(false);
                         }
                     });
                     if (nameTick > 400) {
@@ -52,7 +51,7 @@ public class ClientTickListener {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            GroupManager.updateSubTitles(false);
+                            LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
                         }
                     });
                 }
@@ -62,7 +61,7 @@ public class ClientTickListener {
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {
-                        GroupManager.updateSubTitles(false);
+                        LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
                     }
                 });
             }

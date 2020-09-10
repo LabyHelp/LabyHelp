@@ -4,7 +4,6 @@ import de.marvhuelsmann.labymodaddon.LabyHelp;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
 
-
 public class ClientQuitListener implements Consumer<ServerData> {
 
     @Override

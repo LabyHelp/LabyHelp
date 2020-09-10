@@ -1,17 +1,11 @@
 package de.marvhuelsmann.labymodaddon;
 
-import akka.io.Tcp;
-import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
-import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
-import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
-import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
+import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
+import de.marvhuelsmann.labymodaddon.listeners.*;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
-import de.marvhuelsmann.labymodaddon.util.Commands;
-import de.marvhuelsmann.labymodaddon.util.FileDownloader;
-import de.marvhuelsmann.labymodaddon.util.SocialHandler;
-import de.marvhuelsmann.labymodaddon.util.WebServer;
+import de.marvhuelsmann.labymodaddon.util.*;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.labymod.settings.elements.BooleanElement;
@@ -34,12 +28,15 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.4";
+    public static final String currentVersion = "1.9.4.4";
+    public String newestVersion;
     public boolean onServer = false;
 
-    private SocialHandler socialHandler;
+    private final UserHandler socialHandler = new UserHandler();
+    private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
+
 
     public String instaName;
     public String discordName;
@@ -58,6 +55,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public void onEnable() {
         instace = this;
 
+
         this.getApi().registerForgeListener(new ClientTickListener());
         this.getApi().getEventManager().register(new MessageSendListener());
         this.getApi().getEventManager().registerOnJoin(new ClientJoinListener());
@@ -70,6 +68,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         try {
             String webVersion = WebServer.readVersion();
+            newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
                 isNewerVersion = true;
             }
@@ -109,8 +108,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return uuid != null;
     }
 
-    public SocialHandler getSocialHandler() {
+    public UserHandler getSocialHandler() {
         return socialHandler;
+    }
+
+    public GroupManager getGroupManager() {
+        return groupManager;
     }
 
     public ExecutorService getExecutor() {
@@ -125,6 +128,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Override
     public void loadConfig() {
         AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
+
+        this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
         this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
         this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";

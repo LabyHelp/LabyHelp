@@ -2,35 +2,33 @@ package de.marvhuelsmann.labymodaddon.enums;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import javax.swing.text.html.parser.Entity;
-
 public enum HelpGroups {
 
-    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD +  "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    BANNED("BANNED", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
-    FRIEND("FRIEND", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
-    CREATOR("CREATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
-    LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true, false, true),
-    PARTNER("PARTNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " PARTNER", true, false, true),
-    HELPER("HELPER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.BLUE + " HELPER", true, false, true),
-    DESIGNER("DESIGNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GREEN + " DESIGNER", true, false, true),
-    SRDESIGNER("SRDESIGNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + " H-DESIGNER", true, true, true),
-    CONTENT("CONTENT", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, false, true),
-    SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SrCONTENT", true, true, true),
-    JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + " JrMOD", true, false, true),
-    MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + " MOD", true, true, true),
-    SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SrMOD", true, true, true),
-    DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " DEVELOPER", true, true, true),
-    ADMIN("ADMIN", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED + " ADMIN", true, true, true),
-    OWNER("OWNER", EnumChatFormatting.WHITE + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " LEADER", true, true, true);
+    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
+    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
+    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
+    FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
+    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
+    LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true, false, true),
+    PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " PARTNER", true, false, true),
+    HELPER("HELPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + " EXPERT", true, false, true),
+    DESIGNER("DESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GREEN + " DESIGNER", true, false, true),
+    SRDESIGNER("SRDESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + " H-DESIGNER", true, true, true),
+    CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, false, true),
+    SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SrCONTENT", true, true, true),
+    JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JrMOD", true, false, true),
+    MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " MOD", true, true, true),
+    SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SrMOD", true, true, true),
+    DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " DEVELOPER", true, true, true),
+    ADMIN("ADMIN", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + " ADMIN", true, true, true),
+    OWNER("OWNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " LEADER", true, true, true);
 
 
     private final String name, prefix;
     private final Boolean isPremium;
     private final Boolean isTeam;
 
-    HelpGroups(String name, String prefix, Boolean isPremium, Boolean isTeam, Boolean showTag) {
+     HelpGroups(String name, String prefix, Boolean isPremium, Boolean isTeam, Boolean showTag) {
         this.name = name;
         this.prefix = prefix;
         this.isPremium = isPremium;

@@ -2,6 +2,7 @@ package de.marvhuelsmann.labymodaddon.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
@@ -44,6 +45,7 @@ public class WebServer {
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);
                 con.connect();
+
                 return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
             } else {
                 System.out.println(response);

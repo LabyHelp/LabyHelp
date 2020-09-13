@@ -43,8 +43,10 @@ public class GroupManager {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
                 HelpGroups group = LabyHelp.getInstace().getSocialHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
+                    if (LabyHelp.getInstace().getSocialHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
+                    }
                 }
             }
         }
@@ -69,12 +71,14 @@ public class GroupManager {
                 }
 
                 if (name != null) {
-                    if (isPremium(uuidUserEntry.getKey())) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.BOLD + name);
-                    } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(name);
+                    if (LabyHelp.getInstace().getSocialHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
+                        if (isPremium(uuidUserEntry.getKey())) {
+                            LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.BOLD + name);
+                        } else {
+                            LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(name);
+                        }
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
                     }
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
                 }
             }
         }

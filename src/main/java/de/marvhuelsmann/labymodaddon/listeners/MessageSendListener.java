@@ -7,7 +7,6 @@ public class MessageSendListener implements MessageSendEvent {
 
     @Override
     public boolean onSend(String message) {
-        //TODO ADD /LHIGNORE
         if (
                 message.startsWith("/bandana") || message.startsWith("/cape") ||
                 message.startsWith("/skin") || message.startsWith("/cosmeticsC") ||

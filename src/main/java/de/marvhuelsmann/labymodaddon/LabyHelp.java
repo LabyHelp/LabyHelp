@@ -1,7 +1,9 @@
 package de.marvhuelsmann.labymodaddon;
 
-import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
-import de.marvhuelsmann.labymodaddon.listeners.*;
+import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
+import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
@@ -28,7 +30,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.4.4";
+    public static final String currentVersion = "1.9.4.5";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -87,6 +89,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LabyHelp.getInstace().getSocialHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
             if (isNewerVersion) {
                 FileDownloader.update();
             }
@@ -143,7 +146,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     }
 
     @Override
-    protected void fillSettings(List<SettingsElement> list) {
+    protected void fillSettings(List<SettingsElement> settingsElements) {
 
 
         final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.GOLD_BARDING), new Consumer<Boolean>() {
@@ -157,7 +160,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         }, LabyHelp.getInstace().AddonSettingsEnable);
 
-        list.add(settingsEnabled);
+        settingsElements.add(settingsEnabled);
 
 
         StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), instaName, new Consumer<String>() {
@@ -279,7 +282,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 LabyHelp.this.saveConfig();
             }
         });
-        list.add(status);
+        settingsElements.add(status);
 
         StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), nameTagString, new Consumer<String>() {
             @Override
@@ -295,16 +298,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 LabyHelp.this.saveConfig();
             }
         });
-        list.add(nameTag);
+        settingsElements.add(nameTag);
 
-        ////
-
-        list.add(channelStringElement);
-        list.add(stringDiscord);
-        list.add(stringTwitter);
-        list.add(snapchat);
-        list.add(channelTikTok);
-        list.add(stringYoutube);
-        list.add(stringTwitch);
+        settingsElements.add(channelStringElement);
+        settingsElements.add(stringDiscord);
+        settingsElements.add(stringTwitter);
+        settingsElements.add(snapchat);
+        settingsElements.add(channelTikTok);
+        settingsElements.add(stringYoutube);
+        settingsElements.add(stringTwitch);
     }
 }

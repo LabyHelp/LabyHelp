@@ -1,11 +1,14 @@
 package de.marvhuelsmann.labymodaddon.util;
 
+import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
+import net.labymod.main.LabyMod;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +20,6 @@ public class UserHandler {
     public final Map<UUID, HelpGroups> userGroups = new HashMap<UUID, HelpGroups>();
     public final Map<UUID, String> userNameTags = new HashMap<UUID, String>();
 
-
     public final Map<UUID, String> instaName = new HashMap<UUID, String>();
     public final Map<UUID, String> discordName = new HashMap<UUID, String>();
     public final Map<UUID, String> youtubeName = new HashMap<UUID, String>();
@@ -25,6 +27,13 @@ public class UserHandler {
     public final Map<UUID, String> twitterName = new HashMap<UUID, String>();
     public final Map<UUID, String> tiktokName = new HashMap<UUID, String>();
     public final Map<UUID, String> snapchatName = new HashMap<UUID, String>();
+    public final Map<UUID, String> isOnline = new HashMap<UUID, String>();
+
+
+    public void initSocial() {
+        //TODO DO THIS:
+        LabyHelp.getInstace().instaName = instaName.get(LabyMod.getInstance().getPlayerUUID());
+    }
 
     //instagram 1 |
     //discord 2
@@ -36,7 +45,7 @@ public class UserHandler {
 
     public void readSocialMedia() {
         try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/socialmedia.php").openConnection();
+            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/social.php").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
             con.setConnectTimeout(3000);
             con.setReadTimeout(3000);
@@ -47,7 +56,7 @@ public class UserHandler {
             final String[] split = array = (entries = result.split(","));
             for (final String entry : array) {
                 final String[] data = entry.split(":");
-                if (data.length == 8) {
+                if (data.length == 9) {
                     if (!String.valueOf(data[1]).equals("")) {
                         instaName.put(UUID.fromString(data[0]), String.valueOf(data[1]));
                     }
@@ -70,11 +79,40 @@ public class UserHandler {
                     if (!String.valueOf(data[7]).equals("")) {
                         snapchatName.put(UUID.fromString(data[0]), String.valueOf(data[7]));
                     }
+                    if (!String.valueOf(data[8]).equals("")) {
+                        isOnline.put(UUID.fromString(data[0]), String.valueOf(data[8]));
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not read socialmedia!", e);
+        }
+    }
+
+    public String sendOnline(final UUID uuid, boolean isOnline) {
+        try {
+            if (uuid != null) {
+                if (isOnline) {
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=ONLINE").openConnection();
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                    con.setConnectTimeout(3000);
+                    con.setReadTimeout(3000);
+                    con.connect();
+                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                } else {
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=OFFLINE").openConnection();
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                    con.setConnectTimeout(3000);
+                    con.setReadTimeout(3000);
+                    con.connect();
+                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                }
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not fetch onlinemode!", e);
         }
     }
 

@@ -32,7 +32,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
                 }
             });
         } else {
-            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + " LabyHelp doenst load correctly...");
+            LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + " LabyHelp doesnt load correctly...");
         }
     }
 }

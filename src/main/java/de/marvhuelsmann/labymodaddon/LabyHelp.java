@@ -30,11 +30,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.4.5";
+    public static final String currentVersion = "1.9.4.6";
     public String newestVersion;
     public boolean onServer = false;
 
-    private final UserHandler socialHandler = new UserHandler();
+    private final UserHandler userHandler = new UserHandler();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
@@ -89,7 +89,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            LabyHelp.getInstace().getSocialHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
+            LabyHelp.getInstace().getUserHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
             if (isNewerVersion) {
                 FileDownloader.update();
             }
@@ -106,13 +106,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return uuid;
     }
 
-    public boolean getUUIDBoolean(String name) {
-        UUID uuid = MinecraftServer.getServer().getPlayerProfileCache().getProfileByUUID(UUID.fromString(name)).getId();
-        return uuid != null;
-    }
-
-    public UserHandler getSocialHandler() {
-        return socialHandler;
+    public UserHandler getUserHandler() {
+        return userHandler;
     }
 
     public GroupManager getGroupManager() {
@@ -268,6 +263,22 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         });
 
+        StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), nameTagString, new Consumer<String>() {
+            @Override
+            public void accept(String accepted) {
+                try {
+                    WebServer.sendNameTag(LabyMod.getInstance().getPlayerUUID(), accepted);
+                } catch (Exception ignored) {
+                }
+
+                LabyHelp.this.statusName = accepted;
+
+                LabyHelp.this.getConfig().addProperty("nametag", accepted);
+                LabyHelp.this.saveConfig();
+            }
+        });
+        settingsElements.add(nameTag);
+
         StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
@@ -284,21 +295,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add(status);
 
-        StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), nameTagString, new Consumer<String>() {
-            @Override
-            public void accept(String accepted) {
-                try {
-                    WebServer.sendNameTag(LabyMod.getInstance().getPlayerUUID(), accepted);
-                } catch (Exception ignored) {
-                }
-
-                LabyHelp.this.statusName = accepted;
-
-                LabyHelp.this.getConfig().addProperty("nametag", accepted);
-                LabyHelp.this.saveConfig();
-            }
-        });
-        settingsElements.add(nameTag);
 
         settingsElements.add(channelStringElement);
         settingsElements.add(stringDiscord);

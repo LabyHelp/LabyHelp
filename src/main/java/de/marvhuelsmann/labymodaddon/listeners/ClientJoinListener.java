@@ -6,6 +6,7 @@ import de.marvhuelsmann.labymodaddon.util.WebServer;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
+import net.minecraft.util.EnumChatFormatting;
 
 public class ClientJoinListener implements Consumer<ServerData> {
 
@@ -18,9 +19,16 @@ public class ClientJoinListener implements Consumer<ServerData> {
                 @Override
                 public void run() {
                     WebServer.sendClient();
-                    LabyHelp.getInstace().getSocialHandler().readSocialMedia();
+                    // LabyHelp.getInstace().getUserHandler().readIsOnline();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
+
+                    LabyPlayer labyPlayer = new LabyPlayer();
+                    if (serverData.getIp().equalsIgnoreCase("mcone.eu")) {
+                        labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Du bist auf MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
+                    } else if (serverData.getIp().equalsIgnoreCase("labor.mcone.eu")) {
+                        labyPlayer.sendMessage(EnumChatFormatting.GREEN +"Du bist auf LABOR.MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
+                    }
                 }
             });
         } else {

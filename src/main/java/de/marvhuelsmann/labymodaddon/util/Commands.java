@@ -23,7 +23,6 @@ public class Commands {
     public void commandMessage(final String message) {
         final LabyPlayer labyPlayer = new LabyPlayer();
 
-        LabyHelp.getInstace().getSocialHandler().readSocialMedia();
 
         if (LabyHelp.getInstace().AddonSettingsEnable) {
 
@@ -73,10 +72,12 @@ public class Commands {
                 }
             } else if (message.startsWith("/insta")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/insta ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().instaName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> instaEntry : LabyHelp.getInstace().getSocialHandler().instaName.entrySet()) {
-                        if (instaEntry.getKey().equals(uuid)) {
-                            labyPlayer.openInsta(instaEntry.getValue());
+                if (LabyHelp.getInstace().getUserHandler().instaName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> instaEntry : LabyHelp.getInstace().getUserHandler().instaName.entrySet()) {
+                        if (instaEntry.getKey() != null) {
+                            if (instaEntry.getKey().equals(uuid)) {
+                                labyPlayer.openInsta(instaEntry.getValue());
+                            }
                         }
                     }
                 } else {
@@ -84,8 +85,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/discord")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/discord ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().discordName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> discordEntry : LabyHelp.getInstace().getSocialHandler().discordName.entrySet()) {
+                if (LabyHelp.getInstace().getUserHandler().discordName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> discordEntry : LabyHelp.getInstace().getUserHandler().discordName.entrySet()) {
                         if (discordEntry.getKey().equals(uuid)) {
                             labyPlayer.sendDiscord(discordEntry.getValue());
                         }
@@ -95,8 +96,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/youtube")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/youtube ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().youtubeName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> youtubeEntry : LabyHelp.getInstace().getSocialHandler().youtubeName.entrySet()) {
+                if (LabyHelp.getInstace().getUserHandler().youtubeName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> youtubeEntry : LabyHelp.getInstace().getUserHandler().youtubeName.entrySet()) {
                         if (youtubeEntry.getKey().equals(uuid)) {
                             labyPlayer.openYoutube(youtubeEntry.getValue());
                         }
@@ -106,8 +107,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitch")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitch ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().twitchName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitchEntry : LabyHelp.getInstace().getSocialHandler().twitchName.entrySet()) {
+                if (LabyHelp.getInstace().getUserHandler().twitchName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitchEntry : LabyHelp.getInstace().getUserHandler().twitchName.entrySet()) {
                         if (twitchEntry.getKey().equals(uuid)) {
                             labyPlayer.openTwitch(twitchEntry.getValue());
                         }
@@ -117,8 +118,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitter")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitter ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().twitterName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getSocialHandler().twitterName.entrySet()) {
+                if (LabyHelp.getInstace().getUserHandler().twitterName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getUserHandler().twitterName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
                             labyPlayer.openTwitter(twitterEntry.getValue());
                         }
@@ -128,8 +129,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/tiktok")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/tiktok ", ""));
-                if (LabyHelp.getInstace().getSocialHandler().tiktokName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getSocialHandler().tiktokName.entrySet()) {
+                if (LabyHelp.getInstace().getUserHandler().tiktokName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getUserHandler().tiktokName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
                             labyPlayer.openTikTok(twitterEntry.getValue());
                         }
@@ -139,8 +140,8 @@ public class Commands {
                 }
             } else if (message.startsWith("/snapchat")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/snapchat ", ""));
-                if (!LabyHelp.getInstace().getSocialHandler().snapchatName.containsKey(uuid)) {
-                    for (final Map.Entry<UUID, String> snapchatEntry : LabyHelp.getInstace().getSocialHandler().snapchatName.entrySet()) {
+                if (!LabyHelp.getInstace().getUserHandler().snapchatName.containsKey(uuid)) {
+                    for (final Map.Entry<UUID, String> snapchatEntry : LabyHelp.getInstace().getUserHandler().snapchatName.entrySet()) {
                         if (snapchatEntry.getKey().equals(uuid)) {
                             labyPlayer.sendSnapchat(snapchatEntry.getValue());
                         }
@@ -178,6 +179,8 @@ public class Commands {
             } else if (message.startsWith("/lhreload")) {
                 labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Das LabyHelp Addon wurde neugeladen!");
                 try {
+                    LabyHelp.getInstace().getUserHandler().isOnline.clear();
+                    //LabyHelp.getInstace().getUserHandler().readIsOnline();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateNameTag(false);
                     System.out.println("subtitles updating..");

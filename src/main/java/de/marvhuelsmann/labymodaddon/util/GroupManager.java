@@ -12,20 +12,20 @@ import java.util.UUID;
 public class GroupManager {
 
     public boolean isPremium(final UUID uuid) {
-        return LabyHelp.getInstace().getSocialHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getSocialHandler().userGroups.get(uuid).getPremium();
+        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getPremium();
     }
 
     public boolean isTeam(final UUID uuid) {
-        return LabyHelp.getInstace().getSocialHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getSocialHandler().userGroups.get(uuid).getTeam();
+        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTeam();
     }
 
     public static boolean isBanned(final UUID uuid, Boolean database) {
         if (database) {
-            LabyHelp.getInstace().getSocialHandler().readUserInformations(true);
+            LabyHelp.getInstace().getUserHandler().readUserInformations(true);
         }
 
-        if (!LabyHelp.getInstace().getSocialHandler().userGroups.isEmpty()) {
-            return LabyHelp.getInstace().getSocialHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getSocialHandler().userGroups.get(uuid).equals(HelpGroups.BANNED);
+        if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
+            return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).equals(HelpGroups.BANNED);
         }
         return false;
     }
@@ -34,19 +34,19 @@ public class GroupManager {
     public void updateSubTitles(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstace().onServer) {
-                LabyHelp.getInstace().getSocialHandler().readUserInformations(true);
+                LabyHelp.getInstace().getUserHandler().readUserInformations(true);
             }
             return;
         }
 
-        if (!LabyHelp.getInstace().getSocialHandler().userGroups.isEmpty()) {
+        if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-                HelpGroups group = LabyHelp.getInstace().getSocialHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
+                HelpGroups group = LabyHelp.getInstace().getUserHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
-                    if (LabyHelp.getInstace().getSocialHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
+                   // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
-                    }
+                  // }
                 }
             }
         }
@@ -55,14 +55,14 @@ public class GroupManager {
     public void updateNameTag(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstace().onServer) {
-                LabyHelp.getInstace().getSocialHandler().readUserInformations(false);
+                LabyHelp.getInstace().getUserHandler().readUserInformations(false);
             }
             return;
         }
 
-        if (!LabyHelp.getInstace().getSocialHandler().userNameTags.isEmpty()) {
+        if (!LabyHelp.getInstace().getUserHandler().userNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-                String name = LabyHelp.getInstace().getSocialHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
+                String name = LabyHelp.getInstace().getUserHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
 
                 if (isBanned(uuidUserEntry.getKey(), false)) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
@@ -71,7 +71,7 @@ public class GroupManager {
                 }
 
                 if (name != null) {
-                    if (LabyHelp.getInstace().getSocialHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
+                //  if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
                         if (isPremium(uuidUserEntry.getKey())) {
                             LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.BOLD + name);
                         } else {
@@ -79,7 +79,7 @@ public class GroupManager {
                         }
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
                     }
-                }
+           //     }
             }
         }
     }

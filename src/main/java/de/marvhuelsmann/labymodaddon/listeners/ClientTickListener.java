@@ -12,7 +12,6 @@ public class ClientTickListener {
     @SubscribeEvent
     public void onTick(final TickEvent.ClientTickEvent event) {
 
-        if (LabyHelp.getInstace().onServer) {
                 if (reloadTick > 930) {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
@@ -66,5 +65,4 @@ public class ClientTickListener {
                 nameTick++;
                 reloadTick++;
             }
-        }
     }

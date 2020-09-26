@@ -3,6 +3,8 @@ package de.marvhuelsmann.labymodaddon.listeners;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.util.WebServer;
+import net.labymod.addon.LabyModOFAddon;
+import net.labymod.api.LabyModAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;

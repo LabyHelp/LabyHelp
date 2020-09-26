@@ -151,7 +151,6 @@ public class Commands {
                 }
             } else if (message.startsWith("/lhban")) {
                 String[] components = message.split(" ");
-
                 final UUID uuid = UUIDFetcher.getUUID(components[1]);
                 if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
                     if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
@@ -171,13 +170,12 @@ public class Commands {
                 } else {
                     labyPlayer.sendNoPerms();
                 }
-
             } else if (message.startsWith("/social")) {
                 final String decode = message.replaceAll("/social ", "");
                 final UUID uuid = UUIDFetcher.getUUID(decode);
                 labyPlayer.openSocial(uuid, decode);
             } else if (message.startsWith("/lhreload")) {
-                labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Das LabyHelp Addon wurde neugeladen!");
+                labyPlayer.sendMessage(EnumChatFormatting.GREEN + "The Laby Help addon has been reloaded!");
                 try {
                     LabyHelp.getInstace().getUserHandler().isOnline.clear();
                     //LabyHelp.getInstace().getUserHandler().readIsOnline();

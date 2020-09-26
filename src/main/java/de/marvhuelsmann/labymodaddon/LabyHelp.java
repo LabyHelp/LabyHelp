@@ -19,6 +19,7 @@ import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,7 +31,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.4.6";
+    public static final String currentVersion = "1.9.4.95";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -38,7 +39,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
-
 
     public String instaName;
     public String discordName;
@@ -72,7 +72,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             String webVersion = WebServer.readVersion();
             newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
-                isNewerVersion = true;
+                    isNewerVersion = true;
             }
             addonEnabled = true;
         } catch (Exception ignored) {

@@ -7,7 +7,6 @@ package de.marvhuelsmann.labymodaddon;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -24,6 +23,7 @@ public class Main {
     }
 
     public static void main(final String[] args) throws IOException {
+
         initLookAndFeel();
         initLanguage();
         try {
@@ -68,6 +68,7 @@ public class Main {
             showMessageDialog(Main.lang.get("error"), 0);
         }
     }
+
 
     private static void initLookAndFeel() {
         try {
@@ -114,4 +115,6 @@ public class Main {
     private static void showMessageDialog(final String msg, final int mode) {
         JOptionPane.showMessageDialog(null, msg, "LabyHelp from Marvio", mode);
     }
+
+
 }

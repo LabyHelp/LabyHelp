@@ -1,5 +1,6 @@
 package de.marvhuelsmann.labymodaddon;
 
+import com.google.gson.JsonObject;
 import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
@@ -8,16 +9,22 @@ import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.*;
+import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
+import net.labymod.addon.AddonLoader;
+import net.labymod.api.LabyModAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.settings.elements.StringElement;
+import net.labymod.user.group.LabyGroup;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 
+import java.io.File;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,7 +38,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.4.95";
+    public static final String currentVersion = "1.9.5.3";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -39,6 +46,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
+    private final VoiceChatHandler voiceChatHandler = new VoiceChatHandler();
 
     public String instaName;
     public String discordName;
@@ -49,6 +57,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public String snapchatName;
     public String statusName;
     public String nameTagString;
+
+    public boolean oldVersion = false;
 
     public boolean addonEnabled = false;
 
@@ -64,6 +74,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
 
         if (Source.ABOUT_MC_VERSION.startsWith("1.8")) {
+            oldVersion = true;
             this.getApi().registerModule(new DegreeModule());
             this.getApi().registerModule(new TexturePackModule());
         }
@@ -108,6 +119,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public UserHandler getUserHandler() {
         return userHandler;
+    }
+
+    public VoiceChatHandler getVoiceChatHandler() {
+        return voiceChatHandler;
     }
 
     public GroupManager getGroupManager() {

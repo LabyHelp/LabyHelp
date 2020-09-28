@@ -2,6 +2,7 @@ package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
+import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.UUIDFetcher;
 import net.minecraft.util.EnumChatFormatting;
@@ -72,6 +73,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/insta")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/insta ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().instaName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> instaEntry : LabyHelp.getInstace().getUserHandler().instaName.entrySet()) {
                         if (instaEntry.getKey() != null) {
@@ -85,6 +87,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/discord")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/discord ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().discordName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> discordEntry : LabyHelp.getInstace().getUserHandler().discordName.entrySet()) {
                         if (discordEntry.getKey().equals(uuid)) {
@@ -96,6 +99,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/youtube")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/youtube ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().youtubeName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> youtubeEntry : LabyHelp.getInstace().getUserHandler().youtubeName.entrySet()) {
                         if (youtubeEntry.getKey().equals(uuid)) {
@@ -107,6 +111,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitch")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitch ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().twitchName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> twitchEntry : LabyHelp.getInstace().getUserHandler().twitchName.entrySet()) {
                         if (twitchEntry.getKey().equals(uuid)) {
@@ -118,6 +123,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/twitter")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/twitter ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().twitterName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getUserHandler().twitterName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
@@ -129,6 +135,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/tiktok")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/tiktok ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (LabyHelp.getInstace().getUserHandler().tiktokName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> twitterEntry : LabyHelp.getInstace().getUserHandler().tiktokName.entrySet()) {
                         if (twitterEntry.getKey().equals(uuid)) {
@@ -140,6 +147,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/snapchat")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/snapchat ", ""));
+                LabyHelp.getInstace().getUserHandler().readSocialMedia();
                 if (!LabyHelp.getInstace().getUserHandler().snapchatName.containsKey(uuid)) {
                     for (final Map.Entry<UUID, String> snapchatEntry : LabyHelp.getInstace().getUserHandler().snapchatName.entrySet()) {
                         if (snapchatEntry.getKey().equals(uuid)) {
@@ -151,21 +159,45 @@ public class Commands {
                 }
             } else if (message.startsWith("/lhban")) {
                 String[] components = message.split(" ");
-                final UUID uuid = UUIDFetcher.getUUID(components[1]);
                 if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
-                    if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
-                        if (uuid != null) {
-                            if (components[2] != null) {
+                    if (components.length == 2) {
+                        final UUID uuid = UUIDFetcher.getUUID(components[1]);
+                        if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
+                            if (uuid != null) {
                                 labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde wegen " + EnumChatFormatting.WHITE + components[2] + EnumChatFormatting.RED + " fuer ein Tag gebannt!");
-                                WebServer.sendBanned(uuid, components[2]);
+                                WebServer.sendBanned(uuid, "NAMETAG");
                             } else {
-                                labyPlayer.sendMessage("Bitte benutze /lhban <Spieler> <Grund>");
+                                labyPlayer.sendMessage("Der Spieler existiert nicht!");
                             }
                         } else {
-                            labyPlayer.sendMessage("Der Spieler existiert nicht!");
+                            labyPlayer.sendMessage("Der Spieler ist im LabyHelp Team!");
                         }
                     } else {
-                        labyPlayer.sendMessage("Der Spieler ist im LabyHelp Team!");
+                        labyPlayer.sendMessage("Bitte benutze /lhban <Spieler>");
+                    }
+                } else {
+                    labyPlayer.sendNoPerms();
+                }
+            } else if (message.startsWith("/lhmute")) {
+                String[] components = message.split(" ");
+                if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
+                    if (components.length == 2) {
+                        final UUID uuid = UUIDFetcher.getUUID(components[1]);
+                        if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
+                            if (uuid != null) {
+                                labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde vom LabyHelp VoiceChat fuer ein 24 Stunden gemutet!");
+
+                                WebServer.sendMuted(uuid, "VOICECHAT");
+                                LabyHelp.getInstace().getVoiceChatHandler().updateVoiceChatMutes();
+
+                            } else {
+                                labyPlayer.sendMessage("Der Spieler existiert nicht!");
+                            }
+                        } else {
+                            labyPlayer.sendMessage("Der Spieler ist im LabyHelp Team!");
+                        }
+                    } else {
+                        labyPlayer.sendMessage("Bitte benutze /lhmute <Spieler>");
                     }
                 } else {
                     labyPlayer.sendNoPerms();
@@ -175,8 +207,12 @@ public class Commands {
                 final UUID uuid = UUIDFetcher.getUUID(decode);
                 labyPlayer.openSocial(uuid, decode);
             } else if (message.startsWith("/lhreload")) {
-                labyPlayer.sendMessage(EnumChatFormatting.GREEN + "The Laby Help addon has been reloaded!");
+                labyPlayer.sendMessage(EnumChatFormatting.GREEN + "The LabyHelp addon has been reloaded!");
                 try {
+
+                    LabyHelp.getInstace().getUserHandler().readMute();
+                    LabyHelp.getInstace().getVoiceChatHandler().updateVoiceChatMutes();
+
                     LabyHelp.getInstace().getUserHandler().isOnline.clear();
                     //LabyHelp.getInstace().getUserHandler().readIsOnline();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
@@ -231,6 +267,12 @@ public class Commands {
                 labyPlayer.sendMessage("- /nametag");
                 labyPlayer.sendMessage("- /lhreload");
                 labyPlayer.sendMessage("- /labyhelp");
+
+                if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
+                    labyPlayer.sendMessage("- /lhmute <player> / Only Soundboard");
+                    labyPlayer.sendMessage("- /lhban <player> / Only NameTag");
+                }
+
             }
         } else {
             labyPlayer.sendMessage("You have deactivated the Addon!");

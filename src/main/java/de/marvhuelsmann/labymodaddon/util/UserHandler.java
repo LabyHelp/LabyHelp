@@ -1,12 +1,14 @@
 package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
+import net.labymod.main.LabyMod;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class UserHandler {
 
 
+    public final Map<UUID, Boolean> voiceMuteExtendedList = new HashMap<>();
     public final Map<UUID, HelpGroups> userGroups = new HashMap<UUID, HelpGroups>();
     public final Map<UUID, String> userNameTags = new HashMap<UUID, String>();
 
@@ -25,14 +28,6 @@ public class UserHandler {
     public final Map<UUID, String> tiktokName = new HashMap<UUID, String>();
     public final Map<UUID, String> snapchatName = new HashMap<UUID, String>();
     public final Map<UUID, String> isOnline = new HashMap<UUID, String>();
-
-
-  /*
-    public void initSocial() {
-        //TODO DO THIS:
-        LabyHelp.getInstace().instaName = instaName.get(LabyMod.getInstance().getPlayerUUID());
-    }
-   */
 
     //instagram 1 |
     //discord 2
@@ -84,6 +79,35 @@ public class UserHandler {
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not read socialmedia!", e);
+        }
+    }
+
+    public void readMute() {
+        try {
+            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/muteList.php").openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+            con.setConnectTimeout(3000);
+            con.setReadTimeout(3000);
+            con.connect();
+            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            if (result != null) {
+                final String[] split;
+                final String[] entries = split = result.split(",");
+                for (final String entry : split) {
+                    final String[] data = entry.split(":");
+                    if (data.length == 2) {
+                        String uuid = data[0];
+                        if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+                            voiceMuteExtendedList.put(UUID.fromString(data[0]), data[1].equalsIgnoreCase("true"));
+
+                            LabyMod.getInstance().displayMessageInChat("read mute update ArrayList");
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not fetch mutes!", e);
         }
     }
 

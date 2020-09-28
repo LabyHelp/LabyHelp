@@ -16,7 +16,7 @@ public class MessageSendListener implements MessageSendEvent {
                 message.startsWith("/youtube") || message.startsWith("/twitch") ||
                 message.startsWith("/twitter") || message.startsWith("/tiktok") ||
                 message.startsWith("/social") || message.startsWith("/snapchat") ||
-                message.startsWith("/lhban"))  {
+                message.startsWith("/lhban") || message.startsWith("/lhmute"))  {
             LabyHelp.getInstace().getCommands().commandMessage(message);
             return true;
         } else {

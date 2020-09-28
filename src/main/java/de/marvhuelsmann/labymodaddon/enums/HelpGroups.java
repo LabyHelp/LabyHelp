@@ -5,7 +5,7 @@ import net.minecraft.util.EnumChatFormatting;
 public enum HelpGroups {
 
     USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " BANNED", false, false, false),
+    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
     CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
@@ -19,7 +19,7 @@ public enum HelpGroups {
     JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JrStaff", true, false, true),
     MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Staff", true, true, true),
     SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SrStaff", true, true, true),
-    DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Staff", true, true, true),
+    DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + " Developer", true, true, true),
     ADMIN("ADMIN", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + " ADMIN", true, true, true),
     OWNER("OWNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " LEADER", true, true, true);
 
@@ -37,6 +37,7 @@ public enum HelpGroups {
 
     public static Boolean isExist(final String name) {
         return HelpGroups.USER.getName().equalsIgnoreCase(name)
+                || HelpGroups.BANNED.getName().equalsIgnoreCase(name)
                 || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
                 HelpGroups.BANNED.getName().equalsIgnoreCase(name) ||

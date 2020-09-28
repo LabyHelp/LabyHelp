@@ -43,14 +43,15 @@ public class GroupManager {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
                 HelpGroups group = LabyHelp.getInstace().getUserHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
-                   // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
-                  // }
+                    // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
+                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
+                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
+                    // }
                 }
             }
         }
     }
+
 
     public void updateNameTag(boolean readDatabase) {
         if (readDatabase) {
@@ -71,17 +72,18 @@ public class GroupManager {
                 }
 
                 if (name != null) {
-                //  if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
-                        if (isPremium(uuidUserEntry.getKey())) {
-                            LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.BOLD + name);
-                        } else {
-                            LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(name);
-                        }
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
+                    String finalTag = name.replace("&", "§");
+                    String tag = finalTag.replaceAll("LabyHelp", "");
+                    String finishFinalTag = tag.replaceAll("LabyMod", "");
+
+                    if (isPremium(uuidUserEntry.getKey())) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
+                    } else {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     }
-           //     }
+                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
+                }
             }
         }
     }
-
 }

@@ -127,6 +127,8 @@ public class LabyPlayer {
     }
 
     public void sendMessage(String message) {
-        LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
+        if (LabyHelp.getInstace().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
+        }
     }
 }

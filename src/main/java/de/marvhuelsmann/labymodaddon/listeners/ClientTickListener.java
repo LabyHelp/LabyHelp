@@ -2,6 +2,8 @@ package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
+import net.labymod.core.LabyModCore;
+import net.labymod.main.LabyMod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -16,9 +18,6 @@ public class ClientTickListener {
 
         if (normalTick > 1240) {
             try {
-                LabyHelp.getInstace().getUserHandler().readMute();
-                LabyHelp.getInstace().getVoiceChatHandler().updateVoiceChatMutes();
-
                 LabyHelp.getInstace().addonEnabled = true;
             } catch (Exception ignored) {
                 LabyHelp.getInstace().addonEnabled = false;
@@ -27,7 +26,7 @@ public class ClientTickListener {
             normalTick = 0;
         }
 
-            if (reloadTick > 930) {
+            if (reloadTick > 870) {
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {

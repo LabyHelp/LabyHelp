@@ -1,32 +1,22 @@
 package de.marvhuelsmann.labymodaddon;
 
-import com.google.gson.JsonObject;
-import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
-import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
-import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
-import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
+import de.marvhuelsmann.labymodaddon.listeners.*;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.*;
 import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
-import net.labymod.addon.AddonLoader;
-import net.labymod.api.LabyModAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.labymod.settings.elements.BooleanElement;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.settings.elements.StringElement;
-import net.labymod.user.group.LabyGroup;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 
-import java.io.File;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,7 +28,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.5.3";
+    public static final String currentVersion = "1.9.5.5";
     public String newestVersion;
     public boolean onServer = false;
 

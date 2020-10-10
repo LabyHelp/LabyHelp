@@ -26,7 +26,6 @@ public class Commands {
 
 
         if (LabyHelp.getInstace().AddonSettingsEnable) {
-
             if (message.startsWith("/bandana")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/bandana ", ""));
                 if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
@@ -187,9 +186,6 @@ public class Commands {
                             if (uuid != null) {
                                 labyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde vom LabyHelp VoiceChat fuer ein 24 Stunden gemutet!");
 
-                                WebServer.sendMuted(uuid, "VOICECHAT");
-                                LabyHelp.getInstace().getVoiceChatHandler().updateVoiceChatMutes();
-
                             } else {
                                 labyPlayer.sendMessage("Der Spieler existiert nicht!");
                             }
@@ -210,8 +206,6 @@ public class Commands {
                 labyPlayer.sendMessage(EnumChatFormatting.GREEN + "The LabyHelp addon has been reloaded!");
                 try {
 
-                    LabyHelp.getInstace().getUserHandler().readMute();
-                    LabyHelp.getInstace().getVoiceChatHandler().updateVoiceChatMutes();
 
                     LabyHelp.getInstace().getUserHandler().isOnline.clear();
                     //LabyHelp.getInstace().getUserHandler().readIsOnline();
@@ -269,7 +263,6 @@ public class Commands {
                 labyPlayer.sendMessage("- /labyhelp");
 
                 if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
-                    labyPlayer.sendMessage("- /lhmute <player> / Only Soundboard");
                     labyPlayer.sendMessage("- /lhban <player> / Only NameTag");
                 }
 

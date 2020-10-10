@@ -6,7 +6,7 @@ public enum HelpGroups {
 
     USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, true),
+    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, false),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
     CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
     LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true, false, true),
@@ -27,12 +27,14 @@ public enum HelpGroups {
     private final String name, prefix;
     private final Boolean isPremium;
     private final Boolean isTeam;
+    private final Boolean showTag;
 
     HelpGroups(String name, String prefix, Boolean isPremium, Boolean isTeam, Boolean showTag) {
         this.name = name;
         this.prefix = prefix;
         this.isPremium = isPremium;
         this.isTeam = isTeam;
+        this.showTag = showTag;
     }
 
     public static Boolean isExist(final String name) {
@@ -72,6 +74,10 @@ public enum HelpGroups {
 
     public Boolean getTeam() {
         return isTeam;
+    }
+
+    public Boolean getTag() {
+        return showTag;
     }
 
 

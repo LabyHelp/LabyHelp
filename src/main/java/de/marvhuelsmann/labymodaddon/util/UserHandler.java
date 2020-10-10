@@ -1,7 +1,10 @@
 package de.marvhuelsmann.labymodaddon.util;
 
+import de.marvhuelsmann.labymodaddon.LabyHelp;
+import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
 import net.labymod.main.LabyMod;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -18,6 +21,7 @@ public class UserHandler {
 
     public final Map<UUID, Boolean> voiceMuteExtendedList = new HashMap<>();
     public final Map<UUID, HelpGroups> userGroups = new HashMap<UUID, HelpGroups>();
+    public final Map<UUID, HelpGroups> oldGroups = new HashMap<UUID, HelpGroups>();
     public final Map<UUID, String> userNameTags = new HashMap<UUID, String>();
 
     public final Map<UUID, String> instaName = new HashMap<UUID, String>();
@@ -36,6 +40,28 @@ public class UserHandler {
     //twitter 5
     //tiktok 6
     //snapchat 7
+
+    public HelpGroups getBeforeRanked() {
+        if (!oldGroups.isEmpty()) {
+            for (Map.Entry<UUID, HelpGroups> groups : oldGroups.entrySet()) {
+                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
+                    return LabyHelp.getInstace().getUserHandler().oldGroups.get(groups.getKey());
+                }
+            }
+        }
+        return null;
+    }
+
+    public HelpGroups getNowRanked() {
+        if (!userGroups.isEmpty()) {
+            for (Map.Entry<UUID, HelpGroups> groups : userGroups.entrySet()) {
+                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
+                    return LabyHelp.getInstace().getUserHandler().userGroups.get(groups.getKey());
+                }
+            }
+        }
+        return null;
+    }
 
 
     public void readSocialMedia() {
@@ -218,7 +244,17 @@ public class UserHandler {
 
     public void readUserInformations(boolean groups) {
         if (groups) {
+
+            for (Map.Entry<UUID, HelpGroups> group : userGroups.entrySet()) {
+                oldGroups.put(group.getKey(), group.getValue());
+            }
+
             readGroups();
+
+            if (!getNowRanked().getName().equalsIgnoreCase(getBeforeRanked().getName())) {
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " Your Rank has been change! (" + getNowRanked().getName() + ")");
+            }
+
         } else {
             readNameTag();
         }

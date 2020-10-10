@@ -1,7 +1,9 @@
 package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
+import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
+import net.labymod.labyplay.LabyPlay;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,6 +19,10 @@ public class GroupManager {
 
     public boolean isTeam(final UUID uuid) {
         return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTeam();
+    }
+
+    public boolean isTag(final UUID uuid) {
+        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTag();
     }
 
     public static boolean isBanned(final UUID uuid, Boolean database) {
@@ -73,14 +79,17 @@ public class GroupManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-                    String tag = finalTag.replaceAll("LabyHelp", "");
-                    String finishFinalTag = tag.replaceAll("LabyMod", "");
 
-                    if (isPremium(uuidUserEntry.getKey())) {
+
+                    if (!isTag(uuidUserEntry.getKey())) {
+                        String tag = finalTag.replaceAll("LabyHelp", "");
+                        String finishFinalTag = tag.replaceAll("LabyMod", "");
+
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finalTag);
                     }
+
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
                 }
             }

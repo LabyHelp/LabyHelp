@@ -76,27 +76,6 @@ public class WebServer {
         }
     }
 
-    public static String sendMuted(final UUID uuid, String reason) {
-        try {
-            if (uuid != null) {
-                reason = reason.replace(",", "").replace(":", "");
-
-                LabyMod.getInstance().displayMessageInChat("send muted");
-
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendMuted.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + URLEncoder.encode(reason, "UTF-8")).openConnection();
-                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                con.setConnectTimeout(3000);
-                con.setReadTimeout(3000);
-                con.connect();
-                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            }
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch mute!", e);
-        }
-    }
-
     public static String sendTwitch(final UUID uuid, String name) {
         try {
             if (uuid != null) {

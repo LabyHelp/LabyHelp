@@ -12,6 +12,16 @@ public class LabyPlayer {
 
     public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
 
+    public void sendAdversting(boolean tip) {
+        sendMessage(EnumChatFormatting.RED + "LabyHelp Adversting:");
+        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
+        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
+
+        if (tip) {
+            sendMessage(EnumChatFormatting.RED + "You can deactivate the advertising messages in the LabyHelp Addon Settings");
+        }
+    }
+
     public void openCapeUrl(UUID uuid) {
         if (uuid != null) {
             try {

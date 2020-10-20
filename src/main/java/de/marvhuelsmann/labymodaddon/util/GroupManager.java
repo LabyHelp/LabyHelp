@@ -80,14 +80,15 @@ public class GroupManager {
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
 
+                    String finalRo = finalTag.replace("{likes}", LabyHelp.getInstace().getUserHandler().getLikes(uuidUserEntry.getKey()));
 
                     if (!isTag(uuidUserEntry.getKey())) {
-                        String tag = finalTag.replaceAll("LabyHelp", "");
+                        String tag = finalRo.replaceAll("LabyHelp", "");
                         String finishFinalTag = tag.replaceAll("LabyMod", "");
 
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finalTag);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finalRo);
                     }
 
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);

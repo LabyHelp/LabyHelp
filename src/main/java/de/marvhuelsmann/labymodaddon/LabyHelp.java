@@ -1,17 +1,19 @@
 package de.marvhuelsmann.labymodaddon;
 
-import de.marvhuelsmann.labymodaddon.listeners.*;
+import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
+import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
+import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
+import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.*;
 import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
+import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
-import net.labymod.settings.elements.BooleanElement;
-import net.labymod.settings.elements.ControlElement;
-import net.labymod.settings.elements.SettingsElement;
-import net.labymod.settings.elements.StringElement;
+import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
@@ -27,8 +29,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private static LabyHelp instace;
 
     public boolean AddonSettingsEnable = true;
+    public boolean settingsAdversting = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.5.5";
+    public static final String currentVersion = "1.9.8.9";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -47,6 +50,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public String snapchatName;
     public String statusName;
     public String nameTagString;
+
+    public String nameTagSettings;
+    public int nameTagSwitchingSetting;
 
     public boolean oldVersion = false;
 
@@ -73,7 +79,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             String webVersion = WebServer.readVersion();
             newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
-                    isNewerVersion = true;
+                isNewerVersion = true;
             }
             addonEnabled = true;
         } catch (Exception ignored) {
@@ -81,11 +87,19 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().clear();
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Bandana"));
+
+
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
+        //   LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
 
 
@@ -131,6 +145,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Override
     public void loadConfig() {
         AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
+        settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
 
         this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
@@ -143,6 +158,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
         this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
+
+        this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
+        this.nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
     }
 
     @Override
@@ -159,8 +177,64 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 LabyHelp.this.saveConfig();
             }
         }, LabyHelp.getInstace().AddonSettingsEnable);
-
         settingsElements.add(settingsEnabled);
+
+
+        final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstace().settingsAdversting = enable;
+
+
+                LabyHelp.this.getConfig().addProperty("adversting", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstace().settingsAdversting);
+
+        settingsElements.add(settingAdversting);
+
+
+        final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
+                .fill(NameTagSettings.values());
+        DropDownElement<NameTagSettings> alignmentDropDown = new DropDownElement<>("Local NameTag Settings ", nameTagSettings);
+
+        if (LabyHelp.this.nameTagSettings != null) {
+            nameTagSettings.setSelected(NameTagSettings.valueOf(LabyHelp.this.nameTagSettings));
+        } else {
+            nameTagSettings.setSelected(NameTagSettings.SWITCHING);
+        }
+
+        // Listen on changes
+        alignmentDropDown.setChangeListener(new Consumer<NameTagSettings>() {
+            @Override
+            public void accept(NameTagSettings alignment) {
+
+                LabyHelp.this.nameTagSettings = alignment.getName();
+
+                LabyHelp.this.getConfig().addProperty("nameTagSettings", alignment.getName());
+                LabyHelp.this.saveConfig();
+
+            }
+        });
+
+        settingsElements.add(alignmentDropDown);
+
+
+            NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
+                    new ControlElement.IconData(Material.WATCH) /* setting's icon */, nameTagSwitchingSetting  /* current value */);
+
+            numberElement.addCallback(new Consumer<Integer>() {
+                @Override
+                public void accept(Integer accepted) {
+                    LabyHelp.this.nameTagSwitchingSetting = accepted;
+
+                    LabyHelp.this.getConfig().addProperty("nameTagSettingsSwitching", nameTagSwitchingSetting);
+                    LabyHelp.this.saveConfig();
+                }
+            });
+
+        settingsElements.add(numberElement);
+
 
 
         StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), instaName, new Consumer<String>() {
@@ -284,7 +358,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add(nameTag);
 
-        StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
+        StringElement status = new StringElement("Trade Cosmetics", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {

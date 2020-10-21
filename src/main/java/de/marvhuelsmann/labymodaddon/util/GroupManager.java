@@ -47,13 +47,29 @@ public class GroupManager {
 
         if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
+
+
+
                 HelpGroups group = LabyHelp.getInstace().getUserHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
                     // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.9);
+                    if (LabyHelp.getInstace().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    } else {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
+                    }
+
                     // }
                 }
+
+                if (LabyHelp.getInstace().targetMode) {
+                    if (LabyHelp.getInstace().targetList.contains(uuidUserEntry.getKey())) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
+                    }
+                }
+
             }
         }
     }
@@ -69,11 +85,16 @@ public class GroupManager {
 
         if (!LabyHelp.getInstace().getUserHandler().userNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
+
                 String name = LabyHelp.getInstace().getUserHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
 
                 if (isBanned(uuidUserEntry.getKey(), false)) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
+                    if (LabyHelp.getInstace().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    } else {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
+                    }
                     return;
                 }
 
@@ -91,8 +112,20 @@ public class GroupManager {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finalRo);
                     }
 
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(0.8);
+                    if (LabyHelp.getInstace().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    } else {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
+                    }
                 }
+
+                if (LabyHelp.getInstace().targetMode) {
+                    if (LabyHelp.getInstace().targetList.contains(uuidUserEntry.getKey())) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
+                    }
+                }
+
             }
         }
     }

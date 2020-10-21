@@ -1,49 +1,42 @@
 package de.marvhuelsmann.labymodaddon;
 
+import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
 import net.labymod.main.LabyMod;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class LabyPlayer {
 
+    private final UUID uuid;
+
+    public LabyPlayer(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
 
-    public void sendAdversting(boolean tip) {
-        sendMessage(EnumChatFormatting.RED + "LabyHelp Adversting:");
-        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
-        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
 
-        if (tip) {
-            sendMessage(EnumChatFormatting.RED + "You can deactivate the advertising messages in the LabyHelp Addon Settings");
-        }
-    }
+    public String getSocialMedia(SocialMediaType socialMedia) {
+        LabyHelp.getInstace().getUserHandler().readSocialMedia();
 
-    public void openCapeUrl(UUID uuid) {
-        if (uuid != null) {
-            try {
-                LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
-            } catch (Exception ignored) {
-                sendError();
+        for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {
+            if (socialMedia.getMap().containsKey(uuid)) {
+                if (entry.getKey() != null) {
+                    if (entry.getKey().equals(uuid)) {
+                        return entry.getValue();
+                    }
+                }
+            } else {
+                sendMessage("Der Spieler hat nicht sein Instagram hinterlegt!");
             }
-        } else {
-            sendMessage("This Player does not exit!");
         }
-    }
-
-    public void openBandanaUrl(UUID uuid) {
-        if (uuid != null) {
-            try {
-                LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
-            } catch (Exception ignored) {
-                sendError();
-            }
-        } else {
-            sendMessage("This Player does not exit!");
-        }
+        return null;
     }
 
     public void openInsta(String name) {
@@ -112,16 +105,69 @@ public class LabyPlayer {
         sendMessage("Der SnapChat Name lautet: " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + " (Der Namen wurde in deiner Zwischenablage abgespeichert)");
     }
 
-    public void openSkin(UUID uuid) {
+    public void sendAdversting(boolean tip) {
+        sendMessage(EnumChatFormatting.RED + "LabyHelp Adversting:");
+        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
+        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
+
+        if (tip) {
+            sendMessage(EnumChatFormatting.RED + "You can deactivate the advertising messages in the LabyHelp Addon Settings");
+        }
+    }
+
+    public void openCapeUrl(UUID uuid) {
         if (uuid != null) {
             try {
-                LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
+                if (getPermissions()) {
+                    LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
+                }
             } catch (Exception ignored) {
                 sendError();
             }
         } else {
             sendMessage("This Player does not exit!");
         }
+    }
+
+    public void openBandanaUrl(UUID uuid) {
+        if (uuid != null) {
+            try {
+                if (getPermissions()) {
+                    LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
+                }
+            } catch (Exception ignored) {
+                sendError();
+            }
+        } else {
+            sendMessage("This Player does not exit!");
+        }
+    }
+
+    public void openSkin(UUID uuid) {
+        if (uuid != null) {
+            try {
+                if (getPermissions()) {
+                    LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
+                }
+            } catch (Exception ignored) {
+                sendError();
+            }
+        } else {
+            sendMessage("This Player does not exit!");
+        }
+    }
+
+    public boolean getPermissions() {
+        if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
+            if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
+                return true;
+            } else {
+                sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
+            }
+        } else {
+            sendNoPermsMessage();
+        }
+        return false;
     }
 
     public void sendNoPermsMessage() {
@@ -140,5 +186,10 @@ public class LabyPlayer {
         if (LabyHelp.getInstace().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
         }
+    }
+
+
+    public UUID getUuid() {
+        return this.uuid;
     }
 }

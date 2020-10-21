@@ -49,15 +49,30 @@ public class UserHandler {
     //tiktok 6
     //snapchat 7
 
+
+    public void targetMode(boolean activated) {
+        LabyHelp.getInstace().targetMode = activated;
+    }
+
+
     private static final Map<String, Integer> collectors = new HashMap<>();
 
-    public List<Map.Entry<String, Integer>> getTops() {
+    public List<Map.Entry<String, Integer>> getTops5() {
         if (!userLikes.isEmpty()) {
             for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
                 collectors.put(uuidStringEntry.getKey().toString(), Integer.parseInt(uuidStringEntry.getValue()));
             }
         }
         return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(5).collect(toList());
+    }
+
+    public List<Map.Entry<String, Integer>> getTops3() {
+        if (!userLikes.isEmpty()) {
+            for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
+                collectors.put(uuidStringEntry.getKey().toString(), Integer.parseInt(uuidStringEntry.getValue()));
+            }
+        }
+        return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(3).collect(toList());
     }
 
     public UUID getFamousLikePlayer() {
@@ -337,10 +352,23 @@ public class UserHandler {
                     if (data.length == 2 && HelpGroups.isExist(data[1])) {
                         String uuid = data[0];
                         if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+
                             if (LabyHelp.getInstace().getUserHandler().getFamousLikePlayer().toString().equals(uuid)) {
-                                userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
+                                if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
+                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
+                                }
                             } else {
                                 userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
+
+                                List<Map.Entry<String, Integer>> list = LabyHelp.getInstace().getUserHandler().getTops5();
+                                for (Map.Entry<String, Integer> uuidStringEntry : list) {
+                                    if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
+                                        if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
+                                            userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
+                                        }
+                                    }
+                                }
+
                             }
                         }
                     }

@@ -3,6 +3,7 @@ package de.marvhuelsmann.labymodaddon.listeners;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import net.labymod.api.events.MessageSendEvent;
+import net.labymod.main.LabyMod;
 
 public class MessageSendListener implements MessageSendEvent {
 
@@ -21,14 +22,14 @@ public class MessageSendListener implements MessageSendEvent {
                             message.startsWith("/social") || message.startsWith("/snapchat") ||
                             message.startsWith("/lhban") || message.startsWith("/lhmute") || message.startsWith("/lhteam") ||
                             message.startsWith("/lhlike") || message.startsWith("/likes") ||
-                            message.startsWith("/likelist")) {
+                            message.startsWith("/likelist") || message.startsWith("/lhtarget") || message.equalsIgnoreCase("/lhmodetarget")) {
                 LabyHelp.getInstace().getCommands().commandMessage(message);
                 return true;
             } else {
                 return false;
             }
         } else {
-            LabyPlayer labyPlayer = new LabyPlayer();
+            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
             labyPlayer.sendMessage("You have deactivated the Addon!");
             return false;
         }

@@ -2,6 +2,9 @@ package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
+import net.labymod.core.LabyModCore;
+import net.labymod.core.asm.LabyModCoreMod;
+import net.labymod.main.LabyMod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -22,14 +25,14 @@ public class ClientTickListener {
         if (LabyHelp.getInstace().settingsAdversting) {
             if (!adverdStage) {
                 if (adverstingTick > 1500) {
-                    LabyPlayer labyPlayer = new LabyPlayer();
+                    LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     labyPlayer.sendAdversting(true);
                     adverstingTick = 0;
                     adverdStage = true;
                 }
             } else {
                 if (adverstingTick > 21900) {
-                    LabyPlayer labyPlayer = new LabyPlayer();
+                    LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     labyPlayer.sendAdversting(false);
                     adverstingTick = 0;
                 }

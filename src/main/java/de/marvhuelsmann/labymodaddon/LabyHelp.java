@@ -1,5 +1,7 @@
 package de.marvhuelsmann.labymodaddon;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
 import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
@@ -18,6 +20,7 @@ import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +34,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.8.9";
+    public static final String currentVersion = "1.9.8.26";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -51,8 +54,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public String statusName;
     public String nameTagString;
 
+    public ArrayList<UUID> targetList = new ArrayList<>();
+    public boolean targetMode = false;
+
     public String nameTagSettings;
     public int nameTagSwitchingSetting;
+    public int nameTagSize;
 
     public boolean oldVersion = false;
 
@@ -157,10 +164,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
         this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
-        this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
         this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
         this.nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
+        this.nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
     }
 
     @Override
@@ -220,21 +227,40 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(alignmentDropDown);
 
 
-            NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
-                    new ControlElement.IconData(Material.WATCH) /* setting's icon */, nameTagSwitchingSetting  /* current value */);
 
-            numberElement.addCallback(new Consumer<Integer>() {
-                @Override
-                public void accept(Integer accepted) {
-                    LabyHelp.this.nameTagSwitchingSetting = accepted;
+        SliderElement scalingSliderElement = new SliderElement( "NameTag Size" /* Display name */,
+                new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */ );
 
-                    LabyHelp.this.getConfig().addProperty("nameTagSettingsSwitching", nameTagSwitchingSetting);
-                    LabyHelp.this.saveConfig();
-                }
-            });
+        scalingSliderElement.setRange( 1, 4);
+
+        scalingSliderElement.setSteps(1);
+
+        scalingSliderElement.addCallback( new Consumer<Integer>() {
+            @Override
+            public void accept( Integer accepted ) {
+                LabyHelp.this.nameTagSize = accepted;
+
+                LabyHelp.this.getConfig().addProperty("nameTagSize", nameTagSize);
+                LabyHelp.this.saveConfig();
+            }
+        } );
+
+        settingsElements.add(scalingSliderElement);
+
+        NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
+                new ControlElement.IconData(Material.WATCH) /* setting's icon */, nameTagSwitchingSetting  /* current value */);
+
+        numberElement.addCallback(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer accepted) {
+                LabyHelp.this.nameTagSwitchingSetting = accepted;
+
+                LabyHelp.this.getConfig().addProperty("nameTagSettingsSwitching", nameTagSwitchingSetting);
+                LabyHelp.this.saveConfig();
+            }
+        });
 
         settingsElements.add(numberElement);
-
 
 
         StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), instaName, new Consumer<String>() {

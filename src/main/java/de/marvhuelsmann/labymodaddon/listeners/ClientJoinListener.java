@@ -25,7 +25,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 
-                    LabyPlayer labyPlayer = new LabyPlayer();
+                    LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     if (serverData.getIp().equalsIgnoreCase("mcone.eu")) {
                         labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Du bist auf MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
                     } else if (serverData.getIp().equalsIgnoreCase("labor.mcone.eu")) {

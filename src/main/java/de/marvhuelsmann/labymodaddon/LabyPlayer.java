@@ -25,23 +25,25 @@ public class LabyPlayer {
     public String getSocialMedia(SocialMediaType socialMedia) {
         LabyHelp.getInstace().getUserHandler().readSocialMedia();
 
-        for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {
-            if (socialMedia.getMap().containsKey(uuid)) {
+        if (socialMedia.getMap().containsKey(uuid)) {
+            for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {
                 if (entry.getKey() != null) {
                     if (entry.getKey().equals(uuid)) {
                         return entry.getValue();
                     }
                 }
-            } else {
-                sendMessage("Der Spieler hat nicht sein Instagram hinterlegt!");
             }
+        } else {
+            sendMessage("Der Spieler hat nicht dieses SocialMedia hinterlegt!");
         }
         return null;
     }
 
     public void openInsta(String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.instagram.com/" + name, false);
+            if (name != null) {
+                LabyMod.getInstance().openWebpage("https://www.instagram.com/" + name, false);
+            }
         } catch (Exception ignored) {
             sendError();
         }
@@ -49,7 +51,9 @@ public class LabyPlayer {
 
     public void openTikTok(String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.tiktok.com/@" + name, false);
+            if (name != null) {
+                LabyMod.getInstance().openWebpage("https://www.tiktok.com/@" + name, false);
+            }
         } catch (Exception ignored) {
             sendError();
         }
@@ -57,7 +61,9 @@ public class LabyPlayer {
 
     public void openTwitter(String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.twitter.com/" + name, false);
+            if (name != null) {
+                LabyMod.getInstance().openWebpage("https://www.twitter.com/" + name, false);
+            }
         } catch (Exception ignored) {
             sendError();
         }
@@ -73,7 +79,9 @@ public class LabyPlayer {
 
     public void openTwitch(String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.twitch.tv/" + name, false);
+            if (name != null) {
+                LabyMod.getInstance().openWebpage("https://www.twitch.tv/" + name, false);
+            }
         } catch (Exception ignored) {
             sendError();
         }
@@ -81,7 +89,9 @@ public class LabyPlayer {
 
     public void openYoutube(String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.youtube.com/results?search_query=" + name, false);
+            if (name != null) {
+                LabyMod.getInstance().openWebpage("https://www.youtube.com/results?search_query=" + name, false);
+            }
         } catch (Exception ignored) {
             sendError();
         }

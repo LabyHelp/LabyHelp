@@ -1,4 +1,3 @@
-
 package de.marvhuelsmann.labymodaddon;
 
 import javax.swing.*;

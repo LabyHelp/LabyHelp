@@ -128,7 +128,7 @@ public class LabyPlayer {
     public void openCapeUrl(UUID uuid) {
         if (uuid != null) {
             try {
-                if (getPermissions()) {
+                if (getPermissions(uuid)) {
                     LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
                 }
             } catch (Exception ignored) {
@@ -142,7 +142,7 @@ public class LabyPlayer {
     public void openBandanaUrl(UUID uuid) {
         if (uuid != null) {
             try {
-                if (getPermissions()) {
+                if (getPermissions(uuid)) {
                     LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
                 }
             } catch (Exception ignored) {
@@ -156,7 +156,7 @@ public class LabyPlayer {
     public void openSkin(UUID uuid) {
         if (uuid != null) {
             try {
-                if (getPermissions()) {
+                if (getPermissions(uuid)) {
                     LabyMod.getInstance().openWebpage("https://de.namemc.com/profile/" + uuid, false);
                 }
             } catch (Exception ignored) {
@@ -167,7 +167,7 @@ public class LabyPlayer {
         }
     }
 
-    public boolean getPermissions() {
+    public boolean getPermissions(UUID uuid) {
         if (!LabyHelp.getInstace().getGroupManager().isPremium(uuid) || LabyHelp.getInstace().getGroupManager().isPremium(LabyMod.getInstance().getPlayerUUID())) {
             if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                 return true;

@@ -34,7 +34,7 @@ public class Commands {
 
             } else if (message.startsWith("/cosmeticsC")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/cosmeticsC ", ""));
-                if (clientLabyPlayer.getPermissions()) {
+                if (clientLabyPlayer.getPermissions(uuid)) {
                     LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
                 }
 
@@ -195,6 +195,9 @@ public class Commands {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
+
+                            LabyHelp.getInstace().getTeamManager().update();
+
                             LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                             LabyHelp.getInstace().getGroupManager().updateNameTag(false);
 

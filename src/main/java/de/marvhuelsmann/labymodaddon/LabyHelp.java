@@ -1,7 +1,5 @@
 package de.marvhuelsmann.labymodaddon;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
 import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
@@ -34,12 +32,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.8.26";
+    public static final String currentVersion = "1.9.8.29";
     public String newestVersion;
     public boolean onServer = false;
 
     private final UserHandler userHandler = new UserHandler();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
+    private final de.marvhuelsmann.labymodaddon.util.TeamManager teamManager = new de.marvhuelsmann.labymodaddon.util.TeamManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
     private final VoiceChatHandler voiceChatHandler = new VoiceChatHandler();
@@ -66,15 +65,16 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean addonEnabled = false;
 
 
+
     @Override
     public void onEnable() {
         instace = this;
-
 
         this.getApi().registerForgeListener(new ClientTickListener());
         this.getApi().getEventManager().register(new MessageSendListener());
         this.getApi().getEventManager().registerOnJoin(new ClientJoinListener());
         this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
+
 
         if (Source.ABOUT_MC_VERSION.startsWith("1.8")) {
             oldVersion = true;
@@ -138,6 +138,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public GroupManager getGroupManager() {
         return groupManager;
+    }
+
+    public TeamManager getTeamManager() {
+        return teamManager;
     }
 
     public ExecutorService getExecutor() {

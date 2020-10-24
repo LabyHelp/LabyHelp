@@ -45,6 +45,8 @@ public class GroupManager {
             return;
         }
 
+        LabyHelp.getInstace().getTeamManager().update();
+
         if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 

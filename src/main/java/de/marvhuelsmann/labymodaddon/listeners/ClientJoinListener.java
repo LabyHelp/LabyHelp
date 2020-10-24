@@ -3,8 +3,6 @@ package de.marvhuelsmann.labymodaddon.listeners;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.util.WebServer;
-import net.labymod.addon.LabyModOFAddon;
-import net.labymod.api.LabyModAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
@@ -24,6 +22,9 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     // LabyHelp.getInstace().getUserHandler().readIsOnline();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
+
+
+                    LabyHelp.getInstace().getTeamManager().update();
 
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     if (serverData.getIp().equalsIgnoreCase("mcone.eu")) {

@@ -2,8 +2,6 @@ package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
-import net.labymod.core.LabyModCore;
-import net.labymod.core.asm.LabyModCoreMod;
 import net.labymod.main.LabyMod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -58,6 +56,8 @@ public class ClientTickListener {
                 @Override
                 public void run() {
                     try {
+
+
                         LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                         LabyHelp.getInstace().getGroupManager().updateNameTag(true);
                         LabyHelp.getInstace().addonEnabled = true;
@@ -73,15 +73,17 @@ public class ClientTickListener {
 
         /* REFRESHING NAMETAGS */
         if (LabyHelp.getInstace().nameTagSettings.equalsIgnoreCase("SWITCHING")) {
-            if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 19) {
+            if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 20) {
                 if (LabyHelp.getInstace().onServer) {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            LabyHelp.getInstace().getGroupManager().updateNameTag(false);
+                            if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                                LabyHelp.getInstace().getGroupManager().updateNameTag(false);
+                            }
                         }
                     });
-                    if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 39) {
+                    if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
                         nameTick = 0;
                     }
                 }
@@ -90,7 +92,9 @@ public class ClientTickListener {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
+                            if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                                LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
+                            }
                         }
                     });
                 }

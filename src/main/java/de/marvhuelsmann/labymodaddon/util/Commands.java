@@ -196,7 +196,10 @@ public class Commands {
                         @Override
                         public void run() {
 
-                            LabyHelp.getInstace().getTeamManager().update();
+                            LabyHelp.getInstace().getTeamManager().list.clear();
+
+                            LabyHelp.getInstace().getCommentManager().banned.clear();
+                            LabyHelp.getInstace().getCommentManager().readBanned();
 
                             LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                             LabyHelp.getInstace().getGroupManager().updateNameTag(false);
@@ -237,10 +240,10 @@ public class Commands {
                 }
                 clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Teamspeak: https://labyhelp.de/teamspeak");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Our Discord: https://labyhelp.de/discord");
-            } else if (message.startsWith("/nametag")) {
-                LabyMod.getInstance().openWebpage("https://labyhelp.de/tag-rules", false);
+            } else if (message.startsWith("/lhrules")) {
+                LabyMod.getInstance().openWebpage("https://labyhelp.de/rules", false);
                 clientLabyPlayer.sendMessage("Die Regel Seite hat sich automatisch geoeffnet");
-                clientLabyPlayer.sendMessage("Nichts geoeffnet? https://labyhelp.de/tag-rules");
+                clientLabyPlayer.sendMessage("Nichts geoeffnet? https://labyhelp.de/rules");
             } else if (message.startsWith("/lhteam")) {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp Team:");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Position: " + LocalDate.now());
@@ -256,10 +259,12 @@ public class Commands {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Parodie");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ObiiiTooo");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Regelt");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (3)");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (5)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Vortrag");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ogdarkeagle");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- kleinerblue ");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- xCoki3iee");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- TimoliaModerator");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.DARK_RED + "You can also see the team page here: " + EnumChatFormatting.WHITE + " https://labyhelp.de/");
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
@@ -276,13 +281,15 @@ public class Commands {
                 clientLabyPlayer.sendMessage("- /snapchat <player>");
                 clientLabyPlayer.sendMessage("- /social <player>");
                 //    clientLabyPlayer.sendMessage("- /lhignore <player>");
-                clientLabyPlayer.sendMessage("- /nametag");
+                clientLabyPlayer.sendMessage("- /lhrules");
                 clientLabyPlayer.sendMessage("- /lhteam");
                 clientLabyPlayer.sendMessage("- /lhlike <player> / Like a Player");
                 clientLabyPlayer.sendMessage("- /likes <player> / See Player likes");
                 clientLabyPlayer.sendMessage("- /likelist / Shows the most famous player");
                 clientLabyPlayer.sendMessage("- /lhtarget <player> / add or remove from your list");
                 clientLabyPlayer.sendMessage("- /lhmodetarget / to turn on or off the Target Mode");
+                clientLabyPlayer.sendMessage("- /lhcomment <player> / write a comment to the player");
+                clientLabyPlayer.sendMessage("- /showcomments <player> / see the comments from the player");
                 clientLabyPlayer.sendMessage("- /lhreload");
                 clientLabyPlayer.sendMessage("- /labyhelp");
 
@@ -328,9 +335,10 @@ public class Commands {
                 String[] components = message.split(" ");
                 if (components.length == 2) {
                     UUID uuid = UUIDFetcher.getUUID(components[1]);
+
                     if (uuid != null) {
                         if (LabyHelp.getInstace().targetList.contains(uuid)) {
-                            clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You remove " + components[1] + " to your local Target List");
+                            clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You remove " + components[1] + " from your local Target List");
 
                             if (LabyHelp.getInstace().targetMode) {
                                 if (LabyHelp.getInstace().targetList.contains(uuid)) {
@@ -350,6 +358,81 @@ public class Commands {
                     }
                 } else {
                     clientLabyPlayer.sendMessage("- /lhweb <player>");
+                }
+            } else if (message.startsWith("/lhcomment")) {
+                String[] components = message.split(" ");
+                if (components.length == 2) {
+                    UUID uuid = UUIDFetcher.getUUID(components[1]);
+                    if (uuid != null) {
+                        LabyHelp.getInstace().getCommentManager().refreshComments();
+
+                        LabyHelp.getInstace().getExecutor().submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid)) {
+                                    if (!LabyHelp.getInstace().getCommentManager().banned.contains(LabyMod.getInstance().getPlayerUUID())) {
+                                        if (!LabyHelp.getInstace().getCommentManager().cooldown.contains(LabyMod.getInstance().getPlayerUUID())) {
+                                            if (!LabyMod.getInstance().getPlayerUUID().equals(uuid)) {
+
+                                                LabyHelp.getInstace().commentChat = true;
+                                                LabyHelp.getInstace().commentMap.put(LabyMod.getInstance().getPlayerUUID(), UUIDFetcher.getUUID(components[1]));
+
+                                                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Please send now your comment to this person!");
+                                                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + "In the normal chat without /" + EnumChatFormatting.YELLOW + ". The message will not be sent in the public chat!");
+                                            } else {
+                                                clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You cannot write a comment yourself!");
+                                            }
+                                        } else {
+                                            clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You still have to wait until you can write a comment to this person again");
+                                        }
+                                    } else {
+                                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You are banned in the LabyHelp comment function!");
+                                    }
+                                } else {
+                                    clientLabyPlayer.sendMessage("This Player does not have LabyHelp!");
+                                }
+                            }
+                        });
+                    } else {
+                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "This Player does not exit!");
+                    }
+                } else {
+                    clientLabyPlayer.sendMessage("- /lhcomment <player>");
+                }
+            } else if (message.startsWith("/showcomments")) {
+                String[] components = message.split(" ");
+                if (components.length == 2) {
+                    UUID uuid = UUIDFetcher.getUUID(components[1]);
+                    if (uuid != null) {
+                        LabyHelp.getInstace().getExecutor().submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                LabyHelp.getInstace().getCommentManager().readAllComments(uuid);
+                                LabyHelp.getInstace().getCommentManager().readAllowed(uuid);
+                                if (!LabyHelp.getInstace().getCommentManager().comments.isEmpty()) {
+                                    if (LabyHelp.getInstace().getCommentManager().isAllowed.contains(uuid)) {
+
+                                        clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + components[1].toUpperCase() + " received the following comments:");
+
+                                        for (Map.Entry<UUID, String> entry : LabyHelp.getInstace().getCommentManager().comments.entrySet()) {
+                                            clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "From: " + EnumChatFormatting.GRAY + UUIDFetcher.getName(entry.getKey()).toUpperCase());
+                                            clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "Message: " + EnumChatFormatting.GRAY + entry.getValue());
+                                            LabyMod.getInstance().displayMessageInChat("");
+                                        }
+                                        clientLabyPlayer.sendMessage(EnumChatFormatting.GRAY + "On the web: https://labyhelp.de/comments.php?uuid=" + uuid + "&name=" + components[1]);
+                                    } else {
+                                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "The player has deactivated his comments!");
+                                    }
+                                } else {
+                                    clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "This player has not received any comments!");
+                                }
+                            }
+                        });
+                    } else {
+                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "This Player does not exit!");
+                    }
+                } else {
+                    clientLabyPlayer.sendMessage("- /showcomments <player>");
                 }
             }
         } else {

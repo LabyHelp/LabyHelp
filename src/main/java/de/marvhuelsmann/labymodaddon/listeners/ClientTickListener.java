@@ -73,32 +73,27 @@ public class ClientTickListener {
 
         /* REFRESHING NAMETAGS */
         if (LabyHelp.getInstace().nameTagSettings.equalsIgnoreCase("SWITCHING")) {
-            if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 20) {
-                if (LabyHelp.getInstace().onServer) {
-                    LabyHelp.getInstace().getExecutor().submit(new Runnable() {
-                        @Override
-                        public void run() {
+            LabyHelp.getInstace().getExecutor().submit(new Runnable() {
+                @Override
+                public void run() {
+                    if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 20) {
+                        if (LabyHelp.getInstace().onServer) {
                             if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
                                 LabyHelp.getInstace().getGroupManager().updateNameTag(false);
                             }
+                            if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                                nameTick = 0;
+                            }
                         }
-                    });
-                    if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
-                        nameTick = 0;
-                    }
-                }
-            } else {
-                if (LabyHelp.getInstace().onServer) {
-                    LabyHelp.getInstace().getExecutor().submit(new Runnable() {
-                        @Override
-                        public void run() {
+                    } else {
+                        if (LabyHelp.getInstace().onServer) {
                             if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
                                 LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
                             }
                         }
-                    });
+                    }
                 }
-            }
+            });
         } else if (LabyHelp.getInstace().nameTagSettings.equalsIgnoreCase("NAMETAG")) {
             LabyHelp.getInstace().getGroupManager().updateNameTag(false);
         } else {

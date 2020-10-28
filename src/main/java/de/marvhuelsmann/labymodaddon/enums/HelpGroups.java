@@ -18,6 +18,7 @@ public enum HelpGroups {
     HELPER("HELPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + " EXPERT", true, false, true),
     DESIGNER("DESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " DESIGNER", true, false, true),
     SRDESIGNER("SRDESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GREEN + " SRDESIGNER", true, true, true),
+    JRCONTENT("JRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JRCONTENT", true, false, true),
     CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " CONTENT", true, true, true),
     SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SRCONTENT", true, true, true),
     JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JRMOD", true, false, true),
@@ -57,6 +58,7 @@ public enum HelpGroups {
                 HelpGroups.HELPER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.DESIGNER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.SRDESIGNER.getName().equalsIgnoreCase(name) ||
+                HelpGroups.JRCONTENT.getName().equalsIgnoreCase(name) ||
                 HelpGroups.CONTENT.getName().equalsIgnoreCase(name) ||
                 HelpGroups.SRCONTENT.getName().equalsIgnoreCase(name) ||
                 HelpGroups.JRMODERATOR.getName().equalsIgnoreCase(name) ||

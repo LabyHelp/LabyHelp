@@ -23,8 +23,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 
-
-                    LabyHelp.getInstace().getTeamManager().update();
+                    LabyHelp.getInstace().getCommentManager().refreshComments();
 
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     if (serverData.getIp().equalsIgnoreCase("mcone.eu")) {

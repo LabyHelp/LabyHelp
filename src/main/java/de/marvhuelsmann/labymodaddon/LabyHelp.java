@@ -19,6 +19,7 @@ import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -31,8 +32,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
+    public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.8.29";
+    public static final String currentVersion = "1.9.8.41";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -42,6 +44,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
     private final VoiceChatHandler voiceChatHandler = new VoiceChatHandler();
+    private final CommentManager commentManager = new CommentManager();
 
     public String instaName;
     public String discordName;
@@ -61,9 +64,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public int nameTagSize;
 
     public boolean oldVersion = false;
-
     public boolean addonEnabled = false;
 
+    public boolean commentChat = false;
+    public HashMap<UUID, UUID> commentMap = new HashMap<>();
 
 
     @Override
@@ -95,11 +99,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Bandana"));
+                        playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
+                        playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
+                        playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
+                        playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
+                        playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
+                        playerMenu.getDisplayName().equalsIgnoreCase("Comments"));
 
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
@@ -108,6 +113,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         //   LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CommentsMenu());
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -144,6 +150,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return teamManager;
     }
 
+    public CommentManager getCommentManager() {
+        return commentManager;
+    }
+
     public ExecutorService getExecutor() {
         return threadPool;
     }
@@ -157,6 +167,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public void loadConfig() {
         AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
         settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
+        settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
 
         this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
@@ -204,6 +215,23 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(settingAdversting);
 
+        final BooleanElement settingsComment = new BooleanElement("Comments at your profile", new ControlElement.IconData(Material.SIGN), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstace().settinngsComments = enable;
+
+                if (enable) {
+                    LabyHelp.getInstace().getCommentManager().sendToggle(LabyMod.getInstance().getPlayerUUID(), "TRUE");
+                } else {
+                    LabyHelp.getInstace().getCommentManager().sendToggle(LabyMod.getInstance().getPlayerUUID(), "FALSE");
+                }
+                LabyHelp.this.getConfig().addProperty("comment", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstace().settinngsComments);
+
+        settingsElements.add(settingsComment);
+
 
         final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
                 .fill(NameTagSettings.values());
@@ -231,23 +259,22 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(alignmentDropDown);
 
 
+        SliderElement scalingSliderElement = new SliderElement("NameTag Size" /* Display name */,
+                new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */);
 
-        SliderElement scalingSliderElement = new SliderElement( "NameTag Size" /* Display name */,
-                new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */ );
-
-        scalingSliderElement.setRange( 1, 4);
+        scalingSliderElement.setRange(1, 4);
 
         scalingSliderElement.setSteps(1);
 
-        scalingSliderElement.addCallback( new Consumer<Integer>() {
+        scalingSliderElement.addCallback(new Consumer<Integer>() {
             @Override
-            public void accept( Integer accepted ) {
+            public void accept(Integer accepted) {
                 LabyHelp.this.nameTagSize = accepted;
 
                 LabyHelp.this.getConfig().addProperty("nameTagSize", nameTagSize);
                 LabyHelp.this.saveConfig();
             }
-        } );
+        });
 
         settingsElements.add(scalingSliderElement);
 

@@ -457,16 +457,18 @@ public class UserHandler {
                 oldLikes.put(likes.getKey(), likes.getValue());
             }
 
+
+
             readUserLikes();
             readLikes();
             readGroups();
 
             if (!getNowRanked().getName().equalsIgnoreCase(getBeforeRanked().getName())) {
                 if (getNowRanked().equals(HelpGroups.BANNED)) {
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + "---------LabyHelp Guardian----------");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + "Your NameTag has been banned for one day");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + "Rules: https://labyhelp.de/tag-rules");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + "---------LabyHelp Guardian----------");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp Guardian----------");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Your NameTag has been banned for one day");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + " Rules: https://labyhelp.de/tag-rules");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp Guardian----------");
 
                 } else {
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " Your Rank has been change! (" + EnumChatFormatting.WHITE + getNowRanked().getName() + EnumChatFormatting.GREEN + ")");

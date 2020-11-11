@@ -32,12 +32,6 @@ public class Commands {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/skin ", ""));
                 clientLabyPlayer.openSkin(uuid);
 
-            } else if (message.startsWith("/cosmeticsC")) {
-                final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/cosmeticsC ", ""));
-                if (clientLabyPlayer.getPermissions(uuid)) {
-                    LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().clear();
-                }
-
             } else if (message.startsWith("/insta")) {
                 final UUID uuid = UUIDFetcher.getUUID(message.replaceAll("/insta ", ""));
 
@@ -247,10 +241,9 @@ public class Commands {
             } else if (message.startsWith("/lhteam")) {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp Team:");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Position: " + LocalDate.now());
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Administation (3)");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Administation (2)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Marvio");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Connan97");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Darstellung");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Developers (2)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Rufi");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Rausgemoved");
@@ -259,8 +252,7 @@ public class Commands {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Parodie");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ObiiiTooo");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Regelt");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (5)");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Vortrag");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (4)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ogdarkeagle");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- kleinerblue ");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- xCoki3iee");

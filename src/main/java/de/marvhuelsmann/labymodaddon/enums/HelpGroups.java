@@ -4,10 +4,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 public enum HelpGroups {
 
-    SCAMMER("SCAMMER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + " SCAMMER", true, false, false),
     USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
-    MM("MM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " MIDDLEMAN", true, false, false),
     FAME("FAME", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " FAME", true, false, false),
     FAMOUS("FAMOUS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + " FAMOUS", true, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, false),
@@ -44,10 +42,8 @@ public enum HelpGroups {
 
     public static Boolean isExist(final String name) {
         return HelpGroups.USER.getName().equalsIgnoreCase(name)
-                || HelpGroups.SCAMMER.getName().equalsIgnoreCase(name)
                 || HelpGroups.BANNED.getName().equalsIgnoreCase(name)
                 || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
-                HelpGroups.MM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAME.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAMOUS.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||

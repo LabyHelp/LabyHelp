@@ -9,7 +9,6 @@ import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.util.*;
-import de.marvhuelsmann.labymodaddon.voicechat.VoiceChatHandler;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
@@ -34,7 +33,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.8.41";
+    public static final String currentVersion = "1.9.8.45";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -43,7 +42,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final de.marvhuelsmann.labymodaddon.util.TeamManager teamManager = new de.marvhuelsmann.labymodaddon.util.TeamManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
-    private final VoiceChatHandler voiceChatHandler = new VoiceChatHandler();
     private final CommentManager commentManager = new CommentManager();
 
     public String instaName;
@@ -136,10 +134,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public UserHandler getUserHandler() {
         return userHandler;
-    }
-
-    public VoiceChatHandler getVoiceChatHandler() {
-        return voiceChatHandler;
     }
 
     public GroupManager getGroupManager() {

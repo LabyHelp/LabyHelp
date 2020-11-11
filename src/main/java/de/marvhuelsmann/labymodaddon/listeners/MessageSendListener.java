@@ -29,7 +29,6 @@ public class MessageSendListener implements MessageSendEvent {
                 return true;
             }
 
-
             if (
                     message.startsWith("/bandana") || message.startsWith("/cape") ||
                             message.startsWith("/skin") || message.startsWith("/cosmeticsC") ||

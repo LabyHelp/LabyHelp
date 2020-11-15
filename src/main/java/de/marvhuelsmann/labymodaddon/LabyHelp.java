@@ -33,13 +33,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "1.9.8.45";
+    public static final String currentVersion = "2.02";
     public String newestVersion;
     public boolean onServer = false;
 
     private final UserHandler userHandler = new UserHandler();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final de.marvhuelsmann.labymodaddon.util.TeamManager teamManager = new de.marvhuelsmann.labymodaddon.util.TeamManager();
+    private final InviteManager inviteManager = new InviteManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
     private final CommentManager commentManager = new CommentManager();
@@ -97,12 +98,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
-                        playerMenu.getDisplayName().equalsIgnoreCase("Comments"));
+                playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Comments"));
 
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
@@ -111,7 +112,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         //   LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CommentsMenu());
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -142,6 +142,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public TeamManager getTeamManager() {
         return teamManager;
+    }
+
+    public InviteManager getInviteManager() {
+        return inviteManager;
     }
 
     public CommentManager getCommentManager() {
@@ -409,7 +413,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add(nameTag);
 
-        StringElement status = new StringElement("Trade Cosmetics", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
+        StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {

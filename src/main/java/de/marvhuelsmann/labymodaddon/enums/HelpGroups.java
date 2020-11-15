@@ -8,7 +8,9 @@ public enum HelpGroups {
     BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " USER", false, false, false),
     FAME("FAME", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " FAME", true, false, false),
     FAMOUS("FAMOUS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + " FAMOUS", true, false, false),
+    INVITER("INVITER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + " Inviter", true, false, false),
     PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " PREMIUM", true, false, false),
+    PREMIUM_("PREMIUM_", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.BOLD + " PREMIUM+", true, false, false),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " FRIEND", true, false, true),
     CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, false, true),
     LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true, false, true),
@@ -42,10 +44,11 @@ public enum HelpGroups {
 
     public static Boolean isExist(final String name) {
         return HelpGroups.USER.getName().equalsIgnoreCase(name)
-                || HelpGroups.BANNED.getName().equalsIgnoreCase(name)
                 || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAME.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAMOUS.getName().equalsIgnoreCase(name) ||
+                HelpGroups.INVITER.getName().equalsIgnoreCase(name) ||
+                HelpGroups.PREMIUM_.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
                 HelpGroups.BANNED.getName().equalsIgnoreCase(name) ||
                 HelpGroups.CREATOR.getName().equalsIgnoreCase(name) ||

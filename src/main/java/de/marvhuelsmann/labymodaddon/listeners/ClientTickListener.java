@@ -3,6 +3,7 @@ package de.marvhuelsmann.labymodaddon.listeners;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import net.labymod.main.LabyMod;
+import net.labymod.user.cosmetic.cosmetics.shop.head.CosmeticCowHat;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -56,8 +57,6 @@ public class ClientTickListener {
                 @Override
                 public void run() {
                     try {
-
-
                         LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                         LabyHelp.getInstace().getGroupManager().updateNameTag(true);
                         LabyHelp.getInstace().addonEnabled = true;

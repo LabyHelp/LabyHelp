@@ -253,34 +253,6 @@ public class UserHandler {
         }
     }
 
-    public void readMute() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/muteList.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            if (result != null) {
-                final String[] split;
-                final String[] entries = split = result.split(",");
-                for (final String entry : split) {
-                    final String[] data = entry.split(":");
-                    if (data.length == 2) {
-                        String uuid = data[0];
-                        if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                            voiceMuteExtendedList.put(UUID.fromString(data[0]), data[1].equalsIgnoreCase("true"));
-
-                            LabyMod.getInstance().displayMessageInChat("read mute update ArrayList");
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch mutes!", e);
-        }
-    }
 
     public void readIsOnline() {
         try {
@@ -353,27 +325,30 @@ public class UserHandler {
                         String uuid = data[0];
                         if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
 
-                            if (LabyHelp.getInstace().getUserHandler().getFamousLikePlayer().toString().equals(uuid)) {
-                                if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
-                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
-                                }
-                            } else {
-                                userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
+                            userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
-                                List<Map.Entry<String, Integer>> list = LabyHelp.getInstace().getUserHandler().getTops5();
-                                for (Map.Entry<String, Integer> uuidStringEntry : list) {
-                                    if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
-                                        if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
+
+                            if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
+                               if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
+                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
+                                } else if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
+                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
+                                }
+
+                                if (LabyHelp.getInstace().getUserHandler().getFamousLikePlayer().toString().equals(uuid)) {
+                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
+                                } else {
+                                    List<Map.Entry<String, Integer>> list = LabyHelp.getInstace().getUserHandler().getTops5();
+                                    for (Map.Entry<String, Integer> uuidStringEntry : list) {
+                                        if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
                                             userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
                                         }
                                     }
                                 }
-
                             }
                         }
                     }
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -442,7 +417,7 @@ public class UserHandler {
             return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalStateException("Could not read NameTag!", e);
+            throw new IllegalStateException("Could not read ip!", e);
         }
     }
 
@@ -457,10 +432,15 @@ public class UserHandler {
                 oldLikes.put(likes.getKey(), likes.getValue());
             }
 
+            for (Map.Entry<UUID, String> likes : LabyHelp.getInstace().getInviteManager().userInvites.entrySet()) {
+                LabyHelp.getInstace().getInviteManager().oldInvites.put(likes.getKey(), likes.getValue());
+            }
 
 
             readUserLikes();
             readLikes();
+            LabyHelp.getInstace().getInviteManager().readUserInvites();
+            LabyHelp.getInstace().getInviteManager().readOldPlayer();
             readGroups();
 
             if (!getNowRanked().getName().equalsIgnoreCase(getBeforeRanked().getName())) {
@@ -477,6 +457,10 @@ public class UserHandler {
 
             if (!getBeforeLikes().equalsIgnoreCase(getNowLikes())) {
                 LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " You got a LabyHelp Profile like (" + EnumChatFormatting.WHITE + getNowLikes() + EnumChatFormatting.GREEN + ")");
+            }
+
+            if (!LabyHelp.getInstace().getInviteManager().getBeforeInvites().equalsIgnoreCase(LabyHelp.getInstace().getInviteManager().getNowInvites())) {
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " A player has redeemed your invite code (" + EnumChatFormatting.WHITE + LabyHelp.getInstace().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
             }
 
         } else {

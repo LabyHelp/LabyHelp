@@ -41,7 +41,7 @@ public class MessageSendListener implements MessageSendEvent {
                             message.startsWith("/social") || message.startsWith("/snapchat") ||
                             message.startsWith("/lhban") || message.startsWith("/lhmute") || message.startsWith("/lhteam") ||
                             message.startsWith("/lhlike") || message.startsWith("/likes") ||
-                            message.startsWith("/likelist") || message.startsWith("/lhtarget") || message.startsWith("/lhcomment") || message.startsWith("/showcomments") || message.equalsIgnoreCase("/lhmodetarget")) {
+                            message.startsWith("/likelist") || message.startsWith("/lhtarget") || message.startsWith("/lhcomment") || message.startsWith("/showcomments") || message.equalsIgnoreCase("/lhmodetarget") || message.startsWith("/invites") || message.startsWith("/lhcode") || message.equalsIgnoreCase("/invitelist")) {
                 LabyHelp.getInstace().getCommands().commandMessage(message);
                 return true;
             } else {

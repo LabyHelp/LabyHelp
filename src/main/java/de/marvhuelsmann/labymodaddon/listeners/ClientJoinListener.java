@@ -23,14 +23,17 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 
+
                     LabyHelp.getInstace().getCommentManager().refreshComments();
 
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     if (serverData.getIp().equalsIgnoreCase("mcone.eu")) {
                         labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Du bist auf MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
                     } else if (serverData.getIp().equalsIgnoreCase("labor.mcone.eu")) {
-                        labyPlayer.sendMessage(EnumChatFormatting.GREEN +"Du bist auf LABOR.MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
+                        labyPlayer.sendMessage(EnumChatFormatting.GREEN + "Du bist auf LABOR.MCONE.EU gejoint... Auf diesem Server erhälts du weitere LabyHelp Features!");
                     }
+                    labyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Labyhelp Version 2.0 ist veröffentlicht worden. Hier findest du die neuen Features https://labyhelp.de/discord");
+
                 }
             });
         } else {

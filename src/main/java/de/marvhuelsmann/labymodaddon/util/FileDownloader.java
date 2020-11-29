@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package de.marvhuelsmann.labymodaddon.util;
 
 import net.labymod.addon.AddonLoader;

@@ -4,6 +4,10 @@ import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
 import net.labymod.main.LabyMod;
+import net.labymod.user.cosmetic.cosmetics.partner.CosmeticAbgegrieft;
+import net.labymod.user.cosmetic.cosmetics.partner.CosmeticStegi;
+import net.labymod.user.cosmetic.cosmetics.shop.shoes.CosmeticShoes;
+import net.labymod.user.cosmetic.cosmetics.staff.CosmeticMoehritz;
 import net.labymod.utils.UUIDFetcher;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.IOUtils;
@@ -329,7 +333,7 @@ public class UserHandler {
 
 
                             if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
-                               if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
+                                if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
                                     userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
                                 } else if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
                                     userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
@@ -423,6 +427,22 @@ public class UserHandler {
 
     public void readUserInformations(boolean groups) {
         if (groups) {
+
+         /*   try {
+                UUID uuid = UUIDFetcher.getUUID("Marvio");
+                LabyMod.getInstance().getUserManager().setChecked(uuid, true);
+
+                CosmeticShoes.CosmeticShoesData data = new CosmeticShoes.CosmeticShoesData();
+                data.init(LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()));
+                data.loadData(new String[]{ "6ff672d6-b4cd-11ea-b3de-0242ac130004" });
+                LabyMod.getInstance().getUserManager().getUser(uuid).getCosmetics().put(27, data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+          */
+
+
 
             for (Map.Entry<UUID, HelpGroups> group : userGroups.entrySet()) {
                 oldGroups.put(group.getKey(), group.getValue());

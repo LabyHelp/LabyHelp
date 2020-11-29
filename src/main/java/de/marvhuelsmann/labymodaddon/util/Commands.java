@@ -8,10 +8,12 @@ import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.labymod.user.cosmetic.cosmetics.shop.head.*;
 import net.labymod.user.cosmetic.cosmetics.shop.pet.CosmeticPetDragon;
+import net.labymod.user.cosmetic.cosmetics.shop.shoes.CosmeticShoes;
 import net.labymod.user.group.LabyGroup;
 import net.labymod.utils.UUIDFetcher;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -286,25 +288,25 @@ public class Commands {
             } else if (message.startsWith("/lhteam")) {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp Team:");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Position: " + LocalDate.now());
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Administation (2)");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Marvio");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Administation (3)");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Marvienio");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Connan97");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Tig4z");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Developers (2)");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Developers (1)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Rufi");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Rausgemoved");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Moderation (4)");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- reszyy");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Moderation (3)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Parodie");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ObiiiTooo");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (4)");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- einMaro");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "Addon Contents (2)");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- ogdarkeagle");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- kleinerblue ");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- xCoki3iee");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- TimoliaModerator");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "- Psintx");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.DARK_RED + "You can also see the team page here: " + EnumChatFormatting.WHITE + " https://labyhelp.de/");
             }
             if (message.equalsIgnoreCase("/LhHelp")) {
+
+
+
 
                 clientLabyPlayer.sendMessage("- /bandana <player>");
                 clientLabyPlayer.sendMessage("- /cape <player>");

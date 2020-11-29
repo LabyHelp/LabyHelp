@@ -1,20 +1,9 @@
 package de.marvhuelsmann.labymodaddon.util;
 
-import com.sun.media.sound.SoftVoice;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
-import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
-import net.labymod.api.LabyModAPI;
-import net.labymod.api.LabyModAddon;
-import net.labymod.labyplay.LabyPlay;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
-import net.labymod.user.cosmetic.cosmetics.shop.head.CosmeticCowHat;
-import net.labymod.user.cosmetic.cosmetics.shop.head.CosmeticMooseHat;
-import net.labymod.user.cosmetic.cosmetics.shop.head.CosmeticMustache;
-import net.labymod.user.cosmetic.cosmetics.shop.head.CosmeticScarf;
-import net.labymod.user.cosmetic.cosmetics.shop.shoes.CosmeticBunnyShoes;
-import net.labymod.utils.UUIDFetcher;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;

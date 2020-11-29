@@ -33,7 +33,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.02";
+    public static final String currentVersion = "2.41 Winter EDITION";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -109,7 +109,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new BandanaMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
-        //   LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CosmeticsClearerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
 

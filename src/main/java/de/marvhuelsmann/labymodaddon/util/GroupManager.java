@@ -22,6 +22,10 @@ public class GroupManager {
         return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTeam();
     }
 
+    public HelpGroups getRanked(final UUID uuid) {
+        return LabyHelp.getInstace().getUserHandler().userGroups.get(uuid);
+    }
+
     public boolean isTag(final UUID uuid) {
         return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTag();
     }
@@ -45,7 +49,6 @@ public class GroupManager {
             }
             return;
         }
-
 
 
         if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {

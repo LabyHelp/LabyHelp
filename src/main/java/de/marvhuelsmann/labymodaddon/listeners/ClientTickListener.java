@@ -30,7 +30,7 @@ public class ClientTickListener {
                     adverdStage = true;
                 }
             } else {
-                if (adverstingTick > 21900) {
+                if (adverstingTick > 23900) {
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     labyPlayer.sendAdversting(false);
                     adverstingTick = 0;

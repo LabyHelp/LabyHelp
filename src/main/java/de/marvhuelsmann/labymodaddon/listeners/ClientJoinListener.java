@@ -19,7 +19,6 @@ public class ClientJoinListener implements Consumer<ServerData> {
                 @Override
                 public void run() {
                     WebServer.sendClient();
-                    // LabyHelp.getInstace().getUserHandler().readIsOnline();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 

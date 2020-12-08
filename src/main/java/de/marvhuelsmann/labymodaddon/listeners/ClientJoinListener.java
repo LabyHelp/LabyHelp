@@ -22,6 +22,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 
+                    LabyHelp.getInstace().getStoreHandler().readHelpAddons();
 
                     LabyHelp.getInstace().getCommentManager().refreshComments();
 

@@ -18,7 +18,6 @@ public enum HelpGroups {
 
 
     NICHOLAS("NICHOLAS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Saint Nicolas", false, true,false, false),
-    CRISTMAS_ELF("CRISTMAS_ELF", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Weihnachts Helfer", true,false, false, false),
     SANTA("SANTA", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Santa Claus", false, true,false, false),
 
    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, true,false, true),
@@ -57,7 +56,6 @@ public enum HelpGroups {
         return HelpGroups.USER.getName().equalsIgnoreCase(name)
                 || HelpGroups.PREMIUM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAME.getName().equalsIgnoreCase(name) ||
-                HelpGroups.CRISTMAS_ELF.getName().equalsIgnoreCase(name) ||
                 HelpGroups.NICHOLAS.getName().equalsIgnoreCase(name) ||
                 HelpGroups.SANTA.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FAMOUS.getName().equalsIgnoreCase(name) ||

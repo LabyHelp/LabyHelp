@@ -1,5 +1,6 @@
 package de.marvhuelsmann.labymodaddon.store;
 
+import de.marvhuelsmann.labymodaddon.LabyHelp;
 import net.labymod.addon.AddonLoader;
 import org.apache.commons.io.FileUtils;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 public class FileDownloader {
 
@@ -37,14 +39,14 @@ public class FileDownloader {
     public void installStoreAddons() {
 
         try {
-            for (HelpAddons addons : HelpAddons.values()) {
-                if (!addons.isMainAddon()) {
-                    File addonDir = AddonLoader.getAddonsDirectory();
-                    File addon = new File(addonDir, addons.getFileName() + ".jar");
+          if (LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons) {
+              for (Map.Entry<String, String> addons : LabyHelp.getInstace().getStoreHandler().getAddonsList().entrySet()) {
+                  File addonDir = AddonLoader.getAddonsDirectory();
+                  File addon = new File(addonDir, addons.getKey() + ".jar");
 
-                    FileUtils.copyURLToFile(new URL(addons.getDownloadURL()), addon);
-                }
-            }
+                  FileUtils.copyURLToFile(new URL("https://" + addons.getValue()), addon);
+              }
+          }
         } catch (IOException e) {
             e.printStackTrace();
         }

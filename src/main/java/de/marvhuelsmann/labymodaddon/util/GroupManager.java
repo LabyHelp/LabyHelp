@@ -7,6 +7,7 @@ import net.labymod.user.User;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class GroupManager {
@@ -108,16 +109,16 @@ public class GroupManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-
                     String finalRo = finalTag.replace("{likes}", LabyHelp.getInstace().getUserHandler().getLikes(uuidUserEntry.getKey()));
+                    String rainbow = finalRo.replace("!r", "" + randomeColor() + "");
 
                     if (!isTag(uuidUserEntry.getKey())) {
-                        String tag = finalRo.replaceAll("LabyHelp", "");
+                        String tag = rainbow.replaceAll("LabyHelp", "");
                         String finishFinalTag = tag.replaceAll("LabyMod", "");
 
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finalRo);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + rainbow);
                     }
 
                     if (LabyHelp.getInstace().nameTagSize != 0) {
@@ -136,5 +137,35 @@ public class GroupManager {
 
             }
         }
+    }
+
+    private final Random RANDOM = new Random();
+    private int getRandomNumberInRange() {
+        return RANDOM.nextInt((10 - 1) + 1) + 1;
+    }
+
+    private EnumChatFormatting randomeColor() {
+        if (getRandomNumberInRange() == 1) {
+            return EnumChatFormatting.YELLOW;
+        } else if (getRandomNumberInRange() == 2) {
+            return EnumChatFormatting.BLUE;
+        } else if (getRandomNumberInRange() == 3) {
+            return EnumChatFormatting.RED;
+        } else if (getRandomNumberInRange() == 4) {
+            return EnumChatFormatting.AQUA;
+        } else if (getRandomNumberInRange() == 5) {
+            return EnumChatFormatting.DARK_GREEN;
+        } else if (getRandomNumberInRange() == 6) {
+            return EnumChatFormatting.DARK_PURPLE;
+        } else if (getRandomNumberInRange() == 7) {
+            return EnumChatFormatting.DARK_RED;
+        } else if (getRandomNumberInRange() == 8) {
+            return EnumChatFormatting.GOLD;
+        } else if (getRandomNumberInRange() == 9) {
+            return EnumChatFormatting.GREEN;
+        } else if (getRandomNumberInRange() == 10) {
+            return EnumChatFormatting.LIGHT_PURPLE;
+        }
+        return EnumChatFormatting.GRAY;
     }
 }

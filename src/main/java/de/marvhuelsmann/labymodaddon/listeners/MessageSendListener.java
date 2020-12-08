@@ -2,6 +2,8 @@ package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
+import de.marvhuelsmann.labymodaddon.enums.CommandsList;
+import de.marvhuelsmann.labymodaddon.util.Commands;
 import net.labymod.api.events.MessageSendEvent;
 import net.labymod.main.LabyMod;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,7 +22,7 @@ public class MessageSendListener implements MessageSendEvent {
 
                 if (LabyHelp.getInstace().commentMap.containsValue(commentUuid)) {
                     LabyHelp.getInstace().getCommentManager().sendComment(commentUuid, message);
-                    clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN  + "You have successfully sent the comment!");
+                    clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "You have successfully sent the comment!");
                 } else {
                     clientLabyPlayer.sendMessage("An error has occurred!");
                 }
@@ -29,28 +31,30 @@ public class MessageSendListener implements MessageSendEvent {
                 return true;
             }
 
-            if (
-                    message.startsWith("/bandana") || message.startsWith("/cape") ||
-                            message.startsWith("/skin") || message.startsWith("/cosmeticsC") ||
-                            message.equalsIgnoreCase("/LhHelp") || message.equalsIgnoreCase("/lhrules") ||
-                            message.equalsIgnoreCase("/labyhelp") || message.equalsIgnoreCase("/lhreload") ||
-                            message.startsWith("/lhweb") ||
-                            message.startsWith("/insta") || message.startsWith("/discord") ||
-                            message.startsWith("/youtube") || message.startsWith("/twitch") ||
-                            message.startsWith("/twitter") || message.startsWith("/tiktok") ||
-                            message.startsWith("/social") || message.startsWith("/snapchat") ||
-                            message.startsWith("/lhban") || message.startsWith("/lhmute") || message.startsWith("/lhteam") ||
-                            message.startsWith("/lhlike") || message.startsWith("/likes") ||
-                            message.startsWith("/likelist") || message.startsWith("/lhtarget") || message.startsWith("/lhcomment") || message.startsWith("/showcomments") || message.equalsIgnoreCase("/lhmodetarget") || message.startsWith("/invites") || message.startsWith("/lhcode") || message.equalsIgnoreCase("/invitelist")) {
-                LabyHelp.getInstace().getCommands().commandMessage(message);
-                return true;
-            } else {
-                return false;
+
+            for (CommandsList commands : CommandsList.values()) {
+                if (commands.isMoreArgs()) {
+                    if (message.startsWith("/" + commands.getName())) {
+                        LabyHelp.getInstace().getCommands().commandMessage(message);
+                    }
+                } else {
+                    if (message.equalsIgnoreCase("/" + commands.getName())) {
+                        LabyHelp.getInstace().getCommands().commandMessage(message);
+                    }
+                }
+            }
+
+            for (CommandsList commandsList : CommandsList.values()) {
+                if (message.startsWith("/" + commandsList.getName())) {
+                    return true;
+                }
             }
         } else {
             LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
             labyPlayer.sendMessage("You have deactivated the Addon!");
             return false;
         }
+        return false;
     }
+
 }

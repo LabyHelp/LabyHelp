@@ -35,7 +35,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.4.2 Winter EDITION";
+    public static final String currentVersion = "2.5";
     public String newestVersion;
     public boolean onServer = false;
 

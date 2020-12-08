@@ -15,6 +15,10 @@ public class GroupManager {
         return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getPremium();
     }
 
+    public boolean isPremiumExtra(final UUID uuid) {
+        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getPremiumExtra();
+    }
+
     public boolean isTeam(final UUID uuid) {
         if (LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
             LabyHelp.getInstace().getUserHandler().readGroups();

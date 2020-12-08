@@ -2,9 +2,9 @@
   "uuid": "%uuid%",
   "name": "LabyHelp",
   "mainClass": "de.marvhuelsmann.labymodaddon.LabyHelp",
-  "description": "Allowed user to get the cosmetics skins from other players from the middleclick GUI or Command",
+  "description": "A LabyMod extension with other cool features",
   "version": 1.9,
-  "author": "Marvio",
+  "author": "Marvienio",
   "category": 2,
   "icon": "https://i.imgur.com/u7OrwG7.png"
 }

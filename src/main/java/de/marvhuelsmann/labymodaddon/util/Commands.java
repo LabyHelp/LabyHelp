@@ -5,19 +5,12 @@ import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
 import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
 import de.marvhuelsmann.labymodaddon.menu.TargetMenu;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
-import net.labymod.user.cosmetic.cosmetics.shop.head.*;
-import net.labymod.user.cosmetic.cosmetics.shop.pet.CosmeticPetDragon;
-import net.labymod.user.cosmetic.cosmetics.shop.shoes.CosmeticShoes;
-import net.labymod.user.group.LabyGroup;
 import net.labymod.utils.UUIDFetcher;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -91,7 +84,7 @@ public class Commands {
                         if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                             if (uuid != null) {
                                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Der Spieler " + EnumChatFormatting.WHITE + components[1] + EnumChatFormatting.RED + " wurde wegen dem NAMETAG fuer ein Tag gebannt!");
-                                WebServer.sendBanned(uuid, "NAMETAG");
+                                CommunicatorHandler.sendBanned(uuid, "NAMETAG");
                             } else {
                                 clientLabyPlayer.sendMessage("Der Spieler existiert nicht!");
                             }
@@ -236,8 +229,6 @@ public class Commands {
                         @Override
                         public void run() {
 
-                            LabyHelp.getInstace().getTeamManager().list.clear();
-
                             LabyHelp.getInstace().getCommentManager().banned.clear();
                             LabyHelp.getInstace().getCommentManager().readBanned();
 
@@ -254,7 +245,7 @@ public class Commands {
                             LabyHelp.getInstace().getUserHandler().isOnline.clear();
                             //LabyHelp.getInstace().getUserHandler().readIsOnline();
                             System.out.println("subtitles updating..");
-                            final String webVersion = WebServer.readVersion();
+                            final String webVersion = CommunicatorHandler.readVersion();
                             LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
                         }
                     });
@@ -262,7 +253,7 @@ public class Commands {
                 }
             } else if (message.startsWith("/labyhelp")) {
                 try {
-                    final String webVersion = WebServer.readVersion();
+                    final String webVersion = CommunicatorHandler.readVersion();
                     LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
                     LabyHelp.getInstace().newestVersion = webVersion;
                 if (!LabyHelp.getInstace().isNewerVersion) {

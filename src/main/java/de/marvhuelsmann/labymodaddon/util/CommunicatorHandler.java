@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class WebServer {
+public class CommunicatorHandler {
 
     private static final String SERVER_ID = "4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48";
 

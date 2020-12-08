@@ -2,7 +2,7 @@ package de.marvhuelsmann.labymodaddon.listeners;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
-import de.marvhuelsmann.labymodaddon.util.WebServer;
+import de.marvhuelsmann.labymodaddon.util.CommunicatorHandler;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
@@ -18,7 +18,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
             LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                 @Override
                 public void run() {
-                    WebServer.sendClient();
+                    CommunicatorHandler.sendClient();
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
 

@@ -1,8 +1,13 @@
 package de.marvhuelsmann.labymodaddon;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -19,6 +24,7 @@ public class Main {
     }
 
     public static void main(final String[] args) throws IOException {
+
 
         initLookAndFeel();
         initLanguage();
@@ -63,6 +69,7 @@ public class Main {
             e2.printStackTrace();
             showMessageDialog(Main.lang.get("error"), 0);
         }
+
     }
 
 

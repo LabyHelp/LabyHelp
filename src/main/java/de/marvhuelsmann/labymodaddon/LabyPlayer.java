@@ -7,7 +7,6 @@ import net.minecraft.util.EnumChatFormatting;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 

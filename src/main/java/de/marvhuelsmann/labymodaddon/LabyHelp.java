@@ -8,6 +8,8 @@ import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
+import de.marvhuelsmann.labymodaddon.store.FileDownloader;
+import de.marvhuelsmann.labymodaddon.store.StoreHandler;
 import de.marvhuelsmann.labymodaddon.util.*;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
@@ -33,13 +35,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.4 Winter EDITION";
+    public static final String currentVersion = "2.4.2 Winter EDITION";
     public String newestVersion;
     public boolean onServer = false;
 
     private final UserHandler userHandler = new UserHandler();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
-    private final de.marvhuelsmann.labymodaddon.util.TeamManager teamManager = new de.marvhuelsmann.labymodaddon.util.TeamManager();
+    private final StoreHandler storeHandler = new StoreHandler();
     private final InviteManager inviteManager = new InviteManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
@@ -86,7 +88,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
         try {
-            String webVersion = WebServer.readVersion();
+            String webVersion = CommunicatorHandler.readVersion();
             newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
                 isNewerVersion = true;
@@ -115,8 +117,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstace().getUserHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
+
+            LabyHelp.getInstace().getStoreHandler().getFileDownloader().installStoreAddons();
+
             if (isNewerVersion) {
-                FileDownloader.update();
+                LabyHelp.getInstace().getStoreHandler().getFileDownloader().update();
             }
         }));
     }
@@ -139,8 +144,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return groupManager;
     }
 
-    public TeamManager getTeamManager() {
-        return teamManager;
+    public StoreHandler getStoreHandler() {
+        return storeHandler;
     }
 
     public InviteManager getInviteManager() {
@@ -168,6 +173,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
+        LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons = !this.getConfig().has("storeAddons") || this.getConfig().get("storeAddons").getAsBoolean();
+
         this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
         this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
         this.youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
@@ -176,6 +183,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
         this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
+
 
         this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
         this.nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
@@ -197,6 +205,18 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         }, LabyHelp.getInstace().AddonSettingsEnable);
         settingsElements.add(settingsEnabled);
+
+        final BooleanElement settingsStore = new BooleanElement("Other LabyHelp Addons", new ControlElement.IconData(Material.REDSTONE), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons = enable;
+
+
+                LabyHelp.this.getConfig().addProperty("storeAddons", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons);
+        settingsElements.add(settingsStore);
 
 
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
@@ -255,12 +275,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(alignmentDropDown);
 
-
         SliderElement scalingSliderElement = new SliderElement("NameTag Size" /* Display name */,
                 new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */);
-
         scalingSliderElement.setRange(1, 4);
-
         scalingSliderElement.setSteps(1);
 
         scalingSliderElement.addCallback(new Consumer<Integer>() {
@@ -295,7 +312,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendInstagram(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendInstagram(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -310,7 +327,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendTikTok(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendTikTok(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -325,7 +342,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendTwitch(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendTwitch(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -340,7 +357,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendDiscord(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendDiscord(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -355,7 +372,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendYoutube(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendYoutube(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -370,7 +387,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendTwitter(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendTwitter(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -385,7 +402,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendSnapchat(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendSnapchat(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -400,7 +417,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendNameTag(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendNameTag(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 
@@ -416,7 +433,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(String accepted) {
                 try {
-                    WebServer.sendStatus(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    CommunicatorHandler.sendStatus(LabyMod.getInstance().getPlayerUUID(), accepted);
                 } catch (Exception ignored) {
                 }
 

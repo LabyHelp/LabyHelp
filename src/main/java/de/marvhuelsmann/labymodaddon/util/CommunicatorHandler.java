@@ -33,14 +33,14 @@ public class CommunicatorHandler {
             httpPost.setHeader("Content-Type", "application/json");
 
             JsonObject request = new JsonObject();
-            request.addProperty("accessToken", Minecraft.getMinecraft().getSession().getToken());
-            request.addProperty("selectedProfile", Minecraft.getMinecraft().getSession().getPlayerID());
+            request.addProperty("accessToken", LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken());
+            request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
             request.addProperty("serverId", SERVER_ID);
             httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
 
             HttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == 204) {
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(Minecraft.getMinecraft().getSession().getUsername(), "UTF-8")).openConnection();
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
                 con.setReadTimeout(3000);

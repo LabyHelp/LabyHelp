@@ -12,6 +12,7 @@ public class ClientTickListener {
     private int reloadTick = 0;
     private int nameTick = 0;
     private int normalTick = 0;
+    private int rainbowTick = 0;
 
     private int adverstingTick = 0;
     private boolean adverdStage = false;
@@ -79,6 +80,7 @@ public class ClientTickListener {
                         if (LabyHelp.getInstace().onServer) {
                             if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
                                 LabyHelp.getInstace().getGroupManager().updateNameTag(false);
+
                             }
                             if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
                                 nameTick = 0;
@@ -108,6 +110,12 @@ public class ClientTickListener {
         normalTick++;
         nameTick++;
         reloadTick++;
+        rainbowTick++;
+
+        if (rainbowTick > LabyHelp.getInstace().nameTagRainbwSwitching * 6) {
+            LabyHelp.getInstace().getGroupManager().rainbow = true;
+            rainbowTick = 0;
+        }
 
         if (LabyHelp.getInstace().settingsAdversting) {
             adverstingTick++;

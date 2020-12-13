@@ -12,36 +12,38 @@ import java.util.UUID;
 
 public class GroupManager {
 
+    public boolean rainbow = false;
+
     public boolean isPremium(final UUID uuid) {
-        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getPremium();
+        return LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid) && LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid).getPremium();
     }
 
     public boolean isPremiumExtra(final UUID uuid) {
-        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getPremiumExtra();
+        return LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid) && LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid).getPremiumExtra();
     }
 
     public boolean isTeam(final UUID uuid) {
-        if (LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
-            LabyHelp.getInstace().getUserHandler().readGroups();
+        if (LabyHelp.getInstace().getCommunicationManager().userGroups.isEmpty()) {
+            LabyHelp.getInstace().getCommunicationManager().readGroups();
         }
-        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTeam();
+        return LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid) && LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid).getTeam();
     }
 
     public HelpGroups getRanked(final UUID uuid) {
-        return LabyHelp.getInstace().getUserHandler().userGroups.get(uuid);
+        return LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid);
     }
 
     public boolean isTag(final UUID uuid) {
-        return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).getTag();
+        return LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid) && LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid).getTag();
     }
 
     public static boolean isBanned(final UUID uuid, Boolean database) {
         if (database) {
-            LabyHelp.getInstace().getUserHandler().readUserInformations(true);
+            LabyHelp.getInstace().getCommunicationManager().readUserInformations(true);
         }
 
-        if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
-            return LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid) && LabyHelp.getInstace().getUserHandler().userGroups.get(uuid).equals(HelpGroups.BANNED);
+        if (!LabyHelp.getInstace().getCommunicationManager().userGroups.isEmpty()) {
+            return LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid) && LabyHelp.getInstace().getCommunicationManager().userGroups.get(uuid).equals(HelpGroups.BANNED);
         }
         return false;
     }
@@ -50,16 +52,16 @@ public class GroupManager {
     public void updateSubTitles(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstace().onServer) {
-                LabyHelp.getInstace().getUserHandler().readUserInformations(true);
+                LabyHelp.getInstace().getCommunicationManager().readUserInformations(true);
             }
             return;
         }
 
 
-        if (!LabyHelp.getInstace().getUserHandler().userGroups.isEmpty()) {
+        if (!LabyHelp.getInstace().getCommunicationManager().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
-                HelpGroups group = LabyHelp.getInstace().getUserHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
+                HelpGroups group = LabyHelp.getInstace().getCommunicationManager().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
                     // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
@@ -87,15 +89,15 @@ public class GroupManager {
     public void updateNameTag(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstace().onServer) {
-                LabyHelp.getInstace().getUserHandler().readUserInformations(false);
+                LabyHelp.getInstace().getCommunicationManager().readUserInformations(false);
             }
             return;
         }
 
-        if (!LabyHelp.getInstace().getUserHandler().userNameTags.isEmpty()) {
+        if (!LabyHelp.getInstace().getCommunicationManager().userNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
-                String name = LabyHelp.getInstace().getUserHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
+                String name = LabyHelp.getInstace().getCommunicationManager().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
 
                 if (isBanned(uuidUserEntry.getKey(), false)) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
@@ -109,7 +111,7 @@ public class GroupManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-                    String finalRo = finalTag.replace("{likes}", LabyHelp.getInstace().getUserHandler().getLikes(uuidUserEntry.getKey()));
+                    String finalRo = finalTag.replace("{likes}", LabyHelp.getInstace().getLikeManager().getLikes(uuidUserEntry.getKey()));
                     String rainbow = finalRo.replace("!r", "" + randomeColor() + "");
 
                     if (!isTag(uuidUserEntry.getKey())) {
@@ -140,32 +142,52 @@ public class GroupManager {
     }
 
     private final Random RANDOM = new Random();
+    private EnumChatFormatting chooseColor;
+
     private int getRandomNumberInRange() {
-        return RANDOM.nextInt((10 - 1) + 1) + 1;
+        return RANDOM.nextInt((11 - 1) + 1) + 1;
     }
 
     private EnumChatFormatting randomeColor() {
         if (getRandomNumberInRange() == 1) {
-            return EnumChatFormatting.YELLOW;
+            chooseColor(EnumChatFormatting.YELLOW);
         } else if (getRandomNumberInRange() == 2) {
-            return EnumChatFormatting.BLUE;
+            return chooseColor(EnumChatFormatting.BLUE);
         } else if (getRandomNumberInRange() == 3) {
-            return EnumChatFormatting.RED;
+            return chooseColor(EnumChatFormatting.RED);
         } else if (getRandomNumberInRange() == 4) {
-            return EnumChatFormatting.AQUA;
+            return chooseColor(EnumChatFormatting.AQUA);
         } else if (getRandomNumberInRange() == 5) {
-            return EnumChatFormatting.DARK_GREEN;
+            return chooseColor(EnumChatFormatting.DARK_GREEN);
         } else if (getRandomNumberInRange() == 6) {
-            return EnumChatFormatting.DARK_PURPLE;
+            return chooseColor(EnumChatFormatting.DARK_PURPLE);
         } else if (getRandomNumberInRange() == 7) {
-            return EnumChatFormatting.DARK_RED;
+            return chooseColor(EnumChatFormatting.DARK_GREEN);
         } else if (getRandomNumberInRange() == 8) {
-            return EnumChatFormatting.GOLD;
+            return chooseColor(EnumChatFormatting.GOLD);
         } else if (getRandomNumberInRange() == 9) {
-            return EnumChatFormatting.GREEN;
+            return chooseColor(EnumChatFormatting.GREEN);
         } else if (getRandomNumberInRange() == 10) {
-            return EnumChatFormatting.LIGHT_PURPLE;
+            return chooseColor(EnumChatFormatting.LIGHT_PURPLE);
+        } else if (getRandomNumberInRange() == 11) {
+            return chooseColor(EnumChatFormatting.DARK_AQUA);
         }
-        return EnumChatFormatting.GRAY;
+        return randomeColor();
+    }
+
+    private EnumChatFormatting chooseColor(EnumChatFormatting color) {
+        if (rainbow) {
+            chooseColor = color;
+            rainbow = false;
+
+            return color;
+        } else {
+            if (chooseColor != null) {
+                return chooseColor;
+            } else {
+                chooseColor = color;
+                return color;
+            }
+        }
     }
 }

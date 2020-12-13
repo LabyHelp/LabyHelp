@@ -26,9 +26,7 @@ public class CommentManager {
         LabyHelp.getInstace().getExecutor().submit(new Runnable() {
             @Override
             public void run() {
-
                 cooldown.clear();
-
                 readCooldown();
                 readBanned();
             }

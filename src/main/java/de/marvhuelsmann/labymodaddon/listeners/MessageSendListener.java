@@ -49,6 +49,7 @@ public class MessageSendListener implements MessageSendEvent {
                     return true;
                 }
             }
+
         } else {
             LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
             labyPlayer.sendMessage("You have deactivated the Addon!");

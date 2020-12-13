@@ -16,7 +16,6 @@ public enum HelpGroups {
     DONATOR("DONATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " DONATOR", true, true, false, false),
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " Gingerbread", true, true,false, true),
 
-
     NICHOLAS("NICHOLAS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Saint Nicolas", false, true,false, false),
     SANTA("SANTA", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Santa Claus", false, true,false, false),
 

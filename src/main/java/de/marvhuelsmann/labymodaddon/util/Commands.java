@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class Commands {
 
-
     public void commandMessage(final String message) {
         LabyPlayer clientLabyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
 
@@ -103,24 +102,24 @@ public class Commands {
                 if (components.length == 2) {
                     final UUID uuid = UUIDFetcher.getUUID(components[1]);
                     if (!LabyMod.getInstance().getPlayerUUID().equals(uuid)) {
-                        if (!LabyHelp.getInstace().getUserHandler().isLiked.contains(uuid)) {
+                        if (!LabyHelp.getInstace().getLikeManager().isLiked.contains(uuid)) {
                             if (uuid != null) {
                                 if (uuid.toString().matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                                    if (LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid)) {
+                                    if (LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid)) {
                                         LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                                             @Override
                                             public void run() {
 
-                                                LabyHelp.getInstace().getUserHandler().sendLike(LabyMod.getInstance().getPlayerUUID(), uuid);
+                                                LabyHelp.getInstace().getLikeManager().sendLike(LabyMod.getInstance().getPlayerUUID(), uuid);
 
-                                                LabyHelp.getInstace().getUserHandler().readUserLikes();
-                                                LabyHelp.getInstace().getUserHandler().readLikes();
+                                                LabyHelp.getInstace().getLikeManager().readUserLikes();
+                                                LabyHelp.getInstace().getLikeManager().readLikes();
 
                                                 clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "You have liked " + EnumChatFormatting.DARK_RED + components[1].toUpperCase() + EnumChatFormatting.RED + "!");
-                                                if (LabyHelp.getInstace().getUserHandler().getLikes(uuid).equalsIgnoreCase("1")) {
-                                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has now only " + LabyHelp.getInstace().getUserHandler().getLikes(uuid) + " Like!");
+                                                if (LabyHelp.getInstace().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
+                                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has now only " + LabyHelp.getInstace().getLikeManager().getLikes(uuid) + " Like!");
                                                 } else {
-                                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has now " + LabyHelp.getInstace().getUserHandler().getLikes(uuid) + " Likes!");
+                                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has now " + LabyHelp.getInstace().getLikeManager().getLikes(uuid) + " Likes!");
                                                 }
                                             }
                                         });
@@ -149,14 +148,14 @@ public class Commands {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            LabyHelp.getInstace().getUserHandler().readUserInformations(true);
+                            LabyHelp.getInstace().getCommunicationManager().readUserInformations(true);
                             final UUID uuid = UUIDFetcher.getUUID(components[1]);
 
-                            if (LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid)) {
-                                if (LabyHelp.getInstace().getUserHandler().getLikes(uuid).equalsIgnoreCase("1")) {
-                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has only " + LabyHelp.getInstace().getUserHandler().getLikes(uuid) + " Like!");
+                            if (LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid)) {
+                                if (LabyHelp.getInstace().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
+                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has only " + LabyHelp.getInstace().getLikeManager().getLikes(uuid) + " Like!");
                                 } else {
-                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has " + LabyHelp.getInstace().getUserHandler().getLikes(uuid) + " Likes!");
+                                    clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has " + LabyHelp.getInstace().getLikeManager().getLikes(uuid) + " Likes!");
                                 }
                             } else {
                                 clientLabyPlayer.sendMessage("This Player does not have LabyHelp!");
@@ -171,7 +170,7 @@ public class Commands {
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {
-                        List<Map.Entry<String, Integer>> list = LabyHelp.getInstace().getUserHandler().getTops5();
+                        List<Map.Entry<String, Integer>> list = LabyHelp.getInstace().getLikeManager().getTops5();
 
                         int i = 1;
 
@@ -200,10 +199,10 @@ public class Commands {
                     LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                         @Override
                         public void run() {
-                            LabyHelp.getInstace().getUserHandler().readUserInformations(true);
+                            LabyHelp.getInstace().getCommunicationManager().readUserInformations(true);
                             final UUID uuid = UUIDFetcher.getUUID(components[1]);
 
-                            if (LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid)) {
+                            if (LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid)) {
                                 if (LabyHelp.getInstace().getInviteManager().getNowInvites().equalsIgnoreCase("1")) {
                                     clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + components[1].toUpperCase() + " has only " + LabyHelp.getInstace().getInviteManager().getInvites(uuid) + " Invite Points!");
                                 } else {
@@ -236,37 +235,47 @@ public class Commands {
                             LabyHelp.getInstace().getCommentManager().readBanned();
 
                             LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
+                            LabyHelp.getInstace().getGroupManager().updateNameTag(true);
                             LabyHelp.getInstace().getGroupManager().updateNameTag(false);
 
-                            LabyHelp.getInstace().getUserHandler().isLiked.clear();
-                            LabyHelp.getInstace().getUserHandler().readUserLikes();
-                            LabyHelp.getInstace().getUserHandler().readLikes();
+                            LabyHelp.getInstace().getLikeManager().isLiked.clear();
+                            LabyHelp.getInstace().getLikeManager().readUserLikes();
+                            LabyHelp.getInstace().getLikeManager().readLikes();
 
                             LabyHelp.getInstace().getInviteManager().readUserInvites();
                             LabyHelp.getInstace().getInviteManager().readOldPlayer();
 
-                            LabyHelp.getInstace().getUserHandler().isOnline.clear();
+                            LabyHelp.getInstace().getCommunicationManager().isOnline.clear();
+                            LabyHelp.getInstace().addonEnabled = true;
                             //LabyHelp.getInstace().getUserHandler().readIsOnline();
+
                             System.out.println("subtitles updating..");
                             final String webVersion = CommunicatorHandler.readVersion();
                             LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
                         }
                     });
                 } catch (Exception ignored) {
+                    LabyHelp.getInstace().addonEnabled = false;
                 }
             } else if (message.startsWith("/labyhelp")) {
                 try {
-                    final String webVersion = CommunicatorHandler.readVersion();
-                    LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
-                    LabyHelp.getInstace().newestVersion = webVersion;
-                    if (!LabyHelp.getInstace().isNewerVersion) {
-                        clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (newest)");
-                    }
-                    if (LabyHelp.getInstace().isNewerVersion) {
-                        clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (old)");
-                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Newest Version: " + webVersion);
-                        clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Restart your game to update your version!");
-                    }
+                    LabyHelp.getInstace().getExecutor().submit(new Runnable() {
+                        @Override
+                        public void run() {
+                            LabyHelp.getInstace().addonEnabled = true;
+                            final String webVersion = CommunicatorHandler.readVersion();
+                            LabyHelp.getInstace().isNewerVersion = !webVersion.equalsIgnoreCase(LabyHelp.currentVersion);
+                            LabyHelp.getInstace().newestVersion = webVersion;
+                            if (!LabyHelp.getInstace().isNewerVersion) {
+                                clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (newest)");
+                            }
+                            if (LabyHelp.getInstace().isNewerVersion) {
+                                clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Your Version: " + LabyHelp.currentVersion + " (old)");
+                                clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Newest Version: " + webVersion);
+                                clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Restart your game to update your version!");
+                            }
+                        }
+                    });
                 } catch (Exception ignored) {
                     clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "The LabyHelp servers are not responding!" + EnumChatFormatting.BOLD + "909");
                 }
@@ -284,7 +293,7 @@ public class Commands {
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {
-                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getUserHandler().userGroups.entrySet()) {
+                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getCommunicationManager().userGroups.entrySet()) {
                             if (LabyHelp.getInstace().getGroupManager().isTeam(groupsEntry.getKey())) {
                                 if (LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.ADMIN) || LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.OWNER)) {
                                     if (!groupsEntry.getKey().toString().equals("d4389488-2692-436b-bc10-fce879f7441d")) {
@@ -294,7 +303,7 @@ public class Commands {
                             }
                         }
                         clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Addon Developers");
-                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getUserHandler().userGroups.entrySet()) {
+                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getCommunicationManager().userGroups.entrySet()) {
                             if (LabyHelp.getInstace().getGroupManager().isTeam(groupsEntry.getKey())) {
                                 if (LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.DEVELOPER)) {
                                     clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -302,7 +311,7 @@ public class Commands {
                             }
                         }
                         clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Addon Moderation");
-                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getUserHandler().userGroups.entrySet()) {
+                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getCommunicationManager().userGroups.entrySet()) {
                             if (LabyHelp.getInstace().getGroupManager().isTeam(groupsEntry.getKey())) {
                                 if (LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.MODERATOR) || LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRMODERATOR)) {
                                     clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -310,7 +319,7 @@ public class Commands {
                             }
                         }
                         clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Addon Contents");
-                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getUserHandler().userGroups.entrySet()) {
+                        for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstace().getCommunicationManager().userGroups.entrySet()) {
                             if (LabyHelp.getInstace().getGroupManager().isTeam(groupsEntry.getKey())) {
                                 if (LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.CONTENT) || LabyHelp.getInstace().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRCONTENT)) {
                                     clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -334,7 +343,7 @@ public class Commands {
                 String[] components = message.split(" ");
                 if (components.length == 2) {
                     if (LabyHelp.getInstace().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
-                        LabyMod.getInstance().openWebpage("https://marvhuelsmann.de/linkto.php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&ip=" + LabyHelp.getInstace().getUserHandler().getIp() + "&key=" + components[1], false);
+                        LabyMod.getInstance().openWebpage("https://marvhuelsmann.de/linkto.php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&ip=" + LabyHelp.getInstace().getCommunicationManager().getIp() + "&key=" + components[1], false);
                     } else {
                         clientLabyPlayer.sendNoPerms();
                     }
@@ -356,12 +365,12 @@ public class Commands {
                         }
                     }
 
-                    LabyHelp.getInstace().getUserHandler().targetMode(false);
+                    LabyHelp.getInstace().getCommunicationManager().targetMode(false);
 
                 } else {
                     LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new TargetMenu());
                     clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "You have entered Target Mode");
-                    LabyHelp.getInstace().getUserHandler().targetMode(true);
+                    LabyHelp.getInstace().getCommunicationManager().targetMode(true);
                 }
             } else if (message.startsWith("/lhtarget")) {
                 String[] components = message.split(" ");
@@ -401,7 +410,7 @@ public class Commands {
                         LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                             @Override
                             public void run() {
-                                if (LabyHelp.getInstace().getUserHandler().userGroups.containsKey(uuid)) {
+                                if (LabyHelp.getInstace().getCommunicationManager().userGroups.containsKey(uuid)) {
                                     if (!LabyHelp.getInstace().getCommentManager().banned.contains(LabyMod.getInstance().getPlayerUUID())) {
                                         if (!LabyHelp.getInstace().getCommentManager().cooldown.contains(LabyMod.getInstance().getPlayerUUID())) {
                                             if (!LabyMod.getInstance().getPlayerUUID().equals(uuid)) {

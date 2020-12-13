@@ -1,6 +1,7 @@
 package de.marvhuelsmann.labymodaddon;
 
 import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
+import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
 import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientQuitListener;
 import de.marvhuelsmann.labymodaddon.listeners.ClientTickListener;
@@ -8,7 +9,6 @@ import de.marvhuelsmann.labymodaddon.listeners.MessageSendListener;
 import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
-import de.marvhuelsmann.labymodaddon.store.FileDownloader;
 import de.marvhuelsmann.labymodaddon.store.StoreHandler;
 import de.marvhuelsmann.labymodaddon.util.*;
 import net.labymod.gui.elements.DropDownMenu;
@@ -35,33 +35,26 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.5";
+    public static final String currentVersion = "2.5.15";
     public String newestVersion;
     public boolean onServer = false;
 
-    private final UserHandler userHandler = new UserHandler();
+    private final LikeManager likeManager = new LikeManager();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
+    private final CommunicatorHandler comunicationManager = new CommunicatorHandler();
+    private final SocialMediaManager socialMediaManager = new SocialMediaManager();
     private final StoreHandler storeHandler = new StoreHandler();
     private final InviteManager inviteManager = new InviteManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
     private final CommentManager commentManager = new CommentManager();
 
-    public String instaName;
-    public String discordName;
-    public String youtubeName;
-    public String twitchName;
-    public String twitterName;
-    public String tiktokName;
-    public String snapchatName;
-    public String statusName;
-    public String nameTagString;
-
     public ArrayList<UUID> targetList = new ArrayList<>();
     public boolean targetMode = false;
 
     public String nameTagSettings;
     public int nameTagSwitchingSetting;
+    public int nameTagRainbwSwitching;
     public int nameTagSize;
 
     public boolean oldVersion = false;
@@ -88,6 +81,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
         try {
+            LabyHelp.getInstace().getStoreHandler().readHelpAddons();
             String webVersion = CommunicatorHandler.readVersion();
             newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
@@ -116,7 +110,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            LabyHelp.getInstace().getUserHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
+            LabyHelp.getInstace().getCommunicationManager().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
 
             LabyHelp.getInstace().getStoreHandler().getFileDownloader().installStoreAddons();
 
@@ -136,8 +130,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return uuid;
     }
 
-    public UserHandler getUserHandler() {
-        return userHandler;
+    public LikeManager getLikeManager() {
+        return likeManager;
     }
 
     public GroupManager getGroupManager() {
@@ -150,6 +144,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public InviteManager getInviteManager() {
         return inviteManager;
+    }
+
+    public SocialMediaManager getSocialMediaManager() {
+        return socialMediaManager;
+    }
+
+    public CommunicatorHandler getCommunicationManager() {
+        return comunicationManager;
     }
 
     public CommentManager getCommentManager() {
@@ -171,22 +173,22 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
         settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
 
-        this.statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
+        LabyHelp.getInstace().getSocialMediaManager().statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
         LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons = !this.getConfig().has("storeAddons") || this.getConfig().get("storeAddons").getAsBoolean();
 
-        this.instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
-        this.discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
-        this.youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
-        this.twitchName = this.getConfig().has("twitchname") ? this.getConfig().get("twitchname").getAsString() : "username";
-        this.twitterName = this.getConfig().has("twittername") ? this.getConfig().get("twittername").getAsString() : "username";
-        this.tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
-        this.snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
-        this.nameTagString = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
+        LabyHelp.getInstace().getSocialMediaManager().instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
+        LabyHelp.getInstace().getSocialMediaManager().youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().twitchName = this.getConfig().has("twitchname") ? this.getConfig().get("twitchname").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().twitterName = this.getConfig().has("twittername") ? this.getConfig().get("twittername").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
+        LabyHelp.getInstace().getSocialMediaManager().nameTagName = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
 
-
-        this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
         this.nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
+        this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
+        this.nameTagRainbwSwitching = this.getConfig().has("nameTagRainbwSwitching") ? this.getConfig().get("nameTagRainbwSwitching").getAsInt() : 1;
         this.nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
     }
 
@@ -292,6 +294,24 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(scalingSliderElement);
 
+        SliderElement rainbowElement = new SliderElement("NameTag Rainbow switching Time" /* Display name */,
+                new ControlElement.IconData(Material.WATCH) /* setting's icon */, 1 /* current value */);
+        rainbowElement.setRange(1, 5);
+        rainbowElement.setSteps(1);
+
+        rainbowElement.addCallback(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer accepted) {
+                LabyHelp.this.nameTagRainbwSwitching = accepted;
+
+                LabyHelp.this.getConfig().addProperty("nameTagRainbwSwitching", nameTagRainbwSwitching);
+                LabyHelp.this.saveConfig();
+            }
+        });
+
+        settingsElements.add(rainbowElement);
+
+
         NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
                 new ControlElement.IconData(Material.WATCH) /* setting's icon */, nameTagSwitchingSetting  /* current value */);
 
@@ -308,120 +328,121 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(numberElement);
 
 
-        StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), instaName, new Consumer<String>() {
+        StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().instaName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
+
+                LabyHelp.getInstace().getSocialMediaManager().instaName = accepted;
+
                 try {
-                    CommunicatorHandler.sendInstagram(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.INSTAGRAM, accepted);
                 } catch (Exception ignored) {
                 }
-
-                LabyHelp.this.instaName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("instaname", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement channelTikTok = new StringElement("TikTok username", new ControlElement.IconData(Material.PAPER), tiktokName, new Consumer<String>() {
+        StringElement channelTikTok = new StringElement("TikTok username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().tiktokName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendTikTok(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.TIKTOK, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.tiktokName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().tiktokName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("tiktokname", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement stringTwitch = new StringElement("Twitch username", new ControlElement.IconData(Material.PAPER), twitchName, new Consumer<String>() {
+        StringElement stringTwitch = new StringElement("Twitch username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().twitchName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendTwitch(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.TWTICH, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.twitchName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().twitchName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("twitchname", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement stringDiscord = new StringElement("Discord username", new ControlElement.IconData(Material.PAPER), discordName, new Consumer<String>() {
+        StringElement stringDiscord = new StringElement("Discord username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().discordName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendDiscord(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.DISCORD, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.discordName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().discordName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("discordname", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement stringYoutube = new StringElement("Youtube username", new ControlElement.IconData(Material.PAPER), youtubeName, new Consumer<String>() {
+        StringElement stringYoutube = new StringElement("Youtube username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().youtubeName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendYoutube(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.YOUTUBE, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.youtubeName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().youtubeName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("youtubename", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement stringTwitter = new StringElement("Twitter username", new ControlElement.IconData(Material.PAPER), twitterName, new Consumer<String>() {
+        StringElement stringTwitter = new StringElement("Twitter username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().twitterName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendTwitter(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.TWITTER, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.twitterName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().twitterName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("twittername", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement snapchat = new StringElement("Snapchat username", new ControlElement.IconData(Material.PAPER), snapchatName, new Consumer<String>() {
+        StringElement snapchat = new StringElement("Snapchat username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().snapchatName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendSnapchat(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.SNAPCHAT, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.snapchatName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().snapchatName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("snapchatname", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
 
-        StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), nameTagString, new Consumer<String>() {
+        StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().nameTagName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendNameTag(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.NAMETAG, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.statusName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().nameTagName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("nametag", accepted);
                 LabyHelp.this.saveConfig();
@@ -429,22 +450,21 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add(nameTag);
 
-        StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), statusName, new Consumer<String>() {
+        StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().statusName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
                 try {
-                    CommunicatorHandler.sendStatus(LabyMod.getInstance().getPlayerUUID(), accepted);
+                    LabyHelp.getInstace().getSocialMediaManager().sendSocialMedia(SocialMediaType.STATUS, accepted);
                 } catch (Exception ignored) {
                 }
 
-                LabyHelp.this.statusName = accepted;
+                LabyHelp.getInstace().getSocialMediaManager().statusName = accepted;
 
                 LabyHelp.this.getConfig().addProperty("status", accepted);
                 LabyHelp.this.saveConfig();
             }
         });
         settingsElements.add(status);
-
 
         settingsElements.add(channelStringElement);
         settingsElements.add(stringDiscord);

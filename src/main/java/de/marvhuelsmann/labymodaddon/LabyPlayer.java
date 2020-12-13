@@ -22,7 +22,7 @@ public class LabyPlayer {
 
 
     public String getSocialMedia(SocialMediaType socialMedia) {
-        LabyHelp.getInstace().getUserHandler().readSocialMedia();
+        LabyHelp.getInstace().getSocialMediaManager().readSocialMedia();
 
         if (socialMedia.getMap().containsKey(uuid)) {
             for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {

@@ -2,16 +2,12 @@ package de.marvhuelsmann.labymodaddon.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.LabyPlayer;
 import de.marvhuelsmann.labymodaddon.enums.HelpGroups;
-import net.labymod.addon.LabyModOFAddon;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
-import net.labymod.utils.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.Language;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -19,7 +15,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.logging.log4j.core.appender.db.jpa.converter.ThrowableAttributeConverter;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

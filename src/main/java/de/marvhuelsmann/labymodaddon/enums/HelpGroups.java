@@ -4,22 +4,24 @@ import net.minecraft.util.EnumChatFormatting;
 
 public enum HelpGroups {
 
-    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " Snowmen", false, false,false, false),
-    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " Snowmen", false, false, false, false),
+    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " User", false, false,false, false),
+    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " User", false, false, false, false),
 
     FAME("FAME", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " FAME", true, false, false, false),
     FAMOUS("FAMOUS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + " FAMOUS", false, true, false, false),
     INVITER("INVITER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + " Inviter", true, false, false, false),
     PREMIUM_("PREMIUM_", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " PREMIUM+", false, true, false, false),
 
-    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " Reindeer", true, false, false, false),
+    BOOSTER("BOOSTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.BOLD + " BOOSTER", false, true, false, false),
+
+    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " Premium", true, false, false, false),
     DONATOR("DONATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " DONATOR", true, true, false, false),
-    FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " Gingerbread", true, true,false, true),
+    FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " Friend", true, true,false, true),
 
     NICHOLAS("NICHOLAS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Saint Nicolas", false, true,false, false),
     SANTA("SANTA", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " Santa Claus", false, true,false, false),
 
-   CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, true,false, true),
+    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " CREATOR", true, true,false, true),
     LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true,true, false, true),
     PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " PARTNER", true, true,false, true),
     HELPER("HELPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + " Cristmas Helper", true, true,false, true),
@@ -60,6 +62,7 @@ public enum HelpGroups {
                 HelpGroups.FAMOUS.getName().equalsIgnoreCase(name) ||
                 HelpGroups.INVITER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.PREMIUM_.getName().equalsIgnoreCase(name) ||
+                HelpGroups.BOOSTER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.DONATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
                 HelpGroups.BANNED.getName().equalsIgnoreCase(name) ||

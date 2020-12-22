@@ -2,7 +2,6 @@ package de.marvhuelsmann.labymodaddon.util;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import net.labymod.main.LabyMod;
-import net.labymod.utils.UUIDFetcher;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;

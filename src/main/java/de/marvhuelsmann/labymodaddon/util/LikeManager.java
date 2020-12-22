@@ -19,7 +19,6 @@ public class LikeManager {
     public final ArrayList<UUID> isLiked = new ArrayList<>();
 
 
-
     private static final Map<String, Integer> collectors = new HashMap<>();
 
     public List<Map.Entry<String, Integer>> getTops5() {

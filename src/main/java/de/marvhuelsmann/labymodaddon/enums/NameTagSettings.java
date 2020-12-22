@@ -8,7 +8,6 @@ public enum NameTagSettings {
 
     private final String name;
 
-
     NameTagSettings(String name) {
         this.name = name;
     }

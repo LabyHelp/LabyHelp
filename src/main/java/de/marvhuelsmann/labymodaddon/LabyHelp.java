@@ -35,7 +35,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.5.15";
+    public static final String currentVersion = "2.5.21";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -219,7 +219,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         }, LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons);
         settingsElements.add(settingsStore);
-
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
 
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
             @Override
@@ -233,6 +233,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }, LabyHelp.getInstace().settingsAdversting);
 
         settingsElements.add(settingAdversting);
+
 
         final BooleanElement settingsComment = new BooleanElement("Comments at your profile", new ControlElement.IconData(Material.SIGN), new Consumer<Boolean>() {
             @Override
@@ -250,6 +251,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }, LabyHelp.getInstace().settinngsComments);
 
         settingsElements.add(settingsComment);
+
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
 
 
         final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
@@ -433,6 +436,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 LabyHelp.this.saveConfig();
             }
         });
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
 
         StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstace().getSocialMediaManager().nameTagName, new Consumer<String>() {
             @Override
@@ -466,6 +470,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add(status);
 
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
+
         settingsElements.add(channelStringElement);
         settingsElements.add(stringDiscord);
         settingsElements.add(stringTwitter);
@@ -473,5 +479,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(channelTikTok);
         settingsElements.add(stringYoutube);
         settingsElements.add(stringTwitch);
+
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
+        settingsElements.add((SettingsElement) new HeaderElement("§fDiscord: §lhttps://labyhelp.de/discord"));
+        settingsElements.add((SettingsElement) new HeaderElement("§fTeamSpeak: §lhttps://labyhelp.de/teamspeak"));
     }
 }

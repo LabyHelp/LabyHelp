@@ -85,7 +85,6 @@ public class GroupManager {
         }
     }
 
-
     public void updateNameTag(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstace().onServer) {

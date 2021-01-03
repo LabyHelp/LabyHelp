@@ -35,7 +35,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.5.21";
+    public static final String currentVersion = "2.5.37";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -164,6 +164,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     public Commands getCommands() {
         return commands;
+    }
+
+    public void sendClientMessage(String message) {
+        LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + message);
+    }
+
+    public void sendClientMessageDefault(String message) {
+        LabyMod.getInstance().displayMessageInChat(message);
     }
 
 

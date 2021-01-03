@@ -128,7 +128,7 @@ public class LabyPlayer {
         if (uuid != null) {
             try {
                 if (getPermissions(uuid)) {
-                    LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid=" + uuid, false);
+                    LabyMod.getInstance().openWebpage("https://labyhelp.de/cape.php?uuid=" + uuid, false);
                 }
             } catch (Exception ignored) {
                 sendError();
@@ -142,7 +142,7 @@ public class LabyPlayer {
         if (uuid != null) {
             try {
                 if (getPermissions(uuid)) {
-                    LabyMod.getInstance().openWebpage("https://www.labymod.net/page/php/getCapeTexture.php?bandana&uuid=" + uuid, false);
+                    LabyMod.getInstance().openWebpage("https://labyhelp.de/bandana.php?uuid=" + uuid, false);
                 }
             } catch (Exception ignored) {
                 sendError();

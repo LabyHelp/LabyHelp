@@ -93,6 +93,10 @@ public class CommunicatorHandler {
                     con.connect();
                     return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
                 } else {
+                    if (LabyHelp.getInstace().settingsAdversting) {
+                        LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+                        labyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp cant not verify your Account! Please contact the Support");
+                    }
                     System.out.println(response);
                     throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                 }
@@ -124,7 +128,7 @@ public class CommunicatorHandler {
                             userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
 
-                            if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid))) {
+                            if (!LabyHelp.getInstace().getGroupManager().isTeam(UUID.fromString(uuid)) || !LabyHelp.getInstace().getGroupManager().isPremiumExtra(UUID.fromString(uuid))) {
                                 if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
                                     userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
                                 } else if (Integer.parseInt(LabyHelp.getInstace().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {

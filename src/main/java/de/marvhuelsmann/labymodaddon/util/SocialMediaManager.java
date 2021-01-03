@@ -46,14 +46,25 @@ public class SocialMediaManager {
     private String sendSocial(SocialMediaType type, String message) {
         try {
 
-            String name = message.replace(",", "").replace(":", "").replace("#", "@");
+            if (!type.equals(SocialMediaType.NAMETAG)) {
+                String name = message.replace(",", "").replace(":", "").replace("#", "@");
 
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/send" + type.getUrlName() + ".php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/send" + type.getUrlName() + ".php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
+                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                con.setConnectTimeout(3000);
+                con.setReadTimeout(3000);
+                con.connect();
+                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            } else {
+                String name = message.replace(",", "").replace(":", "");
+
+                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/send" + type.getUrlName() + ".php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
+                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                con.setConnectTimeout(3000);
+                con.setReadTimeout(3000);
+                con.connect();
+                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not fetch SocialMedias!", e);

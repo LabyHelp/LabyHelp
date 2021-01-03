@@ -289,7 +289,7 @@ public class Commands {
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp Team:");
                 clientLabyPlayer.sendMessage(EnumChatFormatting.RED + "Position: " + LocalDate.now());
                 clientLabyPlayer.sendMessage(EnumChatFormatting.WHITE + "Addon Administation");
-                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + "- Marvienio");
+                clientLabyPlayer.sendMessage(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + "- marvhuel");
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {

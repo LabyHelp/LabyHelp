@@ -119,7 +119,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         try {
             LabyHelp.getInstace().getStoreHandler().readHelpAddons();
-            LabyHelp.getInstace().getTranslationManager().initTranslation(Languages.valueOf(LabyHelp.getInstace().getTranslationManager().chooseLanguage));
             String webVersion = CommunicatorHandler.readVersion();
             getSettingsManger().newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(getSettingsManger().currentVersion)) {

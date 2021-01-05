@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class SettingsManager {
 
-    public String currentVersion = "2.5.55";
+    public String currentVersion = "2.5.57";
 
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;

@@ -37,7 +37,7 @@ public class LabyHelpReloadCMD implements HelpCommand {
                     LabyHelp.getInstace().getLikeManager().readLikes();
 
                     LabyHelp.getInstace().getTranslationManager().currentLanguagePack.clear();
-                    LabyHelp.getInstace().getTranslationManager().initTranslation(Languages.valueOf(transManager.chooseLanguage));
+                    LabyHelp.getInstace().getTranslationManager().initTranslation(LabyHelp.getInstace().getTranslationManager().getChooseTranslation(transManager.chooseLanguage));
 
                     LabyHelp.getInstace().getInviteManager().readUserInvites();
                     LabyHelp.getInstace().getInviteManager().readOldPlayer();

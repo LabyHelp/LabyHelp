@@ -8,14 +8,14 @@ import java.util.List;
 
 public class CommandHandler {
 
-    private static final List<HelpCommand> commands = new ArrayList<>();
+    private final List<HelpCommand> commands = new ArrayList<>();
 
     public void registerCommand(HelpCommand helpCommand) {
         commands.add(helpCommand);
     }
 
     public boolean executeCommand(String command) {
-        String rawCommand = command.substring(1); // Raw command: Command: *help RawCommand: help
+        String rawCommand = command.substring(1);
         String[] args = rawCommand.split(" ");
 
         for (HelpCommand helpCommand : commands) {

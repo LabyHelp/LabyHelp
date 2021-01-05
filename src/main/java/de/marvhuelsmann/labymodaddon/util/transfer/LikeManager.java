@@ -1,4 +1,4 @@
-package de.marvhuelsmann.labymodaddon.util;
+package de.marvhuelsmann.labymodaddon.util.transfer;
 
 import net.labymod.main.LabyMod;
 import org.apache.commons.io.IOUtils;

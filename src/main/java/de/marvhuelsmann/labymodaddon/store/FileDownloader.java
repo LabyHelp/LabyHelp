@@ -37,7 +37,6 @@ public class FileDownloader {
     }
 
     public void installStoreAddons() {
-
         try {
           if (LabyHelp.getInstace().getStoreHandler().getStoreSettings().storeAddons) {
               for (Map.Entry<String, String> addons : LabyHelp.getInstace().getStoreHandler().getAddonsList().entrySet()) {

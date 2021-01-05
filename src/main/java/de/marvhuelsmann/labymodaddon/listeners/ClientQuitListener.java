@@ -8,6 +8,6 @@ public class ClientQuitListener implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData serverData) {
-        LabyHelp.getInstace().onServer = false;
+        LabyHelp.getInstace().getSettingsManger().onServer = false;
     }
 }

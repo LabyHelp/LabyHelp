@@ -17,7 +17,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
     @Override
     public void accept(ServerData serverData) {
-        LabyHelp.getInstace().onServer = true;
+        LabyHelp.getInstace().getSettingsManger().onServer = true;
 
         postJoin(serverData);
     }
@@ -36,9 +36,9 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     LabyHelp.getInstace().getCommentManager().refreshComments();
 
 
-                    LabyHelp.getInstace().addonEnabled = true;
+                    LabyHelp.getInstace().getSettingsManger().addonEnabled = true;
                 } catch (Exception ignored) {
-                    LabyHelp.getInstace().addonEnabled = false;
+                    LabyHelp.getInstace().getSettingsManger().addonEnabled = false;
                 }
             }
         });

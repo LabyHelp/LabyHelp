@@ -33,7 +33,7 @@ public class Main {
             if (!new File(dir).exists()) {
                 throw new IOException("No .minecraft/LabyMod directory found!");
             }
-            if (showConfirmDialog(String.format(Main.lang.get("installation"), LabyHelp.currentVersion))) {
+            if (showConfirmDialog(String.format(Main.lang.get("installation"), "(NEWEST VERSION)"))) {
                 final File run = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
                 if (!run.exists() || !run.isFile()) {
                     throw new IOException("Invalid path: " + run.getAbsolutePath());

@@ -51,7 +51,7 @@ public class GroupManager {
 
     public void updateSubTitles(boolean readDatabase) {
         if (readDatabase) {
-            if (LabyHelp.getInstace().onServer) {
+            if (LabyHelp.getInstace().getSettingsManger().onServer) {
                 LabyHelp.getInstace().getCommunicationManager().readUserInformations(true);
             }
             return;
@@ -65,8 +65,8 @@ public class GroupManager {
                 if (group != null) {
                     // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
-                    if (LabyHelp.getInstace().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    if (LabyHelp.getInstace().getSettingsManger().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().getSettingsManger().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
@@ -74,8 +74,8 @@ public class GroupManager {
                     // }
                 }
 
-                if (LabyHelp.getInstace().targetMode) {
-                    if (LabyHelp.getInstace().targetList.contains(uuidUserEntry.getKey())) {
+                if (LabyHelp.getInstace().getSettingsManger().targetMode) {
+                    if (LabyHelp.getInstace().getSettingsManger().targetList.contains(uuidUserEntry.getKey())) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
                     }
@@ -87,7 +87,7 @@ public class GroupManager {
 
     public void updateNameTag(boolean readDatabase) {
         if (readDatabase) {
-            if (LabyHelp.getInstace().onServer) {
+            if (LabyHelp.getInstace().getSettingsManger().onServer) {
                 LabyHelp.getInstace().getCommunicationManager().readUserInformations(false);
             }
             return;
@@ -100,8 +100,8 @@ public class GroupManager {
 
                 if (isBanned(uuidUserEntry.getKey(), false)) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
-                    if (LabyHelp.getInstace().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    if (LabyHelp.getInstace().getSettingsManger().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().getSettingsManger().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
@@ -122,15 +122,15 @@ public class GroupManager {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + rainbow);
                     }
 
-                    if (LabyHelp.getInstace().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().nameTagSize);
+                    if (LabyHelp.getInstace().getSettingsManger().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstace().getSettingsManger().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
                 }
 
-                if (LabyHelp.getInstace().targetMode) {
-                    if (LabyHelp.getInstace().targetList.contains(uuidUserEntry.getKey())) {
+                if (LabyHelp.getInstace().getSettingsManger().targetMode) {
+                    if (LabyHelp.getInstace().getSettingsManger().targetList.contains(uuidUserEntry.getKey())) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
                     }

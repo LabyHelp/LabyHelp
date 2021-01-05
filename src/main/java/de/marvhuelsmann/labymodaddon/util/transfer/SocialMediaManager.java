@@ -1,4 +1,4 @@
-package de.marvhuelsmann.labymodaddon.util;
+package de.marvhuelsmann.labymodaddon.util.transfer;
 
 import de.marvhuelsmann.labymodaddon.LabyHelp;
 import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;

@@ -22,7 +22,7 @@ public class ClientTickListener {
 
 
         /* ADVERSTING */
-        if (LabyHelp.getInstace().settingsAdversting) {
+        if (LabyHelp.getInstace().getSettingsManger().settingsAdversting) {
             if (!adverdStage) {
                 if (adverstingTick > 1500) {
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
@@ -43,9 +43,9 @@ public class ClientTickListener {
         /* CHECKING */
         if (normalTick > 1240) {
             try {
-                LabyHelp.getInstace().addonEnabled = true;
+                LabyHelp.getInstace().getSettingsManger().addonEnabled = true;
             } catch (Exception ignored) {
-                LabyHelp.getInstace().addonEnabled = false;
+                LabyHelp.getInstace().getSettingsManger().addonEnabled = false;
             }
 
             normalTick = 0;
@@ -60,9 +60,9 @@ public class ClientTickListener {
                     try {
                         LabyHelp.getInstace().getGroupManager().updateSubTitles(true);
                         LabyHelp.getInstace().getGroupManager().updateNameTag(true);
-                        LabyHelp.getInstace().addonEnabled = true;
+                        LabyHelp.getInstace().getSettingsManger().addonEnabled = true;
                     } catch (Exception ignored) {
-                        LabyHelp.getInstace().addonEnabled = false;
+                        LabyHelp.getInstace().getSettingsManger().addonEnabled = false;
                     }
 
                     System.out.println("update subtitle & nametags");
@@ -72,33 +72,33 @@ public class ClientTickListener {
         }
 
         /* REFRESHING NAMETAGS */
-        if (LabyHelp.getInstace().nameTagSettings.equalsIgnoreCase("SWITCHING")) {
+        if (LabyHelp.getInstace().getSettingsManger().nameTagSettings.equalsIgnoreCase("SWITCHING")) {
             LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                 @Override
                 public void run() {
-                    if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 20) {
-                        if (LabyHelp.getInstace().onServer) {
-                            if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                    if (nameTick > LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting * 20) {
+                        if (LabyHelp.getInstace().getSettingsManger().onServer) {
+                            if (nameTick < LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting * 40) {
                                 LabyHelp.getInstace().getGroupManager().updateNameTag(false);
 
                             }
-                            if (nameTick > LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                            if (nameTick > LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting * 40) {
                                 nameTick = 0;
                             }
                         }
                     } else {
-                        if (LabyHelp.getInstace().onServer) {
-                            if (nameTick < LabyHelp.getInstace().nameTagSwitchingSetting * 40) {
+                        if (LabyHelp.getInstace().getSettingsManger().onServer) {
+                            if (nameTick < LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting * 40) {
                                 LabyHelp.getInstace().getGroupManager().updateSubTitles(false);
                             }
                         }
                     }
                 }
             });
-        } else if (LabyHelp.getInstace().nameTagSettings.equalsIgnoreCase("NAMETAG")) {
+        } else if (LabyHelp.getInstace().getSettingsManger().nameTagSettings.equalsIgnoreCase("NAMETAG")) {
             LabyHelp.getInstace().getGroupManager().updateNameTag(false);
         } else {
-            if (LabyHelp.getInstace().onServer) {
+            if (LabyHelp.getInstace().getSettingsManger().onServer) {
                 LabyHelp.getInstace().getExecutor().submit(new Runnable() {
                     @Override
                     public void run() {
@@ -112,12 +112,12 @@ public class ClientTickListener {
         reloadTick++;
         rainbowTick++;
 
-        if (rainbowTick > LabyHelp.getInstace().nameTagRainbwSwitching * 6) {
+        if (rainbowTick > LabyHelp.getInstace().getSettingsManger().nameTagRainbwSwitching * 6) {
             LabyHelp.getInstace().getGroupManager().rainbow = true;
             rainbowTick = 0;
         }
 
-        if (LabyHelp.getInstace().settingsAdversting) {
+        if (LabyHelp.getInstace().getSettingsManger().settingsAdversting) {
             adverstingTick++;
         }
     }

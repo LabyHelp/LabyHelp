@@ -1,5 +1,14 @@
 package de.marvhuelsmann.labymodaddon;
 
+import de.marvhuelsmann.labymodaddon.commands.addon.*;
+import de.marvhuelsmann.labymodaddon.commands.comment.LabyHelpCommentCMD;
+import de.marvhuelsmann.labymodaddon.commands.comment.ShowCommentsCMD;
+import de.marvhuelsmann.labymodaddon.commands.feature.*;
+import de.marvhuelsmann.labymodaddon.commands.socialmedia.*;
+import de.marvhuelsmann.labymodaddon.commands.target.ModeTargetCMD;
+import de.marvhuelsmann.labymodaddon.commands.target.TargetCMD;
+import de.marvhuelsmann.labymodaddon.commands.team.LabyHelpBanCMD;
+import de.marvhuelsmann.labymodaddon.commands.team.LabyHelpWebCMD;
 import de.marvhuelsmann.labymodaddon.enums.Languages;
 import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
 import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
@@ -11,7 +20,15 @@ import de.marvhuelsmann.labymodaddon.menu.*;
 import de.marvhuelsmann.labymodaddon.module.DegreeModule;
 import de.marvhuelsmann.labymodaddon.module.TexturePackModule;
 import de.marvhuelsmann.labymodaddon.store.StoreHandler;
-import de.marvhuelsmann.labymodaddon.util.*;
+import de.marvhuelsmann.labymodaddon.util.CommunicatorHandler;
+import de.marvhuelsmann.labymodaddon.util.GroupManager;
+import de.marvhuelsmann.labymodaddon.util.TranslationManager;
+import de.marvhuelsmann.labymodaddon.util.commands.CommandHandler;
+import de.marvhuelsmann.labymodaddon.util.settings.SettingsManager;
+import de.marvhuelsmann.labymodaddon.util.transfer.CommentManager;
+import de.marvhuelsmann.labymodaddon.util.transfer.InviteManager;
+import de.marvhuelsmann.labymodaddon.util.transfer.LikeManager;
+import de.marvhuelsmann.labymodaddon.util.transfer.SocialMediaManager;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
@@ -33,38 +50,21 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     private static LabyHelp instace;
 
-    public boolean AddonSettingsEnable = true;
-    public boolean settingsAdversting = true;
-    public boolean settinngsComments = true;
-    public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.5.44";
-    public String newestVersion;
-    public boolean onServer = false;
 
-    private final LikeManager likeManager = new LikeManager();
     private final de.marvhuelsmann.labymodaddon.util.GroupManager groupManager = new de.marvhuelsmann.labymodaddon.util.GroupManager();
     private final CommunicatorHandler comunicationManager = new CommunicatorHandler();
-    private final SocialMediaManager socialMediaManager = new SocialMediaManager();
     private final StoreHandler storeHandler = new StoreHandler();
-    private final InviteManager inviteManager = new InviteManager();
     private final TranslationManager translationManager = new TranslationManager();
+
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
-    private final Commands commands = new Commands();
+    private final CommandHandler commandHandler = new CommandHandler();
+
+    private final LikeManager likeManager = new LikeManager();
+    private final SocialMediaManager socialMediaManager = new SocialMediaManager();
+    private final InviteManager inviteManager = new InviteManager();
     private final CommentManager commentManager = new CommentManager();
 
-    public ArrayList<UUID> targetList = new ArrayList<>();
-    public boolean targetMode = false;
-
-    public String nameTagSettings;
-    public int nameTagSwitchingSetting;
-    public int nameTagRainbwSwitching;
-    public int nameTagSize;
-
-    public boolean oldVersion = false;
-    public boolean addonEnabled = false;
-
-    public boolean commentChat = false;
-    public HashMap<UUID, UUID> commentMap = new HashMap<>();
+    private final SettingsManager settingsManager = new SettingsManager();
 
 
     @Override
@@ -77,23 +77,57 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
 
 
+        getCommandHandler().registerCommand(new LabyHelpCMD());
+        getCommandHandler().registerCommand(new LabyHelpAddonsCMD());
+        getCommandHandler().registerCommand(new LabyHelpCodeCMD());
+        getCommandHandler().registerCommand(new LabyHelpReloadCMD());
+        getCommandHandler().registerCommand(new LabyHelpRulesCMD());
+        getCommandHandler().registerCommand(new LabyHelpTeamCMD());
+
+        getCommandHandler().registerCommand(new LabyHelpCommentCMD());
+        getCommandHandler().registerCommand(new ShowCommentsCMD());
+
+        getCommandHandler().registerCommand(new InviteListCMD());
+        getCommandHandler().registerCommand(new InvitesCMD());
+        getCommandHandler().registerCommand(new LabyHelpLikeCMD());
+        getCommandHandler().registerCommand(new LikeListCMD());
+        getCommandHandler().registerCommand(new LikesCMD());
+
+        getCommandHandler().registerCommand(new BandanaCMD());
+        getCommandHandler().registerCommand(new CapeCMD());
+        getCommandHandler().registerCommand(new SkinCMD());
+        getCommandHandler().registerCommand(new DiscordCMD());
+        getCommandHandler().registerCommand(new InstaCMD());
+        getCommandHandler().registerCommand(new SnapChatCMD());
+        getCommandHandler().registerCommand(new TikTokCMD());
+        getCommandHandler().registerCommand(new TwitchCMD());
+        getCommandHandler().registerCommand(new TwitterCMD());
+        getCommandHandler().registerCommand(new YoutubeCMD());
+
+        getCommandHandler().registerCommand(new ModeTargetCMD());
+        getCommandHandler().registerCommand(new TargetCMD());
+
+        getCommandHandler().registerCommand(new LabyHelpBanCMD());
+        getCommandHandler().registerCommand(new LabyHelpWebCMD());
+
+
         if (Source.ABOUT_MC_VERSION.startsWith("1.8")) {
-            oldVersion = true;
+            getSettingsManger().oldVersion = true;
             this.getApi().registerModule(new DegreeModule());
             this.getApi().registerModule(new TexturePackModule());
         }
 
         try {
             LabyHelp.getInstace().getStoreHandler().readHelpAddons();
-            LabyHelp.getInstace().getTranslationManager().initTranslations();
+            LabyHelp.getInstace().getTranslationManager().initTranslation(Languages.valueOf(LabyHelp.getInstace().getTranslationManager().chooseLanguage));
             String webVersion = CommunicatorHandler.readVersion();
-            newestVersion = webVersion;
-            if (!webVersion.equalsIgnoreCase(currentVersion)) {
-                isNewerVersion = true;
+            getSettingsManger().newestVersion = webVersion;
+            if (!webVersion.equalsIgnoreCase(getSettingsManger().currentVersion)) {
+                getSettingsManger().isNewerVersion = true;
             }
-            addonEnabled = true;
+            getSettingsManger().addonEnabled = true;
         } catch (Exception ignored) {
-            addonEnabled = false;
+            getSettingsManger().addonEnabled = false;
         }
 
 
@@ -118,7 +152,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
             LabyHelp.getInstace().getStoreHandler().getFileDownloader().installStoreAddons();
 
-            if (isNewerVersion) {
+            if (getSettingsManger().isNewerVersion) {
                 LabyHelp.getInstace().getStoreHandler().getFileDownloader().update();
             }
         }));
@@ -168,24 +202,17 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return threadPool;
     }
 
-    public Commands getCommands() {
-        return commands;
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 
-    public void sendClientMessage(String message) {
-        LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + message);
-    }
-
-    public void sendClientMessageDefault(String message) {
-        LabyMod.getInstance().displayMessageInChat(message);
-    }
-
+    public SettingsManager getSettingsManger() { return settingsManager; }
 
     @Override
     public void loadConfig() {
-        AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
-        settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
-        settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
+        LabyHelp.getInstace().getSettingsManger().AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
+        LabyHelp.getInstace().getSettingsManger().settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
+        LabyHelp.getInstace().getSettingsManger().settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
 
         LabyHelp.getInstace().getTranslationManager().chooseLanguage = this.getConfig().has("translation") ? this.getConfig().get("translation").getAsString() : "DEUTSCH";
 
@@ -202,10 +229,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstace().getSocialMediaManager().snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         LabyHelp.getInstace().getSocialMediaManager().nameTagName = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
 
-        this.nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
-        this.nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
-        this.nameTagRainbwSwitching = this.getConfig().has("nameTagRainbwSwitching") ? this.getConfig().get("nameTagRainbwSwitching").getAsInt() : 1;
-        this.nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
+        LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
+        LabyHelp.getInstace().getSettingsManger().nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
+        LabyHelp.getInstace().getSettingsManger().nameTagRainbwSwitching = this.getConfig().has("nameTagRainbwSwitching") ? this.getConfig().get("nameTagRainbwSwitching").getAsInt() : 1;
+        LabyHelp.getInstace().getSettingsManger().nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
     }
 
     @Override
@@ -215,13 +242,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.GOLD_BARDING), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
-                LabyHelp.getInstace().AddonSettingsEnable = enable;
+                LabyHelp.getInstace().getSettingsManger().AddonSettingsEnable = enable;
 
 
                 LabyHelp.this.getConfig().addProperty("enable", enable);
                 LabyHelp.this.saveConfig();
             }
-        }, LabyHelp.getInstace().AddonSettingsEnable);
+        }, LabyHelp.getInstace().getSettingsManger().AddonSettingsEnable);
         settingsElements.add(settingsEnabled);
 
         final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" /* Display name */, 0, 0, 0, 0)
@@ -229,13 +256,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         DropDownElement<Languages> alignmentDropDown = new DropDownElement<Languages>("Your Language:", alignmentDropDownMenu);
 
 
-        alignmentDropDownMenu.setSelected(Languages.DEUTSCH);
+        alignmentDropDownMenu.setSelected(Languages.valueOf(LabyHelp.getInstace().getTranslationManager().chooseLanguage));
 
         alignmentDropDown.setChangeListener(new Consumer<Languages>() {
             @Override
             public void accept(Languages alignment) {
-                LabyHelp.getInstace().getTranslationManager().translation = alignment;
                 LabyHelp.getInstace().getTranslationManager().chooseLanguage = alignment.getName();
+
+                LabyHelp.getInstace().getTranslationManager().initTranslation(alignment);
 
                 LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                 labyPlayer.sendAlertTranslMessage("main.lang");
@@ -273,13 +301,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
-                LabyHelp.getInstace().settingsAdversting = enable;
+                LabyHelp.getInstace().getSettingsManger().settingsAdversting = enable;
 
 
                 LabyHelp.this.getConfig().addProperty("adversting", enable);
                 LabyHelp.this.saveConfig();
             }
-        }, LabyHelp.getInstace().settingsAdversting);
+        }, LabyHelp.getInstace().getSettingsManger().settingsAdversting);
 
         settingsElements.add(settingAdversting);
 
@@ -287,7 +315,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         final BooleanElement settingsComment = new BooleanElement("Comments at your profile", new ControlElement.IconData(Material.SIGN), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
-                LabyHelp.getInstace().settinngsComments = enable;
+                LabyHelp.getInstace().getSettingsManger().settinngsComments = enable;
 
                 if (enable) {
                     LabyHelp.getInstace().getCommentManager().sendToggle(LabyMod.getInstance().getPlayerUUID(), "TRUE");
@@ -297,7 +325,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 LabyHelp.this.getConfig().addProperty("comment", enable);
                 LabyHelp.this.saveConfig();
             }
-        }, LabyHelp.getInstace().settinngsComments);
+        }, LabyHelp.getInstace().getSettingsManger().settinngsComments);
 
         settingsElements.add(settingsComment);
 
@@ -308,8 +336,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 .fill(NameTagSettings.values());
         DropDownElement<NameTagSettings> alignmentDropDownMenus = new DropDownElement<>("Local NameTag Settings ", nameTagSettings);
 
-        if (LabyHelp.this.nameTagSettings != null) {
-            nameTagSettings.setSelected(NameTagSettings.valueOf(LabyHelp.this.nameTagSettings));
+        if (LabyHelp.getInstace().getSettingsManger().nameTagSettings != null) {
+            nameTagSettings.setSelected(NameTagSettings.valueOf(LabyHelp.getInstace().getSettingsManger().nameTagSettings));
         } else {
             nameTagSettings.setSelected(NameTagSettings.SWITCHING);
         }
@@ -319,7 +347,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             @Override
             public void accept(NameTagSettings alignment) {
 
-                LabyHelp.this.nameTagSettings = alignment.getName();
+                LabyHelp.getInstace().getSettingsManger().nameTagSettings = alignment.getName();
 
                 LabyHelp.this.getConfig().addProperty("nameTagSettings", alignment.getName());
                 LabyHelp.this.saveConfig();
@@ -337,9 +365,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         scalingSliderElement.addCallback(new Consumer<Integer>() {
             @Override
             public void accept(Integer accepted) {
-                LabyHelp.this.nameTagSize = accepted;
+                LabyHelp.getInstace().getSettingsManger().nameTagSize = accepted;
 
-                LabyHelp.this.getConfig().addProperty("nameTagSize", nameTagSize);
+                LabyHelp.this.getConfig().addProperty("nameTagSize", LabyHelp.getInstace().getSettingsManger().nameTagSize);
                 LabyHelp.this.saveConfig();
             }
         });
@@ -354,9 +382,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         rainbowElement.addCallback(new Consumer<Integer>() {
             @Override
             public void accept(Integer accepted) {
-                LabyHelp.this.nameTagRainbwSwitching = accepted;
+                LabyHelp.getInstace().getSettingsManger().nameTagRainbwSwitching = accepted;
 
-                LabyHelp.this.getConfig().addProperty("nameTagRainbwSwitching", nameTagRainbwSwitching);
+                LabyHelp.this.getConfig().addProperty("nameTagRainbwSwitching", LabyHelp.getInstace().getSettingsManger().nameTagRainbwSwitching);
                 LabyHelp.this.saveConfig();
             }
         });
@@ -365,14 +393,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
-                new ControlElement.IconData(Material.WATCH) /* setting's icon */, nameTagSwitchingSetting  /* current value */);
+                new ControlElement.IconData(Material.WATCH) /* setting's icon */, LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting  /* current value */);
 
         numberElement.addCallback(new Consumer<Integer>() {
             @Override
             public void accept(Integer accepted) {
-                LabyHelp.this.nameTagSwitchingSetting = accepted;
+                LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting = accepted;
 
-                LabyHelp.this.getConfig().addProperty("nameTagSettingsSwitching", nameTagSwitchingSetting);
+                LabyHelp.this.getConfig().addProperty("nameTagSettingsSwitching", LabyHelp.getInstace().getSettingsManger().nameTagSwitchingSetting);
                 LabyHelp.this.saveConfig();
             }
         });

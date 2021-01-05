@@ -37,7 +37,7 @@ public class CommunicatorHandler {
     public final Map<UUID, String> isOnline = new HashMap<UUID, String>();
 
     public void targetMode(boolean activated) {
-        LabyHelp.getInstace().targetMode = activated;
+        LabyHelp.getInstace().getSettingsManger().targetMode = activated;
     }
 
     public String sendClient() {
@@ -93,7 +93,7 @@ public class CommunicatorHandler {
                     con.connect();
                     return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
                 } else {
-                    if (LabyHelp.getInstace().settingsAdversting) {
+                    if (LabyHelp.getInstace().getSettingsManger().settingsAdversting) {
                         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                         labyPlayer.sendTranslMessage("main.verify");
                     }

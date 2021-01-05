@@ -103,7 +103,7 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.discord")  + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
+        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.discord")  + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendSnapchat(String name) {
@@ -112,7 +112,7 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.snap") + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
+        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.snap") + " "  + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendAdversting(boolean tip) {
@@ -193,19 +193,19 @@ public class LabyPlayer {
     }
 
     public void sendTranslMessage(String key) {
-        if (LabyHelp.getInstace().onServer) {
+        if (LabyHelp.getInstace().getSettingsManger().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + LabyHelp.getInstace().getTranslationManager().getTranslation(key));
         }
     }
 
     public void sendAlertTranslMessage(String key) {
-        if (LabyHelp.getInstace().onServer) {
+        if (LabyHelp.getInstace().getSettingsManger().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.RED + " " + LabyHelp.getInstace().getTranslationManager().getTranslation(key));
         }
     }
 
     public void sendDefaultMessage(String message) {
-        if (LabyHelp.getInstace().onServer) {
+        if (LabyHelp.getInstace().getSettingsManger().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
         }
     }

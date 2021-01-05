@@ -1,6 +1,7 @@
 package de.marvhuelsmann.labymodaddon;
 
 import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
+import de.marvhuelsmann.labymodaddon.util.TranslationManager;
 import net.labymod.main.LabyMod;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -18,7 +19,7 @@ public class LabyPlayer {
         this.uuid = uuid;
     }
 
-    public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
+    public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.WHITE;
 
 
     public String getSocialMedia(SocialMediaType socialMedia) {
@@ -33,7 +34,7 @@ public class LabyPlayer {
                 }
             }
         } else {
-            sendMessage("Der Spieler hat nicht dieses SocialMedia hinterlegt!");
+            sendTranslMessage("social.null");
         }
         return null;
     }
@@ -102,7 +103,7 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendMessage("Der Discord Name lautet: " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + " (Der Namen wurde in deiner Zwischenablage abgespeichert)");
+        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.discord")  + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendSnapchat(String name) {
@@ -111,16 +112,16 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendMessage("Der SnapChat Name lautet: " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + " (Der Namen wurde in deiner Zwischenablage abgespeichert)");
+        sendDefaultMessage(LabyHelp.getInstace().getTranslationManager().getTranslation("social.snap") + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstace().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendAdversting(boolean tip) {
-        sendMessage(EnumChatFormatting.RED + "LabyHelp Adversting:");
-        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
-        sendMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
+        sendTranslMessage("main.adversting");
+        sendDefaultMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
+        sendDefaultMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
 
         if (tip) {
-            sendMessage(EnumChatFormatting.RED + "You can deactivate the advertising messages in the LabyHelp Addon Settings");
+            sendTranslMessage("adversting.turnoff");
         }
     }
 
@@ -134,7 +135,7 @@ public class LabyPlayer {
                 sendError();
             }
         } else {
-            sendMessage("This Player does not exit!");
+            sendTranslMessage("main.not.exist");
         }
     }
 
@@ -148,7 +149,7 @@ public class LabyPlayer {
                 sendError();
             }
         } else {
-            sendMessage("This Player does not exit!");
+            sendTranslMessage("main.not.exist");
         }
     }
 
@@ -162,7 +163,7 @@ public class LabyPlayer {
                 sendError();
             }
         } else {
-            sendMessage("This Player does not exit!");
+            sendTranslMessage("main.not.exist");
         }
     }
 
@@ -171,7 +172,7 @@ public class LabyPlayer {
             if (!LabyHelp.getInstace().getGroupManager().isTeam(uuid)) {
                 return true;
             } else {
-                sendMessage("Diese Aktion ist bei diesem Spieler deaktiviert, weil er ein Team Mitglied ist!");
+                sendTranslMessage("main.team");
             }
         } else {
             sendNoPermsMessage();
@@ -180,18 +181,30 @@ public class LabyPlayer {
     }
 
     public void sendNoPermsMessage() {
-        LabyMod.getInstance().displayMessageInChat(prefix + " Diese Aktion ist bei diesem Spieler deaktiviert, weil er einen Premium LabyHelp Account besitzt!");
+        sendTranslMessage("main.premium");
     }
 
     public void sendNoPerms() {
-        LabyMod.getInstance().displayMessageInChat(prefix + " Du hast keine Berechtigung auf diesem Befehl!");
+        sendTranslMessage("main.noperms");
     }
 
     public void sendError() {
-        LabyMod.getInstance().displayMessageInChat(prefix + " LabyHelp has an Error...");
+        sendTranslMessage("main.error");
     }
 
-    public void sendMessage(String message) {
+    public void sendTranslMessage(String key) {
+        if (LabyHelp.getInstace().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + " " + LabyHelp.getInstace().getTranslationManager().getTranslation(key));
+        }
+    }
+
+    public void sendAlertTranslMessage(String key) {
+        if (LabyHelp.getInstace().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.RED + " " + LabyHelp.getInstace().getTranslationManager().getTranslation(key));
+        }
+    }
+
+    public void sendDefaultMessage(String message) {
         if (LabyHelp.getInstace().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
         }

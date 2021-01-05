@@ -66,7 +66,7 @@ public class CommunicatorHandler {
                     return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
                 } else {
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
-                    labyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp hatte schwierigkeiten dich zu verifizieren!");
+                    labyPlayer.sendTranslMessage("main.verify");
                     System.out.println(response);
                     throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                 }
@@ -95,7 +95,7 @@ public class CommunicatorHandler {
                 } else {
                     if (LabyHelp.getInstace().settingsAdversting) {
                         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
-                        labyPlayer.sendMessage(EnumChatFormatting.RED + "LabyHelp cant not verify your Account! Please contact the Support");
+                        labyPlayer.sendTranslMessage("main.verify");
                     }
                     System.out.println(response);
                     throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
@@ -177,24 +177,26 @@ public class CommunicatorHandler {
             LabyHelp.getInstace().getInviteManager().readOldPlayer();
             readGroups();
 
+            TranslationManager translationManager = LabyHelp.getInstace().getTranslationManager();
+
             if (!getNowRanked().getName().equalsIgnoreCase(getBeforeRanked().getName())) {
                 if (getNowRanked().equals(HelpGroups.BANNED)) {
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Your NameTag has been banned for one day");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + " Rules: https://labyhelp.de/tag-rules");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + translationManager.getTranslation("main.rules") + ": https://labyhelp.de/tag-rules");
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
 
                 } else {
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " Your Rank has been change! (" + EnumChatFormatting.WHITE + getNowRanked().getName() + EnumChatFormatting.GREEN + ")");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.rankchange") + " (" + EnumChatFormatting.WHITE + getNowRanked().getName() + EnumChatFormatting.GREEN + ")");
                 }
             }
 
             if (!    LabyHelp.getInstace().getLikeManager().getBeforeLikes().equalsIgnoreCase(    LabyHelp.getInstace().getLikeManager().getNowLikes())) {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " You got a LabyHelp Profile like (" + EnumChatFormatting.WHITE + LabyHelp.getInstace().getLikeManager().getNowLikes() + EnumChatFormatting.GREEN + ")");
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.profilelike") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstace().getLikeManager().getNowLikes() + EnumChatFormatting.GREEN + ")");
             }
 
             if (!LabyHelp.getInstace().getInviteManager().getBeforeInvites().equalsIgnoreCase(LabyHelp.getInstace().getInviteManager().getNowInvites())) {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + " A player has redeemed your invite code (" + EnumChatFormatting.WHITE + LabyHelp.getInstace().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN +  translationManager.getTranslation("main.predeemedcode") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstace().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
             }
 
         } else {

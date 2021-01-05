@@ -22,9 +22,9 @@ public class MessageSendListener implements MessageSendEvent {
 
                 if (LabyHelp.getInstace().commentMap.containsValue(commentUuid)) {
                     LabyHelp.getInstace().getCommentManager().sendComment(commentUuid, message);
-                    clientLabyPlayer.sendMessage(EnumChatFormatting.GREEN + "You have successfully sent the comment!");
+                    clientLabyPlayer.sendTranslMessage("comments.send");
                 } else {
-                    clientLabyPlayer.sendMessage("An error has occurred!");
+                    clientLabyPlayer.sendTranslMessage("main.error");
                 }
                 LabyHelp.getInstace().commentChat = false;
 

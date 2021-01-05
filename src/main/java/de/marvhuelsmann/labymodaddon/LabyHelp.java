@@ -1,5 +1,6 @@
 package de.marvhuelsmann.labymodaddon;
 
+import de.marvhuelsmann.labymodaddon.enums.Languages;
 import de.marvhuelsmann.labymodaddon.enums.NameTagSettings;
 import de.marvhuelsmann.labymodaddon.enums.SocialMediaType;
 import de.marvhuelsmann.labymodaddon.listeners.ClientJoinListener;
@@ -14,6 +15,7 @@ import de.marvhuelsmann.labymodaddon.util.*;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
+import net.labymod.main.lang.LanguageManager;
 import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
@@ -35,7 +37,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
     public Boolean isNewerVersion = false;
-    public static final String currentVersion = "2.5.37";
+    public static final String currentVersion = "2.5.44";
     public String newestVersion;
     public boolean onServer = false;
 
@@ -45,6 +47,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final SocialMediaManager socialMediaManager = new SocialMediaManager();
     private final StoreHandler storeHandler = new StoreHandler();
     private final InviteManager inviteManager = new InviteManager();
+    private final TranslationManager translationManager = new TranslationManager();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final Commands commands = new Commands();
     private final CommentManager commentManager = new CommentManager();
@@ -82,6 +85,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         try {
             LabyHelp.getInstace().getStoreHandler().readHelpAddons();
+            LabyHelp.getInstace().getTranslationManager().initTranslations();
             String webVersion = CommunicatorHandler.readVersion();
             newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(currentVersion)) {
@@ -158,6 +162,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return commentManager;
     }
 
+    public TranslationManager getTranslationManager() { return translationManager; }
+
     public ExecutorService getExecutor() {
         return threadPool;
     }
@@ -180,6 +186,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
         settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
         settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
+
+        LabyHelp.getInstace().getTranslationManager().chooseLanguage = this.getConfig().has("translation") ? this.getConfig().get("translation").getAsString() : "DEUTSCH";
 
         LabyHelp.getInstace().getSocialMediaManager().statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
@@ -215,6 +223,39 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         }, LabyHelp.getInstace().AddonSettingsEnable);
         settingsElements.add(settingsEnabled);
+
+        final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" /* Display name */, 0, 0, 0, 0)
+                .fill(Languages.values());
+        DropDownElement<Languages> alignmentDropDown = new DropDownElement<Languages>("Your Language:", alignmentDropDownMenu);
+
+
+        alignmentDropDownMenu.setSelected(Languages.DEUTSCH);
+
+        alignmentDropDown.setChangeListener(new Consumer<Languages>() {
+            @Override
+            public void accept(Languages alignment) {
+                LabyHelp.getInstace().getTranslationManager().translation = alignment;
+                LabyHelp.getInstace().getTranslationManager().chooseLanguage = alignment.getName();
+
+                LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+                labyPlayer.sendAlertTranslMessage("main.lang");
+
+                LabyHelp.this.getConfig().addProperty("translation", alignment.name());
+                LabyHelp.this.saveConfig();
+            }
+        });
+
+        alignmentDropDownMenu.setEntryDrawer(new DropDownMenu.DropDownEntryDrawer() {
+            @Override
+            public void draw(Object object, int x, int y, String trimmedEntry) {
+                String entry = object.toString().toLowerCase();
+                LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
+
+            }
+        });
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
+        settingsElements.add(alignmentDropDown);
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
 
         final BooleanElement settingsStore = new BooleanElement("Other LabyHelp Addons", new ControlElement.IconData(Material.REDSTONE), new Consumer<Boolean>() {
             @Override
@@ -265,7 +306,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
                 .fill(NameTagSettings.values());
-        DropDownElement<NameTagSettings> alignmentDropDown = new DropDownElement<>("Local NameTag Settings ", nameTagSettings);
+        DropDownElement<NameTagSettings> alignmentDropDownMenus = new DropDownElement<>("Local NameTag Settings ", nameTagSettings);
 
         if (LabyHelp.this.nameTagSettings != null) {
             nameTagSettings.setSelected(NameTagSettings.valueOf(LabyHelp.this.nameTagSettings));
@@ -274,7 +315,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
         // Listen on changes
-        alignmentDropDown.setChangeListener(new Consumer<NameTagSettings>() {
+        alignmentDropDownMenus.setChangeListener(new Consumer<NameTagSettings>() {
             @Override
             public void accept(NameTagSettings alignment) {
 
@@ -286,7 +327,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         });
 
-        settingsElements.add(alignmentDropDown);
+        settingsElements.add(alignmentDropDownMenus);
 
         SliderElement scalingSliderElement = new SliderElement("NameTag Size" /* Display name */,
                 new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */);

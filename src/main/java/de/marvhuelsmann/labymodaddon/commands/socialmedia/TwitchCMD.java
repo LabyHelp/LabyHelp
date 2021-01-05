@@ -18,6 +18,6 @@ public class TwitchCMD implements HelpCommand {
         final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
         LabyPlayer labyTarget = new LabyPlayer(uuid);
-        labyPlayer.openTwitter(labyTarget.getSocialMedia(SocialMediaType.TWTICH));
+        labyPlayer.openTwitch(labyTarget.getSocialMedia(SocialMediaType.TWTICH));
     }
 }

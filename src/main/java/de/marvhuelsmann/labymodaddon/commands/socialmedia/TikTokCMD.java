@@ -18,6 +18,6 @@ public class TikTokCMD implements HelpCommand {
         final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
         LabyPlayer labyTarget = new LabyPlayer(uuid);
-        labyPlayer.openTwitter(labyTarget.getSocialMedia(SocialMediaType.TIKTOK));
+        labyPlayer.openTikTok(labyTarget.getSocialMedia(SocialMediaType.TIKTOK));
     }
 }

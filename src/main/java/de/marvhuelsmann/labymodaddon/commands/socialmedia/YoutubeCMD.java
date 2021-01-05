@@ -18,6 +18,6 @@ public class YoutubeCMD implements HelpCommand {
         final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
         LabyPlayer labyTarget = new LabyPlayer(uuid);
-        labyPlayer.openTwitter(labyTarget.getSocialMedia(SocialMediaType.YOUTUBE));
+        labyPlayer.openYoutube(labyTarget.getSocialMedia(SocialMediaType.YOUTUBE));
     }
 }

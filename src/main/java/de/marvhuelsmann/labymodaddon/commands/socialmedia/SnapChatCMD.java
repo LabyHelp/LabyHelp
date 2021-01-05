@@ -18,6 +18,6 @@ public class SnapChatCMD implements HelpCommand {
         final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
         LabyPlayer labyTarget = new LabyPlayer(uuid);
-        labyPlayer.openTwitter(labyTarget.getSocialMedia(SocialMediaType.SNAPCHAT));
+        labyPlayer.sendSnapchat(labyTarget.getSocialMedia(SocialMediaType.SNAPCHAT));
     }
 }

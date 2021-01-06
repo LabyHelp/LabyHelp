@@ -196,6 +196,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return uuid;
     }
 
+    public void sendTranslMessage(String message) {
+        LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+        labyPlayer.sendTranslMessage(message);
+    }
+
     public boolean isInitialize() {
         return instance != null;
     }

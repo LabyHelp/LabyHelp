@@ -150,7 +150,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         try {
             LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-            String webVersion = CommunicatorHandler.readVersion();
+            String webVersion = getStoreHandler().getFileDownloader().readAddonVersion("https://marvhuelsmann.de/version.php");
             getSettingsManager().newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(getSettingsManager().currentVersion)) {
                 getSettingsManager().isNewerVersion = true;
@@ -182,7 +182,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
 
             if (getSettingsManager().isNewerVersion) {
-                LabyHelp.getInstance().getStoreHandler().getFileDownloader().update();
+                LabyHelp.getInstance().getStoreHandler().getFileDownloader().updateLabyHelp();
             }
         }));
     }

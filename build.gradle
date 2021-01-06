@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -13,54 +12,60 @@ buildscript {
 }
 
 plugins {
-    id 'java-library'
+    id 'maven'
     id 'maven-publish'
+    id 'java'
+    id "com.jfrog.bintray" version "1.8.5"
+    id 'com.jfrog.artifactory' version '4.18.3'
 }
 
-// FORGE
-apply plugin: 'net.minecraftforge.gradle.forge'
+group = 'de.labyhelp.addon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '2.5.6'
+//archivesBaseName = "LabyHelp"
 
-// MAVEN PUBLISHING
-apply plugin: 'maven'
-
-dependencies {
-//    compile 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
-    compile 'org.apache.httpcomponents:httpclient:4.5.13'
-
-    // https://mvnrepository.com/artifact/commons-io/commons-io
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
-
-    compileOnly 'org.projectlombok:lombok:1.18.16'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-    testCompileOnly 'org.projectlombok:lombok:1.18.16'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java'
 }
 
-group = "de.labyhelp.addon" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-version = "2.5.6"
-archivesBaseName = "LabyHelp"
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
 
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/labyhelp/labyhelp")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
     publications {
-        mavenJava(MavenPublication) {
-            artifactId = "labyhelp"
-            from(components.java)
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+
+            groupId 'de.labyhelp'
+            artifactId 'addon'
+            version '2.5.6'
             pom {
-                name = 'laby-help'
+                name = 'labyhelp'
                 description = 'The offical API for the LabyHelp addon'
                 url = 'http://www.labyhelp.de'
                 developers {
@@ -83,6 +88,45 @@ publishing {
             }
         }
     }
+}
+
+bintray {
+    user 'dominiklippl'
+    key '7953ac393035cfb92fa8c5fb52cf3dc1ac8415e2'
+    publications = ['mavenPublication']
+    pkg {
+        repo = 'LabyHelp'
+        name = 'LabyHelp'
+        userOrg = 'labyhelp'
+        licenses = ['GPL-2.0']
+        vcsUrl = 'https://github.com/LabyHelp/LabyHelp.git'
+        labels = ['library', 'labymod', 'minecraft']
+        publicDownloadNumbers = true
+        publish = true
+
+        version {
+            name = '2.5.6'
+            desc = 'LabyHelp API'
+            released = new Date()
+            vcsTag = '2.5.6'
+        }
+    }
+}
+
+// FORGE
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+dependencies {
+    // apache
+    compile 'org.apache.httpcomponents:httpclient:4.5.13'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.16'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 
 minecraft {

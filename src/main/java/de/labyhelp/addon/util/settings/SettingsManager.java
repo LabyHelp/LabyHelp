@@ -1,18 +1,21 @@
 package de.labyhelp.addon.util.settings;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+@Getter
 public class SettingsManager {
 
-    public String currentVersion = "2.5.6";
+    public String currentVersion = "2.5.61";
+    public Boolean isNewerVersion = false;
+    public String newestVersion;
 
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
     public boolean settinngsComments = true;
-    public Boolean isNewerVersion = false;
-    public String newestVersion;
     public boolean onServer = false;
 
     public boolean isInitLoading = true;

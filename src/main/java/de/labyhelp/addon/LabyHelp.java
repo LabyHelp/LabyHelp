@@ -175,7 +175,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
 
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
 
@@ -197,6 +196,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         return uuid;
     }
 
+    public boolean isInitialize() {
+        return instance != null;
+    }
 
     @Override
     public void loadConfig() {

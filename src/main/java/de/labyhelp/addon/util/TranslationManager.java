@@ -16,7 +16,6 @@ public class TranslationManager {
     public String chooseLanguage;
     public HashMap<String, String> currentLanguagePack = new HashMap<>();
 
-
     public Languages getChooseTranslation(String lang) {
         for (Languages langu : Languages.values()) {
             if (langu.getName().equalsIgnoreCase(lang)) {
@@ -28,7 +27,9 @@ public class TranslationManager {
 
     public void initTranslation(Languages lang) {
         try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/translations.php").openConnection();
+            String language = lang == null ? Languages.DEUTSCH.getName() : lang.getName();
+            String url = "https://marvhuelsmann.de/translations.php?name=" + language;
+            final HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
             con.setRequestProperty("User-Agent", " Mozilla / 5.0 (Macintosh; U; Intel Mac OS X 10.4; en - US; rv: 1.9 .2 .2) Gecko / 20100316 Firefox / 3.6 .2");
             con.setConnectTimeout(3000);
             con.setReadTimeout(3000);

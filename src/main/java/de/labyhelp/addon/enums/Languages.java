@@ -4,7 +4,7 @@ public enum Languages {
 
     DEUTSCH("DEUTSCH"),
     ENGLISH("ENGLISH"),
-    RUSSIAN("RUSKIY"),
+    RUSSIAN("RUSSIAN"),
     SPANISH("SPANISH"),
     POLNISH("POLNISH"),
     TURKEY("TURKEY"),

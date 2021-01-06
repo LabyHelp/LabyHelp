@@ -31,24 +31,6 @@ public class MessageSendListener implements MessageSendEvent {
 
             return LabyHelp.getInstance().getCommandHandler().executeCommand(message);
 
-            /*        for (CommandsList commands : CommandsList.values()) {
-                if (commands.isMoreArgs()) {
-                    if (message.startsWith("/" + commands.getName())) {
-                        LabyHelp.getInstace().getCommands().commandMessage(message);
-                    }
-                } else {
-                    if (message.equalsIgnoreCase("/" + commands.getName())) {
-                        LabyHelp.getInstace().getCommands().commandMessage(message);
-                    }
-                }
-            }
-
-            for (CommandsList commandsList : CommandsList.values()) {
-                if (message.startsWith("/" + commandsList.getName())) {
-                    return true;
-                }
-            }*/
-
         } else {
             return false;
         }

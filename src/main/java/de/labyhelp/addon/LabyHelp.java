@@ -232,6 +232,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
     }
 
+
     @Override
     protected void fillSettings(List<SettingsElement> settingsElements) {
         final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.GOLD_BARDING), enable -> {
@@ -241,20 +242,31 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }, LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable);
         settingsElements.add(settingsEnabled);
 
+        /* */
+
         final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" /* Display name */, 0, 0, 0, 0)
                 .fill(Languages.values());
         DropDownElement<Languages> alignmentDropDown = new DropDownElement<Languages>("Your Language:", alignmentDropDownMenu);
 
 
-        alignmentDropDownMenu.setSelected(Languages.valueOf(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
+        alignmentDropDownMenu.setSelected(getTranslationManager().getChooseTranslation(getTranslationManager().chooseLanguage) != null ? Languages.valueOf(getTranslationManager().chooseLanguage) : Languages.DEUTSCH);
 
         alignmentDropDown.setChangeListener(alignment -> {
-            LabyHelp.getInstance().getTranslationManager().chooseLanguage = alignment.getName();
 
-            LabyHelp.getInstance().getTranslationManager().initTranslation(alignment);
 
-            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
-            labyPlayer.sendAlertTranslMessage("main.lang");
+            if (!getTranslationManager().chooseLanguage.equals(alignment.getName())) {
+                LabyHelp.getInstance().getTranslationManager().chooseLanguage = alignment.getName();
+                LabyHelp.getInstance().getTranslationManager().initTranslation(alignment);
+
+                LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+                labyPlayer.sendAlertTranslMessage("main.lang");
+            } else {
+                LabyHelp.getInstance().getTranslationManager().chooseLanguage = alignment.getName();
+                LabyHelp.getInstance().getTranslationManager().initTranslation(alignment);
+            }
+
+
+
 
             LabyHelp.this.getConfig().addProperty("translation", alignment.name());
             LabyHelp.this.saveConfig();

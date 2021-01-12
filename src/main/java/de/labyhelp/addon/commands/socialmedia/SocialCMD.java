@@ -1,4 +1,4 @@
-package de.labyhelp.addon.commands;
+package de.labyhelp.addon.commands.socialmedia;
 
 import de.labyhelp.addon.util.commands.HelpCommand;
 import de.labyhelp.addon.LabyPlayer;

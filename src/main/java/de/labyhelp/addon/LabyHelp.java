@@ -1,6 +1,6 @@
 package de.labyhelp.addon;
 
-import de.labyhelp.addon.commands.SocialCMD;
+import de.labyhelp.addon.commands.socialmedia.SocialCMD;
 import de.labyhelp.addon.commands.addon.*;
 import de.labyhelp.addon.commands.comment.LabyHelpCommentCMD;
 import de.labyhelp.addon.commands.comment.ShowCommentsCMD;
@@ -22,10 +22,7 @@ import de.labyhelp.addon.menu.*;
 import de.labyhelp.addon.module.DegreeModule;
 import de.labyhelp.addon.module.TexturePackModule;
 import de.labyhelp.addon.store.StoreHandler;
-import de.labyhelp.addon.util.CommunicatorHandler;
-import de.labyhelp.addon.util.GroupManager;
-import de.labyhelp.addon.util.TranslationManager;
-import de.labyhelp.addon.util.VersionHandler;
+import de.labyhelp.addon.util.*;
 import de.labyhelp.addon.util.commands.CommandHandler;
 import de.labyhelp.addon.util.settings.SettingsManager;
 import de.labyhelp.addon.util.transfer.CommentManager;
@@ -77,6 +74,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final CommentManager commentManager;
     @Getter
     private final SettingsManager settingsManager;
+    @Getter
+    private final RequestManager requestManager;
 
     public LabyHelp() {
         instance = this;
@@ -98,6 +97,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         inviteManager = new InviteManager();
         commentManager = new CommentManager();
         settingsManager = new SettingsManager();
+
+        requestManager = new RequestManager();
 
     }
 

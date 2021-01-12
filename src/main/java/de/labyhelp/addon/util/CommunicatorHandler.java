@@ -242,7 +242,7 @@ public class CommunicatorHandler {
         }
     }
 
-    public static String sendBanned(final UUID uuid, String reason) {
+    public String sendBanned(final UUID uuid, String reason) {
         try {
             if (uuid != null) {
                 reason = reason.replace(",", "").replace(":", "");

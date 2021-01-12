@@ -25,11 +25,14 @@ public class LabyHelpBanCMD implements HelpCommand {
                 final UUID uuid = UUIDFetcher.getUUID(args[1]);
                 if (!LabyHelp.getInstance().getGroupManager().isTeam(uuid)) {
                     if (uuid != null) {
-                        clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("player") + EnumChatFormatting.WHITE + args[1] + EnumChatFormatting.RED + transManager.getTranslation("staff.banned.nametag"));
+                        clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("player") + " " + EnumChatFormatting.WHITE + args[1] + "" + EnumChatFormatting.RED + transManager.getTranslation("staff.banned.nametag"));
 
-                        clientLabyPlayer.sendDefaultMessage("");
+                        if (LabyHelp.getInstance().getCommunicatorHandler().sendBanned(uuid, "NAMETAG") != null) {
+                            clientLabyPlayer.sendDefaultMessage("");
+                        } else {
+                            clientLabyPlayer.sendDefaultMessage("Oups error");
+                        }
 
-                        CommunicatorHandler.sendBanned(uuid, "NAMETAG");
                     } else {
                         clientLabyPlayer.sendTranslMessage("main.not.exist");
                     }

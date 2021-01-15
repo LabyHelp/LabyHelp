@@ -1,5 +1,7 @@
 package de.labyhelp.addon;
 
+import de.labyhelp.addon.util.settings.SettingsManager;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class Main {
             if (!new File(dir).exists()) {
                 throw new IOException("No .minecraft/LabyMod directory found!");
             }
-            if (showConfirmDialog(String.format(Main.lang.get("installation"), ".newest version"))) {
+            if (showConfirmDialog(String.format(Main.lang.get("installation"), SettingsManager.currentVersion))) {
                 final File run = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
                 if (!run.exists() || !run.isFile()) {
                     throw new IOException("Invalid path: " + run.getAbsolutePath());

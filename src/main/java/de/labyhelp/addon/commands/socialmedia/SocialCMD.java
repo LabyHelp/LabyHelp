@@ -15,8 +15,10 @@ public class SocialCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        final String decode = args[1];
-        final UUID uuid = UUIDFetcher.getUUID(decode);
-        labyPlayer.openSocial(uuid, decode);
+        if (args.length == 2) {
+            final String decode = args[1];
+            final UUID uuid = UUIDFetcher.getUUID(decode);
+            labyPlayer.openSocial(uuid, decode);
+        }
     }
 }

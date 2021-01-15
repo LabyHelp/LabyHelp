@@ -14,13 +14,13 @@ public class ClientJoinListener implements Consumer<ServerData> {
     }
 
     public void postJoin(ServerData serverData) {
+        LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
+
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
             @Override
             public void run() {
                 try {
                     LabyHelp.getInstance().getCommunicatorHandler().sendClient();
-
-                    LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
 
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);

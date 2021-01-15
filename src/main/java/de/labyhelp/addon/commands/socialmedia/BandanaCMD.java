@@ -14,7 +14,9 @@ public class BandanaCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        final UUID uuid = UUIDFetcher.getUUID(args[1]);
-        labyPlayer.openBandanaUrl(uuid);
+        if (args.length == 2) {
+            final UUID uuid = UUIDFetcher.getUUID(args[1]);
+            labyPlayer.openBandanaUrl(uuid);
+        }
     }
 }

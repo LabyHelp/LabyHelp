@@ -153,7 +153,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.getInstance().getStoreHandler().readHelpAddons();
             String webVersion = getStoreHandler().getFileDownloader().readAddonVersion("https://marvhuelsmann.de/version.php");
             getSettingsManager().newestVersion = webVersion;
-            if (!webVersion.equalsIgnoreCase(getSettingsManager().currentVersion)) {
+            if (!webVersion.equalsIgnoreCase(SettingsManager.currentVersion)) {
                 getSettingsManager().isNewerVersion = true;
             }
             getSettingsManager().addonEnabled = true;
@@ -202,6 +202,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         labyPlayer.sendTranslMessage(message);
     }
 
+    public void sendDefaultMessage(String message) {
+        LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+        labyPlayer.sendDefaultMessage(message);
+    }
+
     public boolean isInitialize() {
         return instance != null;
     }
@@ -211,6 +216,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
         LabyHelp.getInstance().getSettingsManager().settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
         LabyHelp.getInstance().getSettingsManager().settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
+
+        LabyHelp.getInstance().getSettingsManager().seeNameTags = !this.getConfig().has("seeNameTags") || this.getConfig().get("seeNameTags").getAsBoolean();
 
         LabyHelp.getInstance().getTranslationManager().chooseLanguage = this.getConfig().has("translation") ? this.getConfig().get("translation").getAsString() : "DEUTSCH";
 
@@ -267,8 +274,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
 
 
-
-
             LabyHelp.this.getConfig().addProperty("translation", alignment.name());
             LabyHelp.this.saveConfig();
         });
@@ -307,6 +312,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(settingAdversting);
 
+
         final BooleanElement settingsComment = new BooleanElement("Comments at your profile", new ControlElement.IconData(Material.SIGN), new Consumer<Boolean>() {
             @Override
             public void accept(final Boolean enable) {
@@ -326,6 +332,17 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(new HeaderElement(" "));
 
+
+        final BooleanElement settingsNameTags = new BooleanElement("Show NameTags", new ControlElement.IconData(Material.STRING), enable -> {
+            LabyHelp.getInstance().getSettingsManager().seeNameTags = enable;
+
+            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+            labyPlayer.sendAlertTranslMessage("main.lang");
+
+            LabyHelp.this.getConfig().addProperty("seeNameTags", enable);
+            LabyHelp.this.saveConfig();
+        }, LabyHelp.getInstance().getSettingsManager().seeNameTags);
+        settingsElements.add(settingsNameTags);
 
         final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
                 .fill(NameTagSettings.values());

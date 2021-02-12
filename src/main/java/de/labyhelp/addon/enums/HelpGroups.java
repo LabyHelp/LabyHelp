@@ -30,6 +30,9 @@ public enum HelpGroups {
     CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,true, true),
 
     SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SRCONTENT", true,true, true, true),
+
+    SUPPORTER("SUPPORTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + " SUPPORTER", true, true,false, true),
+
     JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JRMOD", true, true,false, true),
     MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " MOD", true, true,true, true),
     SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SRMOD", true,true, true, true),
@@ -68,6 +71,7 @@ public enum HelpGroups {
                 HelpGroups.FRIEND.getName().equalsIgnoreCase(name) ||
                 HelpGroups.BANNED.getName().equalsIgnoreCase(name) ||
                 HelpGroups.CREATOR.getName().equalsIgnoreCase(name) ||
+                HelpGroups.SUPPORTER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.LABYTEAM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.PARTNER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.DESIGNER.getName().equalsIgnoreCase(name) ||

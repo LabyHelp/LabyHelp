@@ -21,7 +21,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
     public void execute(LabyPlayer clientLabyPlayer, String[] args) {
         clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.RED + "LabyHelp Team:");
         clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.RED + "Position: " + LocalDate.now());
-        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Administation");
+        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Adminstration");
         clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + "- marvhuel");
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
             @Override
@@ -38,7 +38,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
                 clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Developers");
                 for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
                     if (LabyHelp.getInstance().getGroupManager().isTeam(groupsEntry.getKey())) {
-                        if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.DEVELOPER)) {
+                        if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.DEVELOPER) || LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRDEVELOPER)) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
                         }
                     }

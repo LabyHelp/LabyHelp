@@ -57,6 +57,10 @@ public class GroupManager {
             return;
         }
 
+        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
+            return;
+        }
+
 
         if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
@@ -90,6 +94,10 @@ public class GroupManager {
             if (LabyHelp.getInstance().getSettingsManager().onServer) {
                 LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(false);
             }
+            return;
+        }
+
+        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
             return;
         }
 

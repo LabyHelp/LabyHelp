@@ -9,12 +9,15 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.5.67";
+    public static String currentVersion = "2.5.75";
     public Boolean isNewerVersion = false;
     public String newestVersion;
 
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
+
+    public boolean seeNameTags = true;
+
     public boolean settinngsComments = true;
     public boolean onServer = false;
 

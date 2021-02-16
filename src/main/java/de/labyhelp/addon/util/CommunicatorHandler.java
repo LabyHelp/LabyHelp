@@ -41,7 +41,7 @@ public class CommunicatorHandler {
         LabyHelp.getInstance().getSettingsManager().targetMode = activated;
     }
 
-    public String sendClient() {
+    public String sendClient(String sip) {
         try {
 
             if (LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE)) {
@@ -59,8 +59,7 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8")).openConnection();
-                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8")).openConnection(); con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                     con.setConnectTimeout(3000);
                     con.setReadTimeout(3000);
                     con.connect();
@@ -87,7 +86,7 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8")).openConnection();
+                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8")).openConnection();
                     con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                     con.setConnectTimeout(3000);
                     con.setReadTimeout(3000);
@@ -164,9 +163,10 @@ public class CommunicatorHandler {
                 oldGroups.put(group.getKey(), group.getValue());
             }
 
-            for (Map.Entry<UUID, String> likes :     LabyHelp.getInstance().getLikeManager().userLikes.entrySet()) {
+            for (Map.Entry<UUID, String> likes : LabyHelp.getInstance().getLikeManager().userLikes.entrySet()) {
                 LabyHelp.getInstance().getLikeManager().oldLikes.put(likes.getKey(), likes.getValue());
             }
+
 
             for (Map.Entry<UUID, String> likes : LabyHelp.getInstance().getInviteManager().userInvites.entrySet()) {
                 LabyHelp.getInstance().getInviteManager().oldInvites.put(likes.getKey(), likes.getValue());
@@ -176,6 +176,9 @@ public class CommunicatorHandler {
             LabyHelp.getInstance().getLikeManager().readLikes();
             LabyHelp.getInstance().getInviteManager().readUserInvites();
             LabyHelp.getInstance().getInviteManager().readOldPlayer();
+
+            LabyHelp.getInstance().getServerManager().readServerPartner();
+            LabyHelp.getInstance().getServerManager().readTagList();
             readGroups();
 
             TranslationManager translationManager = LabyHelp.getInstance().getTranslationManager();

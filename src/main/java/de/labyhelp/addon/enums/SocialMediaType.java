@@ -15,6 +15,7 @@ public enum SocialMediaType {
     TWTICH(LabyHelp.getInstance().getSocialMediaManager().twitchNameMap, LabyHelp.getInstance().getSocialMediaManager().twitchName, "Twitch"),
     DISCORD(LabyHelp.getInstance().getSocialMediaManager().discordNameMap, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
     STATUS(LabyHelp.getInstance().getCommunicatorHandler().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
+    SERVER(LabyHelp.getInstance().getServerManager().hasServer, null, "Server"),
     NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().nameTagName, "NameTag");
 
     private final Map<UUID, String> map;

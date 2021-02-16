@@ -69,6 +69,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Getter
     private final SocialMediaManager socialMediaManager;
     @Getter
+    private final TagManager serverManager;
+    @Getter
     private final InviteManager inviteManager;
     @Getter
     private final CommentManager commentManager;
@@ -89,6 +91,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         translationManager = new TranslationManager();
         versionHandler = new VersionHandler();
+
+        serverManager = new TagManager();
 
         commandHandler = new CommandHandler();
 
@@ -131,12 +135,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new SkinCMD(),
                 new DiscordCMD(),
                 new InstaCMD(),
+                new ServerCMD(),
                 new SnapChatCMD(),
                 new TikTokCMD(),
                 new TwitchCMD(),
                 new TwitterCMD(),
                 new YoutubeCMD(),
                 new ModeTargetCMD(),
+                new SupportCMD(),
                 new TargetCMD(),
                 new LabyHelpBanCMD(),
                 new LabyHelpWebCMD()
@@ -168,12 +174,15 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("See Server") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("join Server") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Comments"));
 
 
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ServerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

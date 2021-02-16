@@ -23,6 +23,7 @@ public class LabyPlayer {
 
     public String getSocialMedia(SocialMediaType socialMedia) {
         LabyHelp.getInstance().getSocialMediaManager().readSocialMedia();
+        LabyHelp.getInstance().getServerManager().readServerPartner();
 
         if (socialMedia.getMap().containsKey(uuid)) {
             for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {
@@ -70,7 +71,7 @@ public class LabyPlayer {
 
     public void openSocial(UUID uuid, String name) {
         try {
-            LabyMod.getInstance().openWebpage("https://www.labyhelp.de/profile?uuid=" + uuid + "&name=" + name, false);
+            LabyMod.getInstance().openWebpage("https://www.labyhelp.de/p.php?search=" + name, false);
         } catch (Exception ignored) {
             sendError();
         }
@@ -102,7 +103,22 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.discord")  + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
+        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.discord") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
+    }
+
+    public void sendServer(String name) {
+
+        StringSelection stringSelection = new StringSelection(name);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+
+        if (name != null && !name.equals("")) {
+            sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.server") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
+
+            LabyMod.getInstance().getLabyModAPI().connectToServer(name);
+        } else {
+            LabyHelp.getInstance().sendDefaultMessage(EnumChatFormatting.RED + "No Server found! Error 404");
+        }
     }
 
     public void sendSnapchat(String name) {
@@ -111,7 +127,7 @@ public class LabyPlayer {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.snap") + " "  + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
+        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.snap") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendAdversting(boolean tip) {

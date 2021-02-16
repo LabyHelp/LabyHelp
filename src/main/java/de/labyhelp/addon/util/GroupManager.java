@@ -49,6 +49,41 @@ public class GroupManager {
     }
 
 
+    private void setNormalTag(UUID uuid, HelpGroups group) {
+        LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(group.getPrefix());
+    }
+
+    private void seTagWithMore(UUID uuid, HelpGroups group) {
+        if (LabyHelp.getInstance().getServerManager().tagList.containsKey(uuid)) {
+            if (LabyHelp.getInstance().getServerManager().tagList.get(uuid).equals("NORMAL")) {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(EnumChatFormatting.GRAY + "✪ " + group.getPrefix());
+            } else if (LabyHelp.getInstance().getServerManager().tagList.get(uuid).equals("CHROME")) {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(randomeColor() + "✪ " + group.getPrefix());
+            } else {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(group.getPrefix());
+            }
+        }
+    }
+
+    private void setServerTagWithTag(UUID uuid, HelpGroups group) {
+        if (LabyHelp.getInstance().getServerManager().hasServer.containsKey(uuid)) {
+            if (LabyHelp.getInstance().getServerManager().tagList.get(uuid).equals("NORMAL")) {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(EnumChatFormatting.GRAY + "✪ " + group.getPrefix() + EnumChatFormatting.DARK_AQUA + " Ⓢ");
+            } else if (LabyHelp.getInstance().getServerManager().tagList.get(uuid).equals("CHROME")) {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(randomeColor() + "✪ " + group.getPrefix() + EnumChatFormatting.DARK_AQUA + " Ⓢ");
+            } else {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle(group.getPrefix() + EnumChatFormatting.DARK_AQUA + " Ⓢ");
+            }
+        }
+    }
+
+    private void setServerTag(UUID uuid, HelpGroups group) {
+        if (LabyHelp.getInstance().getServerManager().hasServer.containsKey(uuid)) {
+                LabyMod.getInstance().getUserManager().getUser(uuid).setSubTitle( group.getPrefix() + EnumChatFormatting.DARK_AQUA + " Ⓢ");
+        }
+    }
+
+
     public void updateSubTitles(boolean readDatabase) {
         if (readDatabase) {
             if (LabyHelp.getInstance().getSettingsManager().onServer) {
@@ -68,7 +103,20 @@ public class GroupManager {
                 HelpGroups group = LabyHelp.getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
                     // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(group.getPrefix());
+
+
+                    if (LabyHelp.getInstance().getServerManager().tagList.containsKey(uuidUserEntry.getKey())
+                            && LabyHelp.getInstance().getServerManager().hasServer.containsKey(uuidUserEntry.getKey())) {
+                        setServerTagWithTag(uuidUserEntry.getKey(), group);
+                    } else if (LabyHelp.getInstance().getServerManager().hasServer.containsKey(uuidUserEntry.getKey())) {
+                        setServerTag(uuidUserEntry.getKey(), group);
+                    } else if (LabyHelp.getInstance().getServerManager().tagList.containsKey(uuidUserEntry.getKey())) {
+                        seTagWithMore(uuidUserEntry.getKey(), group);
+                    } else {
+                        setNormalTag(uuidUserEntry.getKey(), group);
+                    }
+
+
                     if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
                     } else {
@@ -87,6 +135,7 @@ public class GroupManager {
 
             }
         }
+
     }
 
     public void updateNameTag(boolean readDatabase) {

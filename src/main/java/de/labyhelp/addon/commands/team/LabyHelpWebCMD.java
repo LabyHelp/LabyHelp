@@ -13,10 +13,6 @@ public class LabyHelpWebCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        if (LabyHelp.getInstance().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
             LabyMod.getInstance().openWebpage("https://labyhelp.de/dashboard/index.php", false);
-        } else {
-            labyPlayer.sendNoPerms();
-        }
     }
 }

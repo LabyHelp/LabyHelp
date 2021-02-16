@@ -19,7 +19,6 @@ public class InviteManager {
 
     public final Map<UUID, String> userInvites = new HashMap<UUID, String>();
     public final Map<UUID, String> oldInvites = new HashMap<UUID, String>();
-    public final ArrayList<UUID> isInvited = new ArrayList<>();
 
     private final Map<String, Integer> collectors = new HashMap<>();
 

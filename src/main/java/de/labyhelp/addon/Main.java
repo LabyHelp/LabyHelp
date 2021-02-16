@@ -108,7 +108,7 @@ public class Main {
     }
 
     private static void showMessageDialog(final String msg, final int mode) {
-        JOptionPane.showMessageDialog(null, msg, "LabyHelp from Marvio", mode);
+        JOptionPane.showMessageDialog(null, msg, "LabyHelp from marvhuel", mode);
     }
 
 

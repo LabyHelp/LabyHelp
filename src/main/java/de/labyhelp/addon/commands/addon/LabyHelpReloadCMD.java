@@ -27,6 +27,9 @@ public class LabyHelpReloadCMD implements HelpCommand {
                     LabyHelp.getInstance().getCommentManager().banned.clear();
                     LabyHelp.getInstance().getCommentManager().readBanned();
 
+                    LabyHelp.getInstance().getServerManager().readServerPartner();
+                    LabyHelp.getInstance().getServerManager().readTagList();
+
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstance().getGroupManager().updateNameTag(true);
                     LabyHelp.getInstance().getGroupManager().updateNameTag(false);

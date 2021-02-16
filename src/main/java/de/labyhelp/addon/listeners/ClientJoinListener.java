@@ -25,13 +25,8 @@ public class ClientJoinListener implements Consumer<ServerData> {
             @Override
             public void run() {
                 try {
-                    LabyHelp.getInstance().getCommunicatorHandler().sendClient();
+                    LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
 
-                    i++;
-
-                    if (i == 2) {
-                        LabyHelp.getInstance().sendDefaultMessage("LabyHelp Supporter Bewerbungsphase geöffnet. Weitere Informationen findest du auf unserem Discord.");
-                    }
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(false);

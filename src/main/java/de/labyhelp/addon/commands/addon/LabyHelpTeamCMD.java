@@ -65,6 +65,12 @@ public class LabyHelpTeamCMD implements HelpCommand {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
                         }
                 }
+                clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Translator");
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                    if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.TRANSLATOR)) {
+                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
+                    }
+                }
               }
         });
     }

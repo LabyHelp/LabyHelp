@@ -128,7 +128,7 @@ public class CommunicatorHandler {
                             userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
 
-                            if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid)) || !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))) {
+                            if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid)) && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))) {
                                 if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
                                     userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
                                 } else if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {

@@ -25,6 +25,8 @@ public class TagManager {
             final String[] entries;
             final String[] array;
             final String[] split = array = (entries = result.split(","));
+
+            hasServer.clear();
             for (final String entry : array) {
                 final String[] data = entry.split(":");
                 if (data.length == 2) {
@@ -51,6 +53,8 @@ public class TagManager {
             final String[] entries;
             final String[] array;
             final String[] split = array = (entries = result.split(","));
+
+            tagList.clear();
             for (final String entry : array) {
                 final String[] data = entry.split(":");
                 if (data.length == 2) {

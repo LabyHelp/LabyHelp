@@ -23,15 +23,14 @@ public enum HelpGroups {
     LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true,true, false, true),
     PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("rank.partner"), true, true,false, true),
 
-    DESIGNER("DESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " DESIGNER", true, true,false, true),
-    SRDESIGNER("SRDESIGNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GREEN + " SRDESIGNER", true, true,true, true),
+    TRANSLATOR("TRANSLATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " TRANSLATOR", true, true,false, true),
 
     JRCONTENT("JRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,false, true),
     CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,true, true),
 
     SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SRCONTENT", true,true, true, true),
 
-    SUPPORTER("SUPPORTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BLUE + " SUPPORTER", true, true,false, true),
+    SUPPORTER("SUPPORTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " SUPPORTER", true, true,false, true),
 
     JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JRMODERATOR", true, true,false, true),
     MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " MODERATOR", true, true,true, true),
@@ -74,8 +73,7 @@ public enum HelpGroups {
                 HelpGroups.SUPPORTER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.LABYTEAM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.PARTNER.getName().equalsIgnoreCase(name) ||
-                HelpGroups.DESIGNER.getName().equalsIgnoreCase(name) ||
-                HelpGroups.SRDESIGNER.getName().equalsIgnoreCase(name) ||
+                HelpGroups.TRANSLATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.JRCONTENT.getName().equalsIgnoreCase(name) ||
                 HelpGroups.CONTENT.getName().equalsIgnoreCase(name) ||
                 HelpGroups.SRCONTENT.getName().equalsIgnoreCase(name) ||

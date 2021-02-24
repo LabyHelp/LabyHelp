@@ -1,5 +1,6 @@
 package de.labyhelp.addon.commands.socialmedia;
 
+import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.enums.SocialMediaType;
 import de.labyhelp.addon.util.commands.HelpCommand;
@@ -16,10 +17,11 @@ public class DiscordCMD implements HelpCommand {
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
         if (args.length == 2) {
-            final UUID uuid = UUIDFetcher.getUUID(args[1]);
-
-            LabyPlayer labyTarget = new LabyPlayer(uuid);
-            labyPlayer.sendDiscord(labyTarget.getSocialMedia(SocialMediaType.DISCORD));
+            final String decode = args[1];
+            final UUID uuid = UUIDFetcher.getUUID(decode);
+            labyPlayer.openSocial(uuid, decode);
+        } else {
+            LabyHelp.getInstance().sendDefaultMessage("/social <Player>");
         }
     }
 }

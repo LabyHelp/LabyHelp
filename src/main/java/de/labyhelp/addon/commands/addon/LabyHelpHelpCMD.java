@@ -13,7 +13,7 @@ public class LabyHelpHelpCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        LabyMod.getInstance().openWebpage("https://labyhelp.de/support", true);
+        LabyMod.getInstance().openWebpage("https://labyhelp.de/support", false);
 
         if (LabyHelp.getInstance().getGroupManager().isTeam(LabyMod.getInstance().getPlayerUUID())) {
             labyPlayer.sendDefaultMessage("- /lhban <Spieler> / NameTag");

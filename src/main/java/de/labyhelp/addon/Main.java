@@ -104,11 +104,11 @@ public class Main {
     }
 
     private static boolean showConfirmDialog(final String msg) {
-        return JOptionPane.showConfirmDialog(null, msg, "LabyHelp from Marvio", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0;
+        return JOptionPane.showConfirmDialog(null, msg, "LabyHelp", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0;
     }
 
     private static void showMessageDialog(final String msg, final int mode) {
-        JOptionPane.showMessageDialog(null, msg, "LabyHelp from marvhuel", mode);
+        JOptionPane.showMessageDialog(null, msg, "LabyHelp", mode);
     }
 
 

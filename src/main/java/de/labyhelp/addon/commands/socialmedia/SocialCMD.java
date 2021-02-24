@@ -1,5 +1,6 @@
 package de.labyhelp.addon.commands.socialmedia;
 
+import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
@@ -19,6 +20,8 @@ public class SocialCMD implements HelpCommand {
             final String decode = args[1];
             final UUID uuid = UUIDFetcher.getUUID(decode);
             labyPlayer.openSocial(uuid, decode);
+        } else {
+            LabyHelp.getInstance().sendDefaultMessage("/social <Player>");
         }
     }
 }

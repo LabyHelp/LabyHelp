@@ -116,6 +116,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
 
         getCommandHandler().registerCommand(
+                new LabyHelpHelpCMD(),
                 new SocialCMD(),
                 new LabyHelpCMD(),
                 new LabyHelpAddonsCMD(),

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class LikesCMD implements HelpCommand {
     @Override
     public String getName() {
-        return "likes";
+        return "lhlikes";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LikesCMD implements HelpCommand {
             });
 
         } else {
-            clientLabyPlayer.sendDefaultMessage("/likes -" + transManager.getTranslation("player"));
+            clientLabyPlayer.sendDefaultMessage("/lhlikes -" + transManager.getTranslation("player"));
         }
     }
 }

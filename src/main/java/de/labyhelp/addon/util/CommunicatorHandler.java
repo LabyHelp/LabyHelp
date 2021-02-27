@@ -41,7 +41,7 @@ public class CommunicatorHandler {
         LabyHelp.getInstance().getSettingsManager().targetMode = activated;
     }
 
-    public String sendClient(String sip) {
+    public void sendClient(String sip) {
         try {
 
             if (LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE)) {
@@ -59,11 +59,9 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8")).openConnection(); con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                    con.setConnectTimeout(3000);
-                    con.setReadTimeout(3000);
-                    con.connect();
-                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8"));
+                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.12");
+
                 } else {
                     LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                     labyPlayer.sendTranslMessage("main.verify");
@@ -86,12 +84,9 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8")).openConnection();
-                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                    con.setConnectTimeout(3000);
-                    con.setReadTimeout(3000);
-                    con.connect();
-                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8"));
+                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.8");
+
                 } else {
                     if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
                         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
@@ -149,6 +144,8 @@ public class CommunicatorHandler {
                         }
                     }
                 }
+
+                LabyHelp.getInstance().sendDeveloperMessage("User Group refresh");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -228,20 +225,6 @@ public class CommunicatorHandler {
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not read NameTag!", e);
-        }
-    }
-
-    public String getIp() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/ip.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read ip!", e);
         }
     }
 

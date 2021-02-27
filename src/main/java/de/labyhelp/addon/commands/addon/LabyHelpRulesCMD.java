@@ -13,6 +13,6 @@ public class LabyHelpRulesCMD implements HelpCommand {
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
         LabyMod.getInstance().openWebpage("https://labyhelp.de/rules", false);
-        labyPlayer.sendDefaultMessage("https://labyhelp.de/rules");
+        labyPlayer.sendTranslMessage("main.openlink");
     }
 }

@@ -9,12 +9,16 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.5.89 - OOZQRE";
+    public static String currentVersion = "2.57";
+    public String versionTag = null;
+
     public Boolean isNewerVersion = false;
     public String newestVersion;
 
     public boolean AddonSettingsEnable = true;
     public boolean settingsAdversting = true;
+
+    public boolean developerMode = false;
 
     public boolean seeNameTags = true;
 

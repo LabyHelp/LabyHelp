@@ -46,6 +46,7 @@ public class TranslationManager {
                     }
                 }
             }
+            LabyHelp.getInstance().sendDeveloperMessage("Translation refresh");
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not read translations!", e);

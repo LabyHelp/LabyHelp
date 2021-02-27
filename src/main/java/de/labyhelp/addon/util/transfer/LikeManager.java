@@ -30,15 +30,6 @@ public class LikeManager {
         return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(5).collect(toList());
     }
 
-    public List<Map.Entry<String, Integer>> getTops3() {
-        if (!userLikes.isEmpty()) {
-            for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
-                collectors.put(uuidStringEntry.getKey().toString(), Integer.parseInt(uuidStringEntry.getValue()));
-            }
-        }
-        return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(3).collect(toList());
-    }
-
     public UUID getFamousLikePlayer() {
 
         HashMap<UUID, Integer> likeList = new HashMap<UUID, Integer>();
@@ -53,25 +44,6 @@ public class LikeManager {
             for (Map.Entry<UUID, Integer> entry : likeList.entrySet()) {
                 if (entry.getValue() == maxValueInMap) {
                     return entry.getKey();
-                }
-            }
-        }
-        return null;
-    }
-
-    public Integer getFamousLikesAmount() {
-        HashMap<UUID, Integer> likeList = new HashMap<UUID, Integer>();
-
-        if (!userLikes.isEmpty()) {
-            for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
-                int i = Integer.parseInt(userLikes.get(uuidStringEntry.getKey()));
-                likeList.put(uuidStringEntry.getKey(), i);
-            }
-
-            int maxValueInMap = (Collections.max(likeList.values()));
-            for (Map.Entry<UUID, Integer> entry : likeList.entrySet()) {
-                if (entry.getValue() == maxValueInMap) {
-                    return entry.getValue();
                 }
             }
         }

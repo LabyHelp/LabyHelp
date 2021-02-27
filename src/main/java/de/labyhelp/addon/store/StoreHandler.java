@@ -27,6 +27,8 @@ public class StoreHandler {
             final String[] entries;
             final String[] array;
             final String[] split = array = (entries = result.split(","));
+            helpAddonInfo.clear();
+            helpAddons.clear();
             for (final String entry : array) {
                 final String[] data = entry.split(":");
                 if (data.length == 3) {

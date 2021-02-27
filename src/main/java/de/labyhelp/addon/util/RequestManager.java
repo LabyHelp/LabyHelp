@@ -1,5 +1,6 @@
 package de.labyhelp.addon.util;
 
+import de.labyhelp.addon.LabyHelp;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -28,11 +29,13 @@ public class RequestManager {
             con.setConnectTimeout(3000);
             con.setReadTimeout(3000);
             con.connect();
+
+            LabyHelp.getInstance().sendDeveloperMessage("requesting url: " + urlRequest);
+
             return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new IllegalStateException("Could not fetch request", e);
+            throw new IllegalStateException("Could not fetch request with url:" + urlRequest, e);
         }
     }
-
 }

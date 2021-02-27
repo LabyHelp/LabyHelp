@@ -7,13 +7,13 @@ import java.util.UUID;
 
 public enum SocialMediaType {
 
-    INSTAGRAM(LabyHelp.getInstance().getSocialMediaManager().instaNameMap, LabyHelp.getInstance().getSocialMediaManager().instaName, "Insta"),
-    TWITTER(LabyHelp.getInstance().getSocialMediaManager().twitterNameMap, LabyHelp.getInstance().getSocialMediaManager().twitterName, "Twitter"),
-    YOUTUBE(LabyHelp.getInstance().getSocialMediaManager().youtubeNameMap, LabyHelp.getInstance().getSocialMediaManager().youtubeName, "Youtube"),
-    TIKTOK(LabyHelp.getInstance().getSocialMediaManager().tiktokNameMap, LabyHelp.getInstance().getSocialMediaManager().tiktokName, "TikTok"),
-    SNAPCHAT(LabyHelp.getInstance().getSocialMediaManager().snapchatNameMap, LabyHelp.getInstance().getSocialMediaManager().snapchatName, "Snapchat"),
-    TWTICH(LabyHelp.getInstance().getSocialMediaManager().twitchNameMap, LabyHelp.getInstance().getSocialMediaManager().twitchName, "Twitch"),
-    DISCORD(LabyHelp.getInstance().getSocialMediaManager().discordNameMap, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
+    INSTAGRAM(null, LabyHelp.getInstance().getSocialMediaManager().instaName, "Insta"),
+    TWITTER(null, LabyHelp.getInstance().getSocialMediaManager().twitterName, "Twitter"),
+    YOUTUBE(null, LabyHelp.getInstance().getSocialMediaManager().youtubeName, "Youtube"),
+    TIKTOK(null, LabyHelp.getInstance().getSocialMediaManager().tiktokName, "TikTok"),
+    SNAPCHAT(null, LabyHelp.getInstance().getSocialMediaManager().snapchatName, "Snapchat"),
+    TWTICH(null, LabyHelp.getInstance().getSocialMediaManager().twitchName, "Twitch"),
+    DISCORD(null, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
     STATUS(LabyHelp.getInstance().getCommunicatorHandler().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
     SERVER(LabyHelp.getInstance().getServerManager().hasServer, null, "Server"),
     NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().nameTagName, "NameTag");

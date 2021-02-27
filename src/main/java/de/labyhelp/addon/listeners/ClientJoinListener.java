@@ -25,16 +25,24 @@ public class ClientJoinListener implements Consumer<ServerData> {
             @Override
             public void run() {
                 try {
+                    if (LabyHelp.getInstance().getSettingsManager().isAddonEnabled()) {
                     LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
+
+                    if (LabyHelp.getInstance().getSettingsManager().versionTag != null) {
+                        LabyHelp.getInstance().sendTranslMessage("main.beta.notification");
+                        LabyHelp.getInstance().sendDefaultMessage(LabyHelp.getInstance().getSettingsManager().versionTag);
+                    }
 
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+                    LabyHelp.getInstance().sendDeveloperMessage("updating join user list");
 
                     LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-                    LabyHelp.getInstance().getCommentManager().refreshComments();
 
-                    LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
+                    } else {
+                        LabyHelp.getInstance().sendDefaultMessage("The LabyHelp Server are currently in maintenance mode.");
+                    }
                     LabyHelp.getInstance().getSettingsManager().isInitLoading = false;
                 } catch (Exception ignored) {
                     LabyHelp.getInstance().getSettingsManager().addonEnabled = false;

@@ -38,7 +38,6 @@ public class ClientTickListener {
             }
         }
 
-
         /* CHECKING */
         if (normalTick > 1240) {
             try {
@@ -49,7 +48,6 @@ public class ClientTickListener {
 
             normalTick = 0;
         }
-
 
         /* UPDATING DATA */
         if (reloadTick > 870) {

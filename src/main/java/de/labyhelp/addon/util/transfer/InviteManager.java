@@ -31,54 +31,6 @@ public class InviteManager {
         return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(5).collect(toList());
     }
 
-    public List<Map.Entry<String, Integer>> getTops3() {
-        if (!userInvites.isEmpty()) {
-            for (Map.Entry<UUID, String> uuidStringEntry : userInvites.entrySet()) {
-                collectors.put(uuidStringEntry.getKey().toString(), Integer.parseInt(uuidStringEntry.getValue()));
-            }
-        }
-        return collectors.entrySet().stream().sorted(Map.Entry.comparingByValue(reverseOrder())).limit(3).collect(toList());
-    }
-
-    public UUID getFamousInvitePlayer() {
-
-        HashMap<UUID, Integer> likeList = new HashMap<UUID, Integer>();
-
-        if (!userInvites.isEmpty()) {
-            for (Map.Entry<UUID, String> uuidStringEntry : LabyHelp.getInstance().getLikeManager().userLikes.entrySet()) {
-                int i = Integer.parseInt(LabyHelp.getInstance().getLikeManager().userLikes.get(uuidStringEntry.getKey()));
-                likeList.put(uuidStringEntry.getKey(), i);
-            }
-
-            int maxValueInMap = (Collections.max(likeList.values()));
-            for (Map.Entry<UUID, Integer> entry : likeList.entrySet()) {
-                if (entry.getValue() == maxValueInMap) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
-    }
-
-    public Integer getFamousInviteAmount() {
-        HashMap<UUID, Integer> inviteList = new HashMap<UUID, Integer>();
-
-        if (!userInvites.isEmpty()) {
-            for (Map.Entry<UUID, String> uuidStringEntry : LabyHelp.getInstance().getInviteManager().userInvites.entrySet()) {
-                int i = Integer.parseInt(LabyHelp.getInstance().getInviteManager().userInvites.get(uuidStringEntry.getKey()));
-                inviteList.put(uuidStringEntry.getKey(), i);
-            }
-
-            int maxValueInMap = (Collections.max(inviteList.values()));
-            for (Map.Entry<UUID, Integer> entry : inviteList.entrySet()) {
-                if (entry.getValue() == maxValueInMap) {
-                    return entry.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
     public String getInvites(UUID uuid) {
         if (!userInvites.isEmpty()) {
             for (Map.Entry<UUID, String> likes : userInvites.entrySet()) {

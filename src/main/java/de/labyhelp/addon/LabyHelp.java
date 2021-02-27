@@ -2,8 +2,6 @@ package de.labyhelp.addon;
 
 import de.labyhelp.addon.commands.socialmedia.SocialCMD;
 import de.labyhelp.addon.commands.addon.*;
-import de.labyhelp.addon.commands.comment.LabyHelpCommentCMD;
-import de.labyhelp.addon.commands.comment.ShowCommentsCMD;
 import de.labyhelp.addon.commands.feature.*;
 import de.labyhelp.addon.commands.socialmedia.*;
 import de.labyhelp.addon.commands.target.ModeTargetCMD;
@@ -25,7 +23,6 @@ import de.labyhelp.addon.store.StoreHandler;
 import de.labyhelp.addon.util.*;
 import de.labyhelp.addon.util.commands.CommandHandler;
 import de.labyhelp.addon.util.settings.SettingsManager;
-import de.labyhelp.addon.util.transfer.CommentManager;
 import de.labyhelp.addon.util.transfer.InviteManager;
 import de.labyhelp.addon.util.transfer.LikeManager;
 import de.labyhelp.addon.util.transfer.SocialMediaManager;
@@ -73,8 +70,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Getter
     private final InviteManager inviteManager;
     @Getter
-    private final CommentManager commentManager;
-    @Getter
     private final SettingsManager settingsManager;
     @Getter
     private final RequestManager requestManager;
@@ -99,7 +94,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         likeManager = new LikeManager();
         socialMediaManager = new SocialMediaManager();
         inviteManager = new InviteManager();
-        commentManager = new CommentManager();
         settingsManager = new SettingsManager();
 
         requestManager = new RequestManager();
@@ -117,6 +111,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         getCommandHandler().registerCommand(
                 new LabyHelpHelpCMD(),
+                new LabyHelpDeveloperCMD(),
                 new SocialCMD(),
                 new LabyHelpCMD(),
                 new LabyHelpAddonsCMD(),
@@ -124,8 +119,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new LabyHelpReloadCMD(),
                 new LabyHelpRulesCMD(),
                 new LabyHelpTeamCMD(),
-                new LabyHelpCommentCMD(),
-                new ShowCommentsCMD(),
                 new InviteListCMD(),
                 new InvitesCMD(),
                 new LabyHelpLikeCMD(),
@@ -134,14 +127,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new BandanaCMD(),
                 new CapeCMD(),
                 new SkinCMD(),
-                new DiscordCMD(),
-                new InstaCMD(),
                 new ServerCMD(),
-                new SnapChatCMD(),
-                new TikTokCMD(),
-                new TwitchCMD(),
-                new TwitterCMD(),
-                new YoutubeCMD(),
                 new ModeTargetCMD(),
                 new SupportCMD(),
                 new TargetCMD(),
@@ -215,6 +201,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public void sendDefaultMessage(String message) {
         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
         labyPlayer.sendDefaultMessage(message);
+    }
+
+    public void sendDeveloperMessage(String message) {
+        if (LabyHelp.getInstance().getSettingsManager().developerMode) {
+            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+            labyPlayer.sendDeveloperMessage(message);
+        }
     }
 
     public boolean isInitialize() {
@@ -322,23 +315,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(settingAdversting);
 
-
-        final BooleanElement settingsComment = new BooleanElement("Comments at your profile", new ControlElement.IconData(Material.SIGN), new Consumer<Boolean>() {
-            @Override
-            public void accept(final Boolean enable) {
-                LabyHelp.getInstance().getSettingsManager().settinngsComments = enable;
-
-                if (enable) {
-                    LabyHelp.getInstance().getCommentManager().sendToggle(LabyMod.getInstance().getPlayerUUID(), "TRUE");
-                } else {
-                    LabyHelp.getInstance().getCommentManager().sendToggle(LabyMod.getInstance().getPlayerUUID(), "FALSE");
-                }
-                LabyHelp.this.getConfig().addProperty("comment", enable);
-                LabyHelp.this.saveConfig();
-            }
-        }, LabyHelp.getInstance().getSettingsManager().settinngsComments);
-
-        settingsElements.add(settingsComment);
 
         settingsElements.add(new HeaderElement(" "));
 

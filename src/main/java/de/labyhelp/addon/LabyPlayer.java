@@ -19,10 +19,10 @@ public class LabyPlayer {
     }
 
     public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.WHITE;
+    public final String developerPrefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Dev-Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
 
 
     public String getSocialMedia(SocialMediaType socialMedia) {
-        LabyHelp.getInstance().getSocialMediaManager().readSocialMedia();
         LabyHelp.getInstance().getServerManager().readServerPartner();
 
         if (socialMedia.getMap().containsKey(uuid)) {
@@ -222,6 +222,12 @@ public class LabyPlayer {
     public void sendDefaultMessage(String message) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + message);
+        }
+    }
+
+    public void sendDeveloperMessage(String message) {
+        if (LabyHelp.getInstance().getSettingsManager().onServer) {
+            LabyMod.getInstance().displayMessageInChat(developerPrefix + " " + message);
         }
     }
 

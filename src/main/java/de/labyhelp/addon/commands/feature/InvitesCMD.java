@@ -12,7 +12,7 @@ import java.util.UUID;
 public class InvitesCMD implements HelpCommand {
     @Override
     public String getName() {
-        return "invites";
+        return "lhinvites";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class InvitesCMD implements HelpCommand {
             });
 
         } else {
-            labyPlayer.sendDefaultMessage("/invites -"  + transManager.getTranslation("player"));
+            labyPlayer.sendDefaultMessage("/lhinvites -"  + transManager.getTranslation("player"));
         }
     }
 }

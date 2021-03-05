@@ -1,5 +1,6 @@
 package de.labyhelp.addon.util.commands;
 
+import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import net.labymod.main.LabyMod;
 
@@ -25,6 +26,8 @@ public class CommandHandler {
 
         for (HelpCommand helpCommand : commands) {
             if (rawCommand.split(" ")[0].equalsIgnoreCase(helpCommand.getName())) {
+                LabyHelp.getInstance().sendDeveloperMessage("execute command: " + command);
+
                 LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                 helpCommand.execute(labyPlayer, args);
                 return true;

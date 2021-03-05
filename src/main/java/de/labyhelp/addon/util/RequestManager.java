@@ -35,6 +35,7 @@ public class RequestManager {
             return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
+            LabyHelp.getInstance().sendDeveloperMessage("error handling: " + e);
             throw new IllegalStateException("Could not fetch request with url:" + urlRequest, e);
         }
     }

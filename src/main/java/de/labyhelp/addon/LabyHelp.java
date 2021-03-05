@@ -73,6 +73,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final SettingsManager settingsManager;
     @Getter
     private final RequestManager requestManager;
+    @Getter
+    private final NameTagManager nameTagManager;
 
     public LabyHelp() {
         instance = this;
@@ -97,6 +99,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsManager = new SettingsManager();
 
         requestManager = new RequestManager();
+
+        nameTagManager = new NameTagManager();
 
     }
 
@@ -210,6 +214,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
     }
 
+    public void changeFirstJoin(Boolean bool) {
+        if (LabyHelp.getInstance().getSettingsManager().firstPlay) {
+            LabyHelp.getInstance().getSettingsManager().firstPlay = bool;
+            LabyHelp.getInstance().getConfig().addProperty("firstJoin", bool);
+            LabyHelp.getInstance().saveConfig();
+        }
+    }
+
     public boolean isInitialize() {
         return instance != null;
     }
@@ -219,6 +231,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
         LabyHelp.getInstance().getSettingsManager().settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
         LabyHelp.getInstance().getSettingsManager().settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
+
+        LabyHelp.getInstance().getSettingsManager().firstPlay = !this.getConfig().has("firstJoin") || this.getConfig().get("firstJoin").getAsBoolean();
 
         LabyHelp.getInstance().getSettingsManager().seeNameTags = !this.getConfig().has("seeNameTags") || this.getConfig().get("seeNameTags").getAsBoolean();
 
@@ -252,7 +266,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.this.saveConfig();
         }, LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable);
         settingsElements.add(settingsEnabled);
-
+        settingsElements.add(new HeaderElement("§7Activate or disable the Addon"));
         /* */
 
         final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" /* Display name */, 0, 0, 0, 0)
@@ -302,6 +316,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         }, LabyHelp.getInstance().getStoreHandler().getStoreSettings().storeAddons);
         settingsElements.add(settingsStore);
+
+        settingsElements.add(new HeaderElement("§7Install and use LabyHelp Store Addons"));
         settingsElements.add(new HeaderElement(" "));
 
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
@@ -316,6 +332,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(settingAdversting);
 
 
+        settingsElements.add(new HeaderElement("§7Receive chat promotional messages"));
+        settingsElements.add(new HeaderElement("§7with our Discord or TeamSpeak"));
         settingsElements.add(new HeaderElement(" "));
 
 
@@ -329,6 +347,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.this.saveConfig();
         }, LabyHelp.getInstance().getSettingsManager().seeNameTags);
         settingsElements.add(settingsNameTags);
+        settingsElements.add(new HeaderElement("§7Choose if you will see"));
+        settingsElements.add(new HeaderElement("§7LabyHelp NameTags in the game"));
+        settingsElements.add(new HeaderElement(" "));
 
         final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
                 .fill(NameTagSettings.values());
@@ -351,6 +372,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
 
         settingsElements.add(alignmentDropDownMenus);
+        settingsElements.add(new HeaderElement("§7Choose how the NameTags should be displayed for you"));
+
 
         SliderElement scalingSliderElement = new SliderElement("NameTag Size" /* Display name */,
                 new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */);
@@ -379,7 +402,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
 
         settingsElements.add(rainbowElement);
-
+        settingsElements.add(new HeaderElement("§7Choose the speed in how many seconds"));
+        settingsElements.add(new HeaderElement("§7the rainbow colors should change"));
 
         NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
                 new ControlElement.IconData(Material.WATCH) /* setting's icon */, LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting  /* current value */);
@@ -392,7 +416,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
 
         settingsElements.add(numberElement);
-
+        settingsElements.add(new HeaderElement("§7How quickly should the NameTags"));
+        settingsElements.add(new HeaderElement("§7change to the NameTags ranks"));
 
         StringElement channelStringElement = new StringElement("Instagram username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstance().getSocialMediaManager().instaName, new Consumer<String>() {
             @Override

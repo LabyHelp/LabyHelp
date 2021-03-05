@@ -25,6 +25,9 @@ public class LabyPlayer {
     public String getSocialMedia(SocialMediaType socialMedia) {
         LabyHelp.getInstance().getServerManager().readServerPartner();
 
+
+        LabyHelp.getInstance().sendDeveloperMessage("get exact social media: " + socialMedia.getName() + socialMedia.getUrlName());
+
         if (socialMedia.getMap().containsKey(uuid)) {
             for (final Map.Entry<UUID, String> entry : socialMedia.getMap().entrySet()) {
                 if (entry.getKey() != null) {

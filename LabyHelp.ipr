@@ -18,8 +18,8 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.16/6dc192c7f93ec1853f70d59d8a6dcf94eb42866/lombok-1.18.16.jar" />
         </processorPath>
-        <module name="LabyHelp.test" />
-        <module name="LabyHelp.main" />
+        <module name="de.labyhelp.addon.LabyHelp.main" />
+        <module name="de.labyhelp.addon.LabyHelp.test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8" />
@@ -194,6 +194,9 @@
       <module fileurl="file://$PROJECT_DIR$/LabyHelp.api.iml" filepath="$PROJECT_DIR$/LabyHelp.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/LabyHelp.main.iml" filepath="$PROJECT_DIR$/LabyHelp.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/LabyHelp.test.iml" filepath="$PROJECT_DIR$/LabyHelp.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.api.iml" filepath="$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.main.iml" filepath="$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.test.iml" filepath="$PROJECT_DIR$/de.labyhelp.addon.LabyHelp.test.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
@@ -209,6 +212,16 @@
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="deobfDeps" />
@@ -449,6 +462,16 @@
       <option name="id" value="MavenRepo" />
       <option name="name" value="MavenRepo" />
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="MavenLocal" />

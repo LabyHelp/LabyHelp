@@ -33,6 +33,10 @@ public class ClientJoinListener implements Consumer<ServerData> {
                         LabyHelp.getInstance().sendDefaultMessage(LabyHelp.getInstance().getSettingsManager().versionTag);
                     }
 
+                    if (LabyHelp.getInstance().getSettingsManager().firstPlay) {
+                        LabyHelp.getInstance().changeFirstJoin(false);
+                        LabyHelp.getInstance().sendTranslMessage("main.firstJoin");
+                    }
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
@@ -42,6 +46,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
                     } else {
                         LabyHelp.getInstance().sendDefaultMessage("The LabyHelp Server are currently in maintenance mode.");
+                        LabyHelp.getInstance().sendDefaultMessage("You can see here more: https://stats.uptimerobot.com/ZrV89sM1jA");
                     }
                     LabyHelp.getInstance().getSettingsManager().isInitLoading = false;
                 } catch (Exception ignored) {

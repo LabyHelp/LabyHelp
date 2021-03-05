@@ -41,6 +41,8 @@ public class SocialMediaManager {
             if (!type.equals(SocialMediaType.NAMETAG)) {
                 String name = message.replace(",", "").replace(":", "").replace("#", "@");
 
+                LabyHelp.getInstance().sendDeveloperMessage("send social: " + name);
+
                 final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/send" + type.getUrlName() + ".php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
                 con.setConnectTimeout(3000);
@@ -49,6 +51,8 @@ public class SocialMediaManager {
                 return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
             } else {
                 String name = message.replace(",", "").replace(":", "");
+
+                LabyHelp.getInstance().sendDeveloperMessage("send social: " + name);
 
                 final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/send" + type.getUrlName() + ".php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&name=" + URLEncoder.encode(name, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -59,6 +63,7 @@ public class SocialMediaManager {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            LabyHelp.getInstance().sendDeveloperMessage("error handling: " + e);
             throw new IllegalStateException("Could not fetch SocialMedias!", e);
         }
     }

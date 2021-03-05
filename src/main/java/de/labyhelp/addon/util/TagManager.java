@@ -1,5 +1,6 @@
 package de.labyhelp.addon.util;
 
+import de.labyhelp.addon.LabyHelp;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class TagManager {
             final String[] array;
             final String[] split = array = (entries = result.split(","));
 
+            LabyHelp.getInstance().sendDeveloperMessage("re-loading server tags");
             hasServer.clear();
             for (final String entry : array) {
                 final String[] data = entry.split(":");
@@ -54,6 +56,8 @@ public class TagManager {
             final String[] array;
             final String[] split = array = (entries = result.split(","));
 
+
+            LabyHelp.getInstance().sendDeveloperMessage("re-loading discord tag list");
             tagList.clear();
             for (final String entry : array) {
                 final String[] data = entry.split(":");

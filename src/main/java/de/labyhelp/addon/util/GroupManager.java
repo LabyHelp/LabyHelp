@@ -22,6 +22,10 @@ public class GroupManager {
         return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getPremiumExtra();
     }
 
+    public boolean isBanned(final UUID uuid) {
+        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid) == HelpGroups.BANNED;
+    }
+
     public boolean isTeam(final UUID uuid) {
         if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
             LabyHelp.getInstance().getCommunicatorHandler().readGroups();
@@ -37,7 +41,7 @@ public class GroupManager {
         return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getTag();
     }
 
-    public static boolean isBanned(final UUID uuid, Boolean database) {
+    public boolean isBanned(final UUID uuid, Boolean database) {
         if (database) {
             LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
         }
@@ -96,15 +100,11 @@ public class GroupManager {
             return;
         }
 
-
         if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
                 HelpGroups group = LabyHelp.getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
-                    // if (LabyHelp.getInstace().getUserHandler().isOnline.get(uuidUserEntry.getKey()).equalsIgnoreCase("ONLINE")) {
-
-
                     if (LabyHelp.getInstance().getServerManager().tagList.containsKey(uuidUserEntry.getKey())
                             && LabyHelp.getInstance().getServerManager().hasServer.containsKey(uuidUserEntry.getKey())) {
                         setServerTagWithTag(uuidUserEntry.getKey(), group);
@@ -116,69 +116,6 @@ public class GroupManager {
                         setNormalTag(uuidUserEntry.getKey(), group);
                     }
 
-
-                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
-                    } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
-                    }
-
-                    // }
-                }
-
-                if (LabyHelp.getInstance().getSettingsManager().targetMode) {
-                    if (LabyHelp.getInstance().getSettingsManager().targetList.contains(uuidUserEntry.getKey())) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
-                    }
-                }
-
-            }
-        }
-
-    }
-
-    public void updateNameTag(boolean readDatabase) {
-        if (readDatabase) {
-            if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(false);
-            }
-            return;
-        }
-
-        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
-            return;
-        }
-
-        if (!LabyHelp.getInstance().getCommunicatorHandler().userNameTags.isEmpty()) {
-            for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-
-                String name = LabyHelp.getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null);
-
-                if (isBanned(uuidUserEntry.getKey(), false)) {
-                    LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
-                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
-                    } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
-                    }
-                    return;
-                }
-
-                if (name != null) {
-                    String finalTag = name.replace("&", "§");
-                    String finalRo = finalTag.replace("{likes}", LabyHelp.getInstance().getLikeManager().getLikes(uuidUserEntry.getKey()));
-                    String rainbow = finalRo.replace("!r", "" + randomeColor() + "");
-
-                    if (!isTag(uuidUserEntry.getKey())) {
-                        String tag = rainbow.replaceAll("LabyHelp", "");
-                        String finishFinalTag = tag.replaceAll("LabyMod", "");
-
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
-                    } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + rainbow);
-                    }
-
                     if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
                     } else {
@@ -186,15 +123,11 @@ public class GroupManager {
                     }
                 }
 
-                if (LabyHelp.getInstance().getSettingsManager().targetMode) {
-                    if (LabyHelp.getInstance().getSettingsManager().targetList.contains(uuidUserEntry.getKey())) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + "TARGET");
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(2);
-                    }
-                }
-
             }
+        } else {
+            LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()).setSubTitle("LabyHelp");
         }
+
     }
 
     private final Random RANDOM = new Random();
@@ -204,7 +137,7 @@ public class GroupManager {
         return RANDOM.nextInt((11 - 1) + 1) + 1;
     }
 
-    private EnumChatFormatting randomeColor() {
+    public EnumChatFormatting randomeColor() {
         if (getRandomNumberInRange() == 1) {
             chooseColor(EnumChatFormatting.YELLOW);
         } else if (getRandomNumberInRange() == 2) {

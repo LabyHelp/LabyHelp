@@ -55,55 +55,25 @@ public class ClientTickListener {
                 @Override
                 public void run() {
                     try {
-                        LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
-                        LabyHelp.getInstance().getGroupManager().updateNameTag(true);
+                        LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
                         LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
                     } catch (Exception ignored) {
                         LabyHelp.getInstance().getSettingsManager().addonEnabled = false;
                     }
 
-                    System.out.println("update subtitle & nametags");
+                    LabyHelp.getInstance().sendDeveloperMessage("reloading via tick");
                 }
             });
             reloadTick = 0;
         }
 
         /* REFRESHING NAMETAGS */
-        if (LabyHelp.getInstance().getSettingsManager().nameTagSettings.equalsIgnoreCase("SWITCHING")) {
-            LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                @Override
-                public void run() {
-                    if (nameTick > LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 20) {
-                        if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                            if (nameTick < LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 40) {
-                                LabyHelp.getInstance().getGroupManager().updateNameTag(false);
 
-                            }
-                            if (nameTick > LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 40) {
-                                nameTick = 0;
-                            }
-                        }
-                    } else {
-                        if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                            if (nameTick < LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 40) {
-                                LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
-                            }
-                        }
-                    }
-                }
-            });
-        } else if (LabyHelp.getInstance().getSettingsManager().nameTagSettings.equalsIgnoreCase("NAMETAG")) {
-            LabyHelp.getInstance().getGroupManager().updateNameTag(false);
-        } else {
-            if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
-                    }
-                });
-            }
+
+        if (LabyHelp.getInstance().getNameTagManager().updateNameTags(nameTick)) {
+            nameTick = 0;
         }
+
         normalTick++;
         nameTick++;
         reloadTick++;

@@ -20,7 +20,7 @@ plugins {
 }
 
 group = 'de.labyhelp.addon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-version = '2.5.6'
+version = '2.6'
 //archivesBaseName = "LabyHelp"
 
 allprojects {
@@ -63,7 +63,7 @@ publishing {
 
             groupId 'de.labyhelp'
             artifactId 'addon'
-            version '2.5.6'
+            version '2.6'
             pom {
                 name = 'labyhelp'
                 description = 'The offical API for the LabyHelp addon'
@@ -105,10 +105,10 @@ bintray {
         publish = true
 
         version {
-            name = '2.5.6'
+            name = '2.6'
             desc = 'LabyHelp API'
             released = new Date()
-            vcsTag = '2.5.6'
+            vcsTag = '2.6'
         }
     }
 }

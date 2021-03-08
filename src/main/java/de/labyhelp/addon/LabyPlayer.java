@@ -42,71 +42,12 @@ public class LabyPlayer {
         return null;
     }
 
-    public void openInsta(String name) {
-        try {
-            if (name != null) {
-                LabyMod.getInstance().openWebpage("https://www.instagram.com/" + name, false);
-            }
-        } catch (Exception ignored) {
-            sendError();
-        }
-    }
-
-    public void openTikTok(String name) {
-        try {
-            if (name != null) {
-                LabyMod.getInstance().openWebpage("https://www.tiktok.com/@" + name, false);
-            }
-        } catch (Exception ignored) {
-            sendError();
-        }
-    }
-
-    public void openTwitter(String name) {
-        try {
-            if (name != null) {
-                LabyMod.getInstance().openWebpage("https://www.twitter.com/" + name, false);
-            }
-        } catch (Exception ignored) {
-            sendError();
-        }
-    }
-
     public void openSocial(UUID uuid, String name) {
         try {
             LabyMod.getInstance().openWebpage("https://www.labyhelp.de/p.php?search=" + name, false);
         } catch (Exception ignored) {
             sendError();
         }
-    }
-
-    public void openTwitch(String name) {
-        try {
-            if (name != null) {
-                LabyMod.getInstance().openWebpage("https://www.twitch.tv/" + name, false);
-            }
-        } catch (Exception ignored) {
-            sendError();
-        }
-    }
-
-    public void openYoutube(String name) {
-        try {
-            if (name != null) {
-                LabyMod.getInstance().openWebpage("https://www.youtube.com/results?search_query=" + name, false);
-            }
-        } catch (Exception ignored) {
-            sendError();
-        }
-    }
-
-    public void sendDiscord(String name) {
-
-        StringSelection stringSelection = new StringSelection(name);
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
-
-        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.discord") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
     }
 
     public void sendServer(String name) {

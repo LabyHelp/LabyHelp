@@ -16,7 +16,26 @@ public class ClientJoinListener implements Consumer<ServerData> {
         postJoin(serverData);
     }
 
-    int i = 1;
+    private void sendBetaMessage() {
+        if (LabyHelp.getInstance().getSettingsManager().versionTag != null) {
+            LabyHelp.getInstance().sendTranslMessage("main.beta.notification");
+            LabyHelp.getInstance().sendDefaultMessage(LabyHelp.getInstance().getSettingsManager().versionTag);
+        }
+    }
+
+    private void sendFirstJoinMessage() {
+        if (LabyHelp.getInstance().getSettingsManager().firstPlay) {
+            LabyHelp.getInstance().changeFirstJoin(false);
+            LabyHelp.getInstance().sendTranslMessage("main.firstJoin");
+        }
+    }
+
+    private void checkIfPartnerServer(String serverIp) {
+        if (serverIp.equalsIgnoreCase("mcone.eu")) {
+            LabyHelp.getInstance().sendDeveloperMessage("try to connect to the partner server: " + serverIp);
+            //TODO: add Partner Server code
+        }
+    }
 
     public void postJoin(ServerData serverData) {
         LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
@@ -28,15 +47,10 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     if (LabyHelp.getInstance().getSettingsManager().isAddonEnabled()) {
                     LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
 
-                    if (LabyHelp.getInstance().getSettingsManager().versionTag != null) {
-                        LabyHelp.getInstance().sendTranslMessage("main.beta.notification");
-                        LabyHelp.getInstance().sendDefaultMessage(LabyHelp.getInstance().getSettingsManager().versionTag);
-                    }
+                    sendBetaMessage();
+                    sendFirstJoinMessage();
 
-                    if (LabyHelp.getInstance().getSettingsManager().firstPlay) {
-                        LabyHelp.getInstance().changeFirstJoin(false);
-                        LabyHelp.getInstance().sendTranslMessage("main.firstJoin");
-                    }
+                    checkIfPartnerServer(serverData.getIp());
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(false);

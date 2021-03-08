@@ -3,7 +3,7 @@
   "name": "LabyHelp",
   "mainClass": "de.labyhelp.addon.LabyHelp",
   "description": "A LabyMod extension with other cool features",
-  "version": 2.5,
+  "version": 2.6,
   "author": "marvhuel",
   "category": 2,
   "icon": "https://i.imgur.com/u7OrwG7.png"

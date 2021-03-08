@@ -9,8 +9,8 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.57.2";
-    public String versionTag = null;
+    public static String currentVersion = "2.6";
+    public String versionTag = "SNAPSHOT - A/B";
 
     public boolean firstPlay = true;
 
@@ -29,9 +29,6 @@ public class SettingsManager {
 
     public boolean isInitLoading = true;
 
-
-    public ArrayList<UUID> targetList = new ArrayList<>();
-    public boolean targetMode = false;
 
     public String nameTagSettings;
     public int nameTagSwitchingSetting;

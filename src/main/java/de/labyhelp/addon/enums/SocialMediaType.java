@@ -16,7 +16,8 @@ public enum SocialMediaType {
     DISCORD(null, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
     STATUS(LabyHelp.getInstance().getCommunicatorHandler().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
     SERVER(LabyHelp.getInstance().getServerManager().hasServer, null, "Server"),
-    NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().nameTagName, "NameTag");
+    NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().nameTagName, "NameTag"),
+    SECOND_NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().secondNameTagName, "SecondNameTag");
 
     private final Map<UUID, String> map;
     private final String name;

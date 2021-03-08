@@ -4,13 +4,10 @@ import de.labyhelp.addon.commands.socialmedia.SocialCMD;
 import de.labyhelp.addon.commands.addon.*;
 import de.labyhelp.addon.commands.feature.*;
 import de.labyhelp.addon.commands.socialmedia.*;
-import de.labyhelp.addon.commands.target.ModeTargetCMD;
-import de.labyhelp.addon.commands.target.TargetCMD;
 import de.labyhelp.addon.commands.team.LabyHelpBanCMD;
 import de.labyhelp.addon.commands.team.LabyHelpWebCMD;
 import de.labyhelp.addon.enums.LabyVersion;
 import de.labyhelp.addon.enums.Languages;
-import de.labyhelp.addon.enums.NameTagSettings;
 import de.labyhelp.addon.enums.SocialMediaType;
 import de.labyhelp.addon.listeners.ClientJoinListener;
 import de.labyhelp.addon.listeners.ClientQuitListener;
@@ -115,6 +112,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         getCommandHandler().registerCommand(
                 new LabyHelpHelpCMD(),
+                new LabyHelpReportCMD(),
                 new LabyHelpDeveloperCMD(),
                 new SocialCMD(),
                 new LabyHelpCMD(),
@@ -132,9 +130,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new CapeCMD(),
                 new SkinCMD(),
                 new ServerCMD(),
-                new ModeTargetCMD(),
                 new SupportCMD(),
-                new TargetCMD(),
                 new LabyHelpBanCMD(),
                 new LabyHelpWebCMD()
         );
@@ -162,19 +158,17 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("SocialMedia") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Clear cosmetics") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("LabyHelp Profile") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
                 playerMenu.getDisplayName().equalsIgnoreCase("See Server") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("join Server") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Comments"));
+                playerMenu.getDisplayName().equalsIgnoreCase("NameTag report") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Socialmedia") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("join Server"));
 
-
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new CapeMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SkinMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ServerMenu());
         LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ReportMenu());
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
@@ -215,11 +209,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     }
 
     public void changeFirstJoin(Boolean bool) {
-        if (LabyHelp.getInstance().getSettingsManager().firstPlay) {
             LabyHelp.getInstance().getSettingsManager().firstPlay = bool;
             LabyHelp.getInstance().getConfig().addProperty("firstJoin", bool);
             LabyHelp.getInstance().saveConfig();
-        }
     }
 
     public boolean isInitialize() {
@@ -250,6 +242,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSocialMediaManager().tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().nameTagName = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
+        LabyHelp.getInstance().getSocialMediaManager().secondNameTagName = this.getConfig().has("second_nametag") ? this.getConfig().get("second_nametag").getAsString() : "second_nametag" +
+                "";
 
         LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
         LabyHelp.getInstance().getSettingsManager().nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
@@ -351,30 +345,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(new HeaderElement("§7LabyHelp NameTags in the game"));
         settingsElements.add(new HeaderElement(" "));
 
-        final DropDownMenu<NameTagSettings> nameTagSettings = new DropDownMenu<NameTagSettings>("Local NameTag Settings" /* Display name */, 0, 0, 0, 0)
-                .fill(NameTagSettings.values());
-        DropDownElement<NameTagSettings> alignmentDropDownMenus = new DropDownElement<>("Local NameTag Settings ", nameTagSettings);
-
-        if (LabyHelp.getInstance().getSettingsManager().nameTagSettings != null) {
-            nameTagSettings.setSelected(NameTagSettings.valueOf(LabyHelp.getInstance().getSettingsManager().nameTagSettings));
-        } else {
-            nameTagSettings.setSelected(NameTagSettings.SWITCHING);
-        }
-
-        // Listen on changes
-        alignmentDropDownMenus.setChangeListener(alignment -> {
-
-            LabyHelp.getInstance().getSettingsManager().nameTagSettings = alignment.getName();
-
-            LabyHelp.this.getConfig().addProperty("nameTagSettings", alignment.getName());
-            LabyHelp.this.saveConfig();
-
-        });
-
-        settingsElements.add(alignmentDropDownMenus);
-        settingsElements.add(new HeaderElement("§7Choose how the NameTags should be displayed for you"));
-
-
         SliderElement scalingSliderElement = new SliderElement("NameTag Size" /* Display name */,
                 new ControlElement.IconData(Material.ANVIL) /* setting's icon */, 1 /* current value */);
         scalingSliderElement.setRange(1, 4);
@@ -404,6 +374,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(rainbowElement);
         settingsElements.add(new HeaderElement("§7Choose the speed in how many seconds"));
         settingsElements.add(new HeaderElement("§7the rainbow colors should change"));
+
+        settingsElements.add(new HeaderElement(" "));
 
         NumberElement numberElement = new NumberElement("NameTag Switching Time" /* Display name */,
                 new ControlElement.IconData(Material.WATCH) /* setting's icon */, LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting  /* current value */);
@@ -541,6 +513,22 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         });
         settingsElements.add(nameTag);
+
+        StringElement second_nameTag = new StringElement("Second NameTag", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstance().getSocialMediaManager().secondNameTagName, new Consumer<String>() {
+            @Override
+            public void accept(String accepted) {
+                try {
+                    LabyHelp.getInstance().getSocialMediaManager().sendSocialMedia(SocialMediaType.SECOND_NAMETAG, accepted);
+                } catch (Exception ignored) {
+                }
+
+                LabyHelp.getInstance().getSocialMediaManager().secondNameTagName = accepted;
+
+                LabyHelp.this.getConfig().addProperty("second_nametag", accepted);
+                LabyHelp.this.saveConfig();
+            }
+        });
+        settingsElements.add(second_nameTag);
 
         StringElement status = new StringElement("Status", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstance().getSocialMediaManager().statusName, new Consumer<String>() {
             @Override

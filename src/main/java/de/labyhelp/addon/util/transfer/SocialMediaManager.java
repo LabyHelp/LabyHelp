@@ -25,6 +25,7 @@ public class SocialMediaManager {
     public String snapchatName;
     public String statusName;
     public String nameTagName;
+    public String secondNameTagName;
 
     public void sendSocialMedia(SocialMediaType type, String message) {
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
@@ -38,7 +39,7 @@ public class SocialMediaManager {
     private String sendSocial(SocialMediaType type, String message) {
         try {
 
-            if (!type.equals(SocialMediaType.NAMETAG)) {
+            if (!type.equals(SocialMediaType.NAMETAG) && !type.equals(SocialMediaType.SECOND_NAMETAG)) {
                 String name = message.replace(",", "").replace(":", "").replace("#", "@");
 
                 LabyHelp.getInstance().sendDeveloperMessage("send social: " + name);

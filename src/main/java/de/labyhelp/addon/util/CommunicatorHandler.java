@@ -34,12 +34,9 @@ public class CommunicatorHandler {
     public final Map<UUID, HelpGroups> userGroups = new HashMap<UUID, HelpGroups>();
     public final Map<UUID, HelpGroups> oldGroups = new HashMap<UUID, HelpGroups>();
     public final Map<UUID, String> userNameTags = new HashMap<UUID, String>();
+    public final Map<UUID, String> userSecondNameTags = new HashMap<UUID, String>();
 
     public final Map<UUID, String> isOnline = new HashMap<UUID, String>();
-
-    public void targetMode(boolean activated) {
-        LabyHelp.getInstance().getSettingsManager().targetMode = activated;
-    }
 
     public void sendClient(String sip) {
         try {
@@ -123,7 +120,9 @@ public class CommunicatorHandler {
                             userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
 
-                            if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid)) && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))) {
+                            if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid))
+                                    && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))
+                                    && !LabyHelp.getInstance().getGroupManager().isBanned(UUID.fromString(uuid))) {
                                 if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
                                     userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
                                 } else if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
@@ -145,7 +144,7 @@ public class CommunicatorHandler {
                     }
                 }
 
-                LabyHelp.getInstance().sendDeveloperMessage("User Group refresh");
+                LabyHelp.getInstance().sendDeveloperMessage("called method: readGroups");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,13 +168,16 @@ public class CommunicatorHandler {
                 LabyHelp.getInstance().getInviteManager().oldInvites.put(likes.getKey(), likes.getValue());
             }
 
+            LabyHelp.getInstance().sendDeveloperMessage("called method: readUserInformations");
+
             LabyHelp.getInstance().getLikeManager().readUserLikes();
             LabyHelp.getInstance().getLikeManager().readLikes();
             LabyHelp.getInstance().getInviteManager().readUserInvites();
-            LabyHelp.getInstance().getInviteManager().readOldPlayer();
 
             LabyHelp.getInstance().getServerManager().readServerPartner();
             LabyHelp.getInstance().getServerManager().readTagList();
+
+            LabyHelp.getInstance().getInviteManager().readOldPlayer();
             readGroups();
 
             TranslationManager translationManager = LabyHelp.getInstance().getTranslationManager();
@@ -200,38 +202,20 @@ public class CommunicatorHandler {
                 LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN +  translationManager.getTranslation("main.predeemedcode") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
             }
 
-        } else {
-            readNameTag();
         }
-    }
-
-    public void readNameTag() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametag.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            final String[] entries;
-            final String[] array;
-            final String[] split = array = (entries = result.split(","));
-            for (final String entry : array) {
-                final String[] data = entry.split(":");
-                if (data.length == 2) {
-                    userNameTags.put(UUID.fromString(data[0]), data[1]);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read NameTag!", e);
-        }
+        LabyHelp.getInstance().getNameTagManager().readNameTags();
     }
 
     public String sendBanned(final UUID uuid, String reason) {
         try {
             if (uuid != null) {
                 reason = reason.replace(",", "").replace(":", "");
+
+                LabyHelp.getInstance().sendDeveloperMessage("called method: sendBanned");
+                LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
+                LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
+                LabyHelp.getInstance().sendDeveloperMessage("reason: " + reason);
+
 
                 final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + URLEncoder.encode(reason, "UTF-8")).openConnection();
                 con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -330,6 +314,7 @@ public class CommunicatorHandler {
             con.setConnectTimeout(3000);
             con.setReadTimeout(3000);
             con.connect();
+
             return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();

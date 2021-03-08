@@ -13,14 +13,28 @@ public class LabyHelpDeveloperCMD implements HelpCommand {
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
 
-        if (LabyHelp.getInstance().getSettingsManager().developerMode) {
-            LabyHelp.getInstance().sendTranslMessage("main.developer.mode.off");
+        String syntax = "/lhdev or /lhdev [setFirstJoin]";
 
-            LabyHelp.getInstance().getSettingsManager().developerMode = false;
+        if (args.length == 0 || args.length == 1) {
+
+            if (LabyHelp.getInstance().getSettingsManager().developerMode) {
+                LabyHelp.getInstance().sendTranslMessage("main.developer.mode.off");
+
+                LabyHelp.getInstance().getSettingsManager().developerMode = false;
+            } else {
+                LabyHelp.getInstance().sendTranslMessage("main.developer.mode.on");
+
+                LabyHelp.getInstance().getSettingsManager().developerMode = true;
+            }
+        } else if (args.length == 2) {
+            if (args[1].equalsIgnoreCase("setFirstJoin")) {
+                LabyHelp.getInstance().sendTranslMessage("main.developer.mode.firstjoin");
+                LabyHelp.getInstance().changeFirstJoin(true);
+            } else {
+                LabyHelp.getInstance().sendDefaultMessage(syntax);
+            }
         } else {
-            LabyHelp.getInstance().sendTranslMessage("main.developer.mode.on");
-
-            LabyHelp.getInstance().getSettingsManager().developerMode = true;
+            LabyHelp.getInstance().sendDefaultMessage(syntax);
         }
     }
 }

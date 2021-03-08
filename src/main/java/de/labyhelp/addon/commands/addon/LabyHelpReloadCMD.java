@@ -29,8 +29,7 @@ public class LabyHelpReloadCMD implements HelpCommand {
                     LabyHelp.getInstance().getServerManager().readTagList();
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
-                    LabyHelp.getInstance().getGroupManager().updateNameTag(true);
-                    LabyHelp.getInstance().getGroupManager().updateNameTag(false);
+                    LabyHelp.getInstance().getNameTagManager().updateNameTag(true, true);
                     LabyHelp.getInstance().sendDeveloperMessage("NameTags/Subtitles refresh");
 
                     LabyHelp.getInstance().getLikeManager().isLiked.clear();

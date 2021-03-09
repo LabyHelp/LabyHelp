@@ -52,8 +52,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
                     checkIfPartnerServer(serverData.getIp());
 
-                    LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
-                    LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+                    LabyHelp.getInstance().getCommunicatorHandler().readFastStart();
                     LabyHelp.getInstance().sendDeveloperMessage("updating join user list");
 
                     LabyHelp.getInstance().getStoreHandler().readHelpAddons();

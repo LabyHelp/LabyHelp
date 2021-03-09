@@ -55,13 +55,14 @@ public class NameTagManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-                    String finalRo = finalTag.replace("{likes}", LabyHelp.getInstance().getLikeManager().getLikes(uuidUserEntry.getKey())).
-                            replace("{invites}", LabyHelp.getInstance().getInviteManager().getInvites(uuidUserEntry.getKey()));
-                    String rainbow = finalRo.replace("!r", "" + LabyHelp.getInstance().getGroupManager().randomeColor() + "");
+                    //     String finalRo = finalTag.replace("{likes}", LabyHelp.getInstance().getLikeManager().getLikes(uuidUserEntry.getKey()));
+                    //   String finalRo2 = finalRo.replace("{invites}", LabyHelp.getInstance().getInviteManager().getInvites(uuidUserEntry.getKey()));
+
+                    String rainbow = finalTag.replace("!r", "" + LabyHelp.getInstance().getGroupManager().randomeColor() + "");
 
                     if (!LabyHelp.getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
-                        String tag = rainbow.replaceAll("LabyHelp", "");
-                        String finishFinalTag = tag.replaceAll("LabyMod", "");
+                        String tag = rainbow.replaceAll("LabyHelp", "CENSORED");
+                        String finishFinalTag = tag.replaceAll("LabyMod", "CENSORED");
 
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     } else {
@@ -160,7 +161,6 @@ public class NameTagManager {
     public void updateCurrentNameTagRealTime() {
         if (currentNameTag == NameTags.RANK) {
             LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
-            currentNameTag = NameTags.FIRST_NAMETAG;
         } else if (currentNameTag == NameTags.FIRST_NAMETAG) {
             updateNameTag(false, true);
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
@@ -179,6 +179,7 @@ public class NameTagManager {
             return true;
         }
 
+        updateCurrentNameTagRealTime();
         Integer chooseSeconds = LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
 
         if (LabyHelp.getInstance().getSettingsManager().isOnServer()) {
@@ -188,7 +189,6 @@ public class NameTagManager {
                 moveNameTags();
             }
 
-            updateCurrentNameTagRealTime();
         }
 
 

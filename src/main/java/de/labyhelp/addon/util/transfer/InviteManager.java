@@ -38,8 +38,10 @@ public class InviteManager {
                     return likes.getValue();
                 }
             }
+        } else {
+            return "0";
         }
-        return null;
+        return "0";
     }
 
     public String getBeforeInvites() {

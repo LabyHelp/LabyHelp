@@ -25,32 +25,23 @@ public class LabyHelpReloadCMD implements HelpCommand {
 
                     LabyHelp.getInstance().getStoreHandler().readHelpAddons();
                     LabyHelp.getInstance().sendDeveloperMessage("Help Addons refresh");
-                    LabyHelp.getInstance().getServerManager().readServerPartner();
-                    LabyHelp.getInstance().getServerManager().readTagList();
 
                     LabyHelp.getInstance().getGroupManager().updateSubTitles(true);
-                    LabyHelp.getInstance().getNameTagManager().updateNameTag(true, true);
                     LabyHelp.getInstance().sendDeveloperMessage("NameTags/Subtitles refresh");
 
                     LabyHelp.getInstance().getLikeManager().isLiked.clear();
-                    LabyHelp.getInstance().getLikeManager().readUserLikes();
-                    LabyHelp.getInstance().getLikeManager().readLikes();
-                    LabyHelp.getInstance().sendDeveloperMessage("Like refresh");
 
                     LabyHelp.getInstance().getTranslationManager().currentLanguagePack.clear();
                     LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(transManager.chooseLanguage));
 
-                    LabyHelp.getInstance().getInviteManager().readUserInvites();
-                    LabyHelp.getInstance().getInviteManager().readOldPlayer();
+                    LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
                     LabyHelp.getInstance().sendDeveloperMessage("old Player refresh");
 
                     LabyHelp.getInstance().getCommunicatorHandler().isOnline.clear();
                     LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
 
-                    System.out.println("subtitles updating..");
                     final String webVersion = CommunicatorHandler.readVersion();
                     LabyHelp.getInstance().getSettingsManager().isNewerVersion = !webVersion.equalsIgnoreCase(SettingsManager.currentVersion);
-
                     LabyHelp.getInstance().sendDeveloperMessage("updating Version");
 
                     labyPlayer.sendTranslMessage("info.reload.finish");

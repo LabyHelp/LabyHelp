@@ -23,7 +23,6 @@ public class LikesCMD implements HelpCommand {
             LabyHelp.getInstance().getExecutor().submit(new Runnable() {
                 @Override
                 public void run() {
-                    LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
                     final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
                     if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid)) {

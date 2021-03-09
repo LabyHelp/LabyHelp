@@ -6,6 +6,7 @@ import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.LabyVersion;
+import de.labyhelp.addon.util.settings.SettingsManager;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
@@ -56,7 +57,7 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8"));
+                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8"));
                     LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.12");
 
                 } else {
@@ -81,7 +82,7 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8"));
+                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8"));
                     LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.8");
 
                 } else {
@@ -152,6 +153,19 @@ public class CommunicatorHandler {
         }
     }
 
+    public void readFastStart() {
+        LabyHelp.getInstance().sendDeveloperMessage("readFast state 1");
+
+        LabyHelp.getInstance().getNameTagManager().readNameTags();
+        LabyHelp.getInstance().sendDeveloperMessage("readFast state 2");
+
+        LabyHelp.getInstance().getServerManager().readServerPartner();
+        LabyHelp.getInstance().getServerManager().readTagList();
+
+        readUserInformations(true);
+        LabyHelp.getInstance().sendDeveloperMessage("readFast state 3");
+    }
+
     public void readUserInformations(boolean groups) {
         if (groups) {
 
@@ -172,6 +186,7 @@ public class CommunicatorHandler {
 
             LabyHelp.getInstance().getLikeManager().readUserLikes();
             LabyHelp.getInstance().getLikeManager().readLikes();
+            LabyHelp.getInstance().sendDeveloperMessage("Like refresh");
             LabyHelp.getInstance().getInviteManager().readUserInvites();
 
             LabyHelp.getInstance().getServerManager().readServerPartner();

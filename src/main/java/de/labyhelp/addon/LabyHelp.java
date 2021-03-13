@@ -155,20 +155,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("LabyHelp Profile") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("See Server") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("NameTag report") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("Socialmedia") ||
-                playerMenu.getDisplayName().equalsIgnoreCase("join Server"));
 
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ServerMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
-        LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ReportMenu());
+        changePlayerMenuItems();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
@@ -208,6 +196,25 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
     }
 
+    public void changePlayerMenuItems() {
+        LabyMod.getInstance().getChatToolManager().getPlayerMenu().removeIf(playerMenu -> playerMenu.getDisplayName().equalsIgnoreCase("Like") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Cape") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Skin") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("LabyHelp Profile") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Bandana") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("See Server") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("NameTag report") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("Socialmedia") ||
+                playerMenu.getDisplayName().equalsIgnoreCase("join Server"));
+
+        if (settingsManager.seePlayerMenu) {
+            LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new LikeMenu());
+            LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ServerMenu());
+            LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
+            LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ReportMenu());
+        }
+    }
+
     public void changeFirstJoin(Boolean bool) {
             LabyHelp.getInstance().getSettingsManager().firstPlay = bool;
             LabyHelp.getInstance().getConfig().addProperty("firstJoin", bool);
@@ -222,7 +229,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     public void loadConfig() {
         LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable = !this.getConfig().has("enable") || this.getConfig().get("enable").getAsBoolean();
         LabyHelp.getInstance().getSettingsManager().settingsAdversting = !this.getConfig().has("adversting") || this.getConfig().get("adversting").getAsBoolean();
-        LabyHelp.getInstance().getSettingsManager().settinngsComments = !this.getConfig().has("comment") || this.getConfig().get("comment").getAsBoolean();
+        LabyHelp.getInstance().getSettingsManager().seePlayerMenu = !this.getConfig().has("seePlayerMenu") || this.getConfig().get("seePlayerMenu").getAsBoolean();
 
         LabyHelp.getInstance().getSettingsManager().firstPlay = !this.getConfig().has("firstJoin") || this.getConfig().get("firstJoin").getAsBoolean();
 
@@ -312,6 +319,21 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(settingsStore);
 
         settingsElements.add(new HeaderElement("§7Install and use LabyHelp Store Addons"));
+        settingsElements.add(new HeaderElement(" "));
+        final BooleanElement settingsPlayerMenu = new BooleanElement("LabyHelp PlayerMenu items", new ControlElement.IconData(Material.ARROW), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstance().getSettingsManager().seePlayerMenu = enable;
+                changePlayerMenuItems();
+
+
+                LabyHelp.this.getConfig().addProperty("seePlayerMenu", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstance().getSettingsManager().seePlayerMenu);
+        settingsElements.add(settingsPlayerMenu);
+
+        settingsElements.add(new HeaderElement("§7See the LabyHelp PlayerMenu items"));
         settingsElements.add(new HeaderElement(" "));
 
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {

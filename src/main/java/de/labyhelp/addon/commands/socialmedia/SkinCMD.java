@@ -9,7 +9,7 @@ import java.util.UUID;
 public class SkinCMD implements HelpCommand {
     @Override
     public String getName() {
-        return "skin";
+        return "lhskin";
     }
 
     @Override

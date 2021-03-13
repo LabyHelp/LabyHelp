@@ -10,7 +10,6 @@ public class ClientTickListener {
 
     private int reloadTick = 0;
     private int nameTick = 0;
-    private int normalTick = 0;
     private int rainbowTick = 0;
 
     private int adverstingTick = 0;
@@ -38,17 +37,6 @@ public class ClientTickListener {
             }
         }
 
-        /* CHECKING */
-        if (normalTick > 1240) {
-            try {
-                LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
-            } catch (Exception ignored) {
-                LabyHelp.getInstance().getSettingsManager().addonEnabled = false;
-            }
-
-            normalTick = 0;
-        }
-
         /* UPDATING DATA */
         if (reloadTick > 870) {
             LabyHelp.getInstance().getExecutor().submit(new Runnable() {
@@ -68,13 +56,10 @@ public class ClientTickListener {
         }
 
         /* REFRESHING NAMETAGS */
-
-
         if (LabyHelp.getInstance().getNameTagManager().updateNameTags(nameTick)) {
             nameTick = 0;
         }
 
-        normalTick++;
         nameTick++;
         reloadTick++;
         rainbowTick++;

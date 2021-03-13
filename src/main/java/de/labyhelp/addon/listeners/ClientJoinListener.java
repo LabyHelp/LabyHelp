@@ -38,12 +38,12 @@ public class ClientJoinListener implements Consumer<ServerData> {
     }
 
     public void postJoin(ServerData serverData) {
-        LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
-
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
             @Override
             public void run() {
                 try {
+                    LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
+
                     if (LabyHelp.getInstance().getSettingsManager().isAddonEnabled()) {
                     LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
 
@@ -52,7 +52,10 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
                     checkIfPartnerServer(serverData.getIp());
 
-                    LabyHelp.getInstance().getCommunicatorHandler().readFastStart();
+                    if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
+                        LabyHelp.getInstance().getCommunicatorHandler().readFastStart();
+                    }
+
                     LabyHelp.getInstance().sendDeveloperMessage("updating join user list");
 
                     LabyHelp.getInstance().getStoreHandler().readHelpAddons();

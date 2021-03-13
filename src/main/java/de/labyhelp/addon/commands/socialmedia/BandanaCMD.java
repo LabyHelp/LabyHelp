@@ -9,7 +9,7 @@ import java.util.UUID;
 public class BandanaCMD implements HelpCommand {
     @Override
     public String getName() {
-        return "bandana";
+        return "lhbandana";
     }
 
     @Override

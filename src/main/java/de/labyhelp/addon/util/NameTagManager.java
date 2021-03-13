@@ -171,26 +171,29 @@ public class NameTagManager {
     }
 
     int prepereTicks = 0;
+
     public boolean updateNameTags(Integer currentValue) {
 
-        if (prepereTicks < 15) {
-            prepereTicks++;
-            moveNameTags();
-            return true;
-        }
-
-        updateCurrentNameTagRealTime();
-        Integer chooseSeconds = LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
-
-        if (LabyHelp.getInstance().getSettingsManager().isOnServer()) {
-            if (currentValue > chooseSeconds) {
-                return true;
-            } else if (currentValue == 1) {
+        if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
+            if (prepereTicks < 15) {
+                prepereTicks++;
                 moveNameTags();
+                return true;
             }
 
-        }
+            updateCurrentNameTagRealTime();
 
+            Integer chooseSeconds = LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
+
+            if (LabyHelp.getInstance().getSettingsManager().isOnServer()) {
+                if (currentValue > chooseSeconds) {
+                    return true;
+                } else if (currentValue == 1) {
+                    moveNameTags();
+                }
+
+            }
+        }
 
         return false;
     }

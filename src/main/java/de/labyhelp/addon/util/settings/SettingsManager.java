@@ -9,10 +9,12 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.1";
+    public static String currentVersion = "2.6.41";
     public String versionTag = null;
 
     public boolean firstPlay = true;
+
+    public boolean translationLoaded = false;
 
     public Boolean isNewerVersion = false;
     public String newestVersion;
@@ -24,11 +26,11 @@ public class SettingsManager {
 
     public boolean seeNameTags = true;
 
-    public boolean settinngsComments = true;
     public boolean onServer = false;
 
     public boolean isInitLoading = true;
 
+    public boolean seePlayerMenu = true;
 
     public String nameTagSettings;
     public int nameTagSwitchingSetting;

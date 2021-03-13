@@ -9,7 +9,7 @@ import java.util.UUID;
 public class CapeCMD implements HelpCommand {
     @Override
     public String getName() {
-        return "cape";
+        return "lhcape";
     }
 
     @Override

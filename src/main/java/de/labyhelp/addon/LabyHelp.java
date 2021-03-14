@@ -72,6 +72,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final RequestManager requestManager;
     @Getter
     private final NameTagManager nameTagManager;
+    @Getter
+    private final VoiceChatManager voiceChatManager;
 
     public LabyHelp() {
         instance = this;
@@ -98,6 +100,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         requestManager = new RequestManager();
 
         nameTagManager = new NameTagManager();
+        voiceChatManager = new VoiceChatManager();
 
     }
 
@@ -132,7 +135,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new ServerCMD(),
                 new SupportCMD(),
                 new LabyHelpBanCMD(),
-                new LabyHelpWebCMD()
+                new LabyHelpWebCMD(),
+                new VoiceChatCMD()
         );
 
 
@@ -245,12 +249,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSocialMediaManager().discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
         LabyHelp.getInstance().getSocialMediaManager().youtubeName = this.getConfig().has("youtubename") ? this.getConfig().get("youtubename").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().twitchName = this.getConfig().has("twitchname") ? this.getConfig().get("twitchname").getAsString() : "username";
+        LabyHelp.getInstance().getSocialMediaManager().githubName = this.getConfig().has("githubname") ? this.getConfig().get("githubname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().twitterName = this.getConfig().has("twittername") ? this.getConfig().get("twittername").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().tiktokName = this.getConfig().has("tiktokname") ? this.getConfig().get("tiktokname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().snapchatName = this.getConfig().has("snapchatname") ? this.getConfig().get("snapchatname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().nameTagName = this.getConfig().has("nametag") ? this.getConfig().get("nametag").getAsString() : "nametag";
-        LabyHelp.getInstance().getSocialMediaManager().secondNameTagName = this.getConfig().has("second_nametag") ? this.getConfig().get("second_nametag").getAsString() : "second_nametag" +
-                "";
+        LabyHelp.getInstance().getSocialMediaManager().secondNameTagName = this.getConfig().has("second_nametag") ? this.getConfig().get("second_nametag").getAsString() : "second_nametag" + "";
 
         LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting = this.getConfig().has("nameTagSettingsSwitching") ? this.getConfig().get("nameTagSettingsSwitching").getAsInt() : 10;
         LabyHelp.getInstance().getSettingsManager().nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
@@ -520,6 +524,22 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         });
         settingsElements.add((SettingsElement) new HeaderElement(" "));
 
+        StringElement github = new StringElement("GitHub username", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstance().getSocialMediaManager().snapchatName, new Consumer<String>() {
+            @Override
+            public void accept(String accepted) {
+                try {
+                    LabyHelp.getInstance().getSocialMediaManager().sendSocialMedia(SocialMediaType.GITHUB, accepted);
+                } catch (Exception ignored) {
+                }
+
+                LabyHelp.getInstance().getSocialMediaManager().githubName = accepted;
+
+                LabyHelp.this.getConfig().addProperty("githubname", accepted);
+                LabyHelp.this.saveConfig();
+            }
+        });
+        settingsElements.add((SettingsElement) new HeaderElement(" "));
+
         StringElement nameTag = new StringElement("NameTag", new ControlElement.IconData(Material.PAPER), LabyHelp.getInstance().getSocialMediaManager().nameTagName, new Consumer<String>() {
             @Override
             public void accept(String accepted) {
@@ -577,6 +597,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(channelTikTok);
         settingsElements.add(stringYoutube);
         settingsElements.add(stringTwitch);
+        settingsElements.add(github);
 
         settingsElements.add(new HeaderElement(" "));
         settingsElements.add(new HeaderElement("§fDiscord: §lhttps://labyhelp.de/discord"));

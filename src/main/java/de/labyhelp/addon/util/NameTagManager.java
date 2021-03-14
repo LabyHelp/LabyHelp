@@ -17,6 +17,7 @@ import java.util.UUID;
 public class NameTagManager {
 
     public NameTags currentNameTag = NameTags.RANK;
+    private Boolean updateNameTagFinish = false;
 
     public void readNameTags() {
         readNameTag();
@@ -37,6 +38,12 @@ public class NameTagManager {
             return;
         }
 
+        if (updateNameTagFinish) {
+            return;
+        }
+
+        updateNameTagFinish = true;
+
         if (!LabyHelp.getInstance().getCommunicatorHandler().userNameTags.isEmpty() || !LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
@@ -55,9 +62,6 @@ public class NameTagManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-                    //     String finalRo = finalTag.replace("{likes}", LabyHelp.getInstance().getLikeManager().getLikes(uuidUserEntry.getKey()));
-                    //   String finalRo2 = finalRo.replace("{invites}", LabyHelp.getInstance().getInviteManager().getInvites(uuidUserEntry.getKey()));
-
                     String rainbow = finalTag.replace("!r", "" + LabyHelp.getInstance().getGroupManager().randomeColor() + "");
 
                     if (!LabyHelp.getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
@@ -77,6 +81,7 @@ public class NameTagManager {
                 }
             }
         }
+        updateNameTagFinish = false;
     }
 
     private void readNameTag() {
@@ -170,17 +175,10 @@ public class NameTagManager {
         }
     }
 
-    int prepereTicks = 0;
 
     public boolean updateNameTags(Integer currentValue) {
 
         if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
-            if (prepereTicks < 15) {
-                prepereTicks++;
-                moveNameTags();
-                return true;
-            }
-
             updateCurrentNameTagRealTime();
 
             Integer chooseSeconds = LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 15;

@@ -13,6 +13,7 @@ public enum SocialMediaType {
     TIKTOK(null, LabyHelp.getInstance().getSocialMediaManager().tiktokName, "TikTok"),
     SNAPCHAT(null, LabyHelp.getInstance().getSocialMediaManager().snapchatName, "Snapchat"),
     TWTICH(null, LabyHelp.getInstance().getSocialMediaManager().twitchName, "Twitch"),
+    GITHUB(null, LabyHelp.getInstance().getSocialMediaManager().twitchName, "GitHub"),
     DISCORD(null, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
     STATUS(LabyHelp.getInstance().getCommunicatorHandler().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
     SERVER(LabyHelp.getInstance().getServerManager().hasServer, null, "Server"),

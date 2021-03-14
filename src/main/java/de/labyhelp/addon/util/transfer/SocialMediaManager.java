@@ -23,6 +23,7 @@ public class SocialMediaManager {
     public String twitterName;
     public String tiktokName;
     public String snapchatName;
+    public String githubName;
     public String statusName;
     public String nameTagName;
     public String secondNameTagName;

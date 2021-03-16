@@ -159,8 +159,8 @@ public class CommunicatorHandler {
         LabyHelp.getInstance().getNameTagManager().readNameTags();
         LabyHelp.getInstance().sendDeveloperMessage("readFast state 2");
 
-        LabyHelp.getInstance().getServerManager().readServerPartner();
-        LabyHelp.getInstance().getServerManager().readTagList();
+        LabyHelp.getInstance().getTagManager().readServerPartner();
+        LabyHelp.getInstance().getTagManager().readTagList();
 
         readUserInformations(true);
         LabyHelp.getInstance().sendDeveloperMessage("readFast state 3");
@@ -189,8 +189,8 @@ public class CommunicatorHandler {
             LabyHelp.getInstance().sendDeveloperMessage("Like refresh");
             LabyHelp.getInstance().getInviteManager().readUserInvites();
 
-            LabyHelp.getInstance().getServerManager().readServerPartner();
-            LabyHelp.getInstance().getServerManager().readTagList();
+            LabyHelp.getInstance().getTagManager().readServerPartner();
+            LabyHelp.getInstance().getTagManager().readTagList();
 
             LabyHelp.getInstance().getInviteManager().readOldPlayer();
             readGroups();

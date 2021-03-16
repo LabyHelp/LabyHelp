@@ -23,7 +23,7 @@ public class LabyPlayer {
 
 
     public String getSocialMedia(SocialMediaType socialMedia) {
-        LabyHelp.getInstance().getServerManager().readServerPartner();
+        LabyHelp.getInstance().getTagManager().readServerPartner();
 
 
         LabyHelp.getInstance().sendDeveloperMessage("get exact social media: " + socialMedia.getName() + socialMedia.getUrlName());

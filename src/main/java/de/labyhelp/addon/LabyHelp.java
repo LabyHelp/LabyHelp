@@ -63,7 +63,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     @Getter
     private final SocialMediaManager socialMediaManager;
     @Getter
-    private final TagManager serverManager;
+    private final TagManager tagManager;
     @Getter
     private final InviteManager inviteManager;
     @Getter
@@ -88,7 +88,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         translationManager = new TranslationManager();
         versionHandler = new VersionHandler();
 
-        serverManager = new TagManager();
+        tagManager = new TagManager();
 
         commandHandler = new CommandHandler();
 

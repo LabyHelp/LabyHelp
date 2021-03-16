@@ -1,7 +1,9 @@
 package de.labyhelp.addon.util;
 
 import de.labyhelp.addon.LabyHelp;
+import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.NameTags;
+import de.labyhelp.addon.enums.Tags;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.minecraft.util.EnumChatFormatting;
@@ -84,6 +86,40 @@ public class NameTagManager {
         updateNameTagFinish = false;
     }
 
+
+    public void updateSubTitles(boolean readDatabase) {
+        if (readDatabase) {
+            if (LabyHelp.getInstance().getSettingsManager().onServer) {
+                LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
+            }
+            return;
+        }
+
+        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
+            return;
+        }
+
+        if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+            for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
+
+                HelpGroups group = LabyHelp.getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
+                if (group != null) {
+                    LabyHelp.getInstance().getTagManager().setNormalTag(uuidUserEntry.getKey(), group);
+
+                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
+                    } else {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
+                    }
+                }
+
+            }
+        } else {
+            LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()).setSubTitle("LabyHelp");
+        }
+
+    }
+
     private void readNameTag() {
         try {
 
@@ -142,7 +178,7 @@ public class NameTagManager {
     private NameTags moveNameTags() {
 
         if (currentNameTag == NameTags.RANK) {
-            LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+            updateSubTitles(false);
             currentNameTag = NameTags.FIRST_NAMETAG;
             return NameTags.FIRST_NAMETAG;
 
@@ -157,7 +193,7 @@ public class NameTagManager {
             return NameTags.RANK;
 
         } else {
-            LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+            updateSubTitles(false);
             currentNameTag = NameTags.RANK;
             return NameTags.RANK;
         }
@@ -165,16 +201,15 @@ public class NameTagManager {
 
     public void updateCurrentNameTagRealTime() {
         if (currentNameTag == NameTags.RANK) {
-            LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+            updateSubTitles(false);
         } else if (currentNameTag == NameTags.FIRST_NAMETAG) {
             updateNameTag(false, true);
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
             updateNameTag(false, false);
         } else {
-            LabyHelp.getInstance().getGroupManager().updateSubTitles(false);
+        updateSubTitles(false);
         }
     }
-
 
     public boolean updateNameTags(Integer currentValue) {
 

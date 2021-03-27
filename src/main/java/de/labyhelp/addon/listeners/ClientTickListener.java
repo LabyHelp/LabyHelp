@@ -55,6 +55,11 @@ public class ClientTickListener {
             reloadTick = 0;
         }
 
+        if (rainbowTick > LabyHelp.getInstance().getSettingsManager().nameTagRainbwSwitching * 6) {
+            LabyHelp.getInstance().getGroupManager().rainbow = true;
+            rainbowTick = 0;
+        }
+
         /* REFRESHING NAMETAGS */
         if (LabyHelp.getInstance().getNameTagManager().updateNameTags(nameTick)) {
             nameTick = 0;
@@ -64,10 +69,6 @@ public class ClientTickListener {
         reloadTick++;
         rainbowTick++;
 
-        if (rainbowTick > LabyHelp.getInstance().getSettingsManager().nameTagRainbwSwitching * 6) {
-            LabyHelp.getInstance().getGroupManager().rainbow = true;
-            rainbowTick = 0;
-        }
 
         if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
             adverstingTick++;

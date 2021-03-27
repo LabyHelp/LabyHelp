@@ -4,7 +4,7 @@ import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.Tags;
 import net.labymod.main.LabyMod;
-import net.labymod.settings.LabyModModuleEditorGui;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -21,6 +21,8 @@ public class TagManager {
 
     public HashMap<UUID, Tags> discordTagList = new HashMap<>();
     public HashMap<UUID, String> tagList = new HashMap<>();
+
+    private EnumChatFormatting colorCache;
 
     public void readServerPartner() {
         try {
@@ -99,7 +101,12 @@ public class TagManager {
             for (Tags tags : Tags.values()) {
                 if (tags.equals(Tags.DISCORD_NORMAL_TAG) || tags.equals(Tags.DISCORD_RAINBOW_TAG)) {
                     if (tags.getMapName().containsKey(uuid) && tags.equals(tags.getMapName().get(uuid))) {
-                        return tags.getIsRainbow() ? LabyHelp.getInstance().getGroupManager().randomeColor() + tags.getTagDisplayed() : tags.getTagDisplayed();
+                        if (colorCache == null || LabyHelp.getInstance().getGroupManager().rainbow) {
+                            colorCache = LabyHelp.getInstance().getGroupManager().randomColor(false);
+                            LabyHelp.getInstance().getGroupManager().rainbow = false;
+                        }
+
+                        return tags.getIsRainbow() ? colorCache + tags.getTagDisplayed() : tags.getTagDisplayed();
                     }
                 }
             }

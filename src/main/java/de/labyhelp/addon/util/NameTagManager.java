@@ -3,7 +3,6 @@ package de.labyhelp.addon.util;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.NameTags;
-import de.labyhelp.addon.enums.Tags;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,30 +12,44 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static de.labyhelp.addon.LabyHelp.getInstance;
 
 public class NameTagManager {
 
     public NameTags currentNameTag = NameTags.RANK;
     private Boolean updateNameTagFinish = false;
 
+
     public void readNameTags() {
         readNameTag();
         readSecondNameTag();
 
-        LabyHelp.getInstance().sendDeveloperMessage("method: readNameTags in NameTagManager");
+        getInstance().sendDeveloperMessage("method: readNameTags in NameTagManager");
+    }
+
+    public String getDiscoNameTag(String n) {
+
+        StringBuilder finalEndTag = new StringBuilder();
+        for (char ch : n.toCharArray()) {
+            finalEndTag.append(getInstance().getGroupManager().randomColor(true)).append(ch);
+        }
+
+        return finalEndTag.toString();
     }
 
     public void updateNameTag(boolean readDatabase, boolean firstNameTag) {
         if (readDatabase) {
-            if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(false);
+            if (getInstance().getSettingsManager().onServer) {
+                getInstance().getCommunicatorHandler().readUserInformations(false);
             }
             return;
         }
 
-        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
+        if (!getInstance().getSettingsManager().seeNameTags) {
             return;
         }
 
@@ -46,16 +59,21 @@ public class NameTagManager {
 
         updateNameTagFinish = true;
 
-        if (!LabyHelp.getInstance().getCommunicatorHandler().userNameTags.isEmpty() || !LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.isEmpty()) {
+        if (!getInstance().getCommunicatorHandler().userNameTags.isEmpty() || !getInstance().getCommunicatorHandler().userSecondNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
-                String name = firstNameTag ? LabyHelp.getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null) : LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null);
+                String name = firstNameTag
+                        ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
+                        :  getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
+
+                        ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
+                        : getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null);
 
 
-                if (LabyHelp.getInstance().getGroupManager().isBanned(uuidUserEntry.getKey(), false)) {
+                if (getInstance().getGroupManager().isBanned(uuidUserEntry.getKey(), false)) {
                     LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("CENSORED");
-                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
+                    if (getInstance().getSettingsManager().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(getInstance().getSettingsManager().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
@@ -64,19 +82,21 @@ public class NameTagManager {
 
                 if (name != null) {
                     String finalTag = name.replace("&", "§");
-                    String rainbow = finalTag.replace("!r", "" + LabyHelp.getInstance().getGroupManager().randomeColor() + "");
+                    String rainbow = finalTag.replace("!r", "" + getInstance().getGroupManager().randomColor(false));
 
-                    if (!LabyHelp.getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
-                        String tag = rainbow.replaceAll("LabyHelp", "CENSORED");
-                        String finishFinalTag = tag.replaceAll("LabyMod", "CENSORED");
+                    String disco = rainbow.replace("!d" + rainbow.replace("!d", ""),
+                            getDiscoNameTag(rainbow.replace("!d", "")));
 
+                    if (!getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
+                        String finishFinalTag = disco.replace("LabyMod", "CENSORED");
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + rainbow);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + disco);
                     }
 
-                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
+
+                    if (getInstance().getSettingsManager().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(getInstance().getSettingsManager().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
@@ -89,25 +109,25 @@ public class NameTagManager {
 
     public void updateSubTitles(boolean readDatabase) {
         if (readDatabase) {
-            if (LabyHelp.getInstance().getSettingsManager().onServer) {
-                LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
+            if (getInstance().getSettingsManager().onServer) {
+                getInstance().getCommunicatorHandler().readUserInformations(true);
             }
             return;
         }
 
-        if (!LabyHelp.getInstance().getSettingsManager().seeNameTags) {
+        if (!getInstance().getSettingsManager().seeNameTags) {
             return;
         }
 
-        if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+        if (!getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
-                HelpGroups group = LabyHelp.getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
+                HelpGroups group = getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
-                    LabyHelp.getInstance().getTagManager().setNormalTag(uuidUserEntry.getKey(), group);
+                    getInstance().getTagManager().setNormalTag(uuidUserEntry.getKey(), group);
 
-                    if (LabyHelp.getInstance().getSettingsManager().nameTagSize != 0) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().nameTagSize);
+                    if (getInstance().getSettingsManager().nameTagSize != 0) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(getInstance().getSettingsManager().nameTagSize);
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
@@ -123,7 +143,7 @@ public class NameTagManager {
     private void readNameTag() {
         try {
 
-            LabyHelp.getInstance().sendDeveloperMessage("called method: readNameTag first");
+            getInstance().sendDeveloperMessage("called method: readNameTag first");
 
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -138,7 +158,7 @@ public class NameTagManager {
             for (final String entry : array) {
                 final String[] data = entry.split(":");
                 if (data.length == 2) {
-                    LabyHelp.getInstance().getCommunicatorHandler().userNameTags.put(UUID.fromString(data[0]), data[1]);
+                    getInstance().getCommunicatorHandler().userNameTags.put(UUID.fromString(data[0]), data[1]);
                 }
             }
         } catch (IOException e) {
@@ -151,7 +171,7 @@ public class NameTagManager {
     private void readSecondNameTag() {
         try {
 
-            LabyHelp.getInstance().sendDeveloperMessage("called method: readNameTag second");
+            getInstance().sendDeveloperMessage("called method: readNameTag second");
 
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -166,7 +186,7 @@ public class NameTagManager {
             for (final String entry : array) {
                 final String[] data = entry.split(":");
                 if (data.length == 2) {
-                    LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.put(UUID.fromString(data[0]), data[1]);
+                    getInstance().getCommunicatorHandler().userSecondNameTags.put(UUID.fromString(data[0]), data[1]);
                 }
             }
         } catch (IOException e) {
@@ -207,18 +227,18 @@ public class NameTagManager {
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
             updateNameTag(false, false);
         } else {
-        updateSubTitles(false);
+            updateSubTitles(false);
         }
     }
 
     public boolean updateNameTags(Integer currentValue) {
 
-        if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
+        if (getInstance().getSettingsManager().translationLoaded) {
             updateCurrentNameTagRealTime();
 
-            Integer chooseSeconds = LabyHelp.getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
+            Integer chooseSeconds = getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
 
-            if (LabyHelp.getInstance().getSettingsManager().isOnServer()) {
+            if (getInstance().getSettingsManager().isOnServer()) {
                 if (currentValue > chooseSeconds) {
                     return true;
                 } else if (currentValue == 1) {

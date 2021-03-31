@@ -2,7 +2,6 @@ package de.labyhelp.addon.commands.addon;
 
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
-import de.labyhelp.addon.util.CommunicatorHandler;
 import de.labyhelp.addon.util.TranslationManager;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import de.labyhelp.addon.util.settings.SettingsManager;
@@ -23,15 +22,15 @@ public class LabyHelpCMD implements HelpCommand {
                 @Override
                 public void run() {
                     LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
-                    final String webVersion = CommunicatorHandler.readVersion();
-                    LabyHelp.getInstance().getSettingsManager().isNewerVersion = !webVersion.equalsIgnoreCase(SettingsManager.currentVersion);
-                    LabyHelp.getInstance().getSettingsManager().newestVersion = webVersion;
+
+                    String newestVersion = LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
+
                     if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
                         labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("new"));
                     }
                     if (LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
                         labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("old"));
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + webVersion);
+                        labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + newestVersion);
                         labyPlayer.sendAlertTranslMessage("info.restart");
                     }
                 }

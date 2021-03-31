@@ -65,14 +65,6 @@ public class LabyPlayer {
         }
     }
 
-    public void sendSnapchat(String name) {
-
-        StringSelection stringSelection = new StringSelection(name);
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
-
-        sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.snap") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
-    }
 
     public void sendAdversting(boolean tip) {
         sendTranslMessage("main.adversting");
@@ -154,6 +146,12 @@ public class LabyPlayer {
     public void sendTranslMessage(String key) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+        }
+    }
+
+    public void sendSpecificTranslMessage(String key, String start) {
+        if (LabyHelp.getInstance().getSettingsManager().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + start + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
         }
     }
 

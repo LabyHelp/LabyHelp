@@ -153,11 +153,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             if (!webVersion.equalsIgnoreCase(SettingsManager.currentVersion)) {
                 getSettingsManager().isNewerVersion = true;
             }
+
             getSettingsManager().addonEnabled = true;
         } catch (Exception ignored) {
             getSettingsManager().addonEnabled = false;
         }
-
 
 
         changePlayerMenuItems();
@@ -167,7 +167,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
             LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
 
-            if (getSettingsManager().isNewerVersion) {
+            if (getSettingsManager().isNewerVersion || getSettingsManager().versionTag != null) {
+
                 LabyHelp.getInstance().getStoreHandler().getFileDownloader().updateLabyHelp();
             }
         }));
@@ -192,6 +193,12 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
         labyPlayer.sendDefaultMessage(message);
     }
+
+    public void sendSpecficTranslMessage(String start, String message) {
+        LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+        labyPlayer.sendSpecificTranslMessage(message, start);
+    }
+
 
     public void sendDeveloperMessage(String message) {
         if (LabyHelp.getInstance().getSettingsManager().developerMode) {
@@ -220,9 +227,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     }
 
     public void changeFirstJoin(Boolean bool) {
-            LabyHelp.getInstance().getSettingsManager().firstPlay = bool;
-            LabyHelp.getInstance().getConfig().addProperty("firstJoin", bool);
-            LabyHelp.getInstance().saveConfig();
+        LabyHelp.getInstance().getSettingsManager().firstPlay = bool;
+        LabyHelp.getInstance().getSettingsManager().newVersionMessage = bool;
+        LabyHelp.getInstance().getConfig().addProperty("newVersionMessage", bool);
+        LabyHelp.getInstance().getConfig().addProperty("firstJoin", bool);
+        LabyHelp.getInstance().saveConfig();
     }
 
     public boolean isInitialize() {
@@ -236,6 +245,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().seePlayerMenu = !this.getConfig().has("seePlayerMenu") || this.getConfig().get("seePlayerMenu").getAsBoolean();
 
         LabyHelp.getInstance().getSettingsManager().firstPlay = !this.getConfig().has("firstJoin") || this.getConfig().get("firstJoin").getAsBoolean();
+
+        LabyHelp.getInstance().getSettingsManager().newVersionMessage = !this.getConfig().has("newVersionMessage") || this.getConfig().get("newVersionMessage").getAsBoolean();
 
         LabyHelp.getInstance().getSettingsManager().seeNameTags = !this.getConfig().has("seeNameTags") || this.getConfig().get("seeNameTags").getAsBoolean();
 

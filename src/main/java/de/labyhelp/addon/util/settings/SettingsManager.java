@@ -9,10 +9,11 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.21";
+    public static String currentVersion = "2.6.32";
     public String versionTag = null;
 
     public boolean firstPlay = true;
+    public boolean newVersionMessage = false;
 
     public boolean translationLoaded = false;
 

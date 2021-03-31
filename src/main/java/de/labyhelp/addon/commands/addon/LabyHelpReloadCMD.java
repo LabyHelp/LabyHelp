@@ -40,8 +40,7 @@ public class LabyHelpReloadCMD implements HelpCommand {
                     LabyHelp.getInstance().getCommunicatorHandler().isOnline.clear();
                     LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
 
-                    final String webVersion = CommunicatorHandler.readVersion();
-                    LabyHelp.getInstance().getSettingsManager().isNewerVersion = !webVersion.equalsIgnoreCase(SettingsManager.currentVersion);
+                    LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
                     LabyHelp.getInstance().sendDeveloperMessage("updating Version");
 
                     labyPlayer.sendTranslMessage("info.reload.finish");

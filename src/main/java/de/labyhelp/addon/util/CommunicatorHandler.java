@@ -154,16 +154,14 @@ public class CommunicatorHandler {
     }
 
     public void readFastStart() {
-        LabyHelp.getInstance().sendDeveloperMessage("readFast state 1");
 
         LabyHelp.getInstance().getNameTagManager().readNameTags();
-        LabyHelp.getInstance().sendDeveloperMessage("readFast state 2");
 
         LabyHelp.getInstance().getTagManager().readServerPartner();
         LabyHelp.getInstance().getTagManager().readTagList();
 
         readUserInformations(true);
-        LabyHelp.getInstance().sendDeveloperMessage("readFast state 3");
+        LabyHelp.getInstance().sendDeveloperMessage("readFast finish");
     }
 
     public void readUserInformations(boolean groups) {
@@ -322,7 +320,7 @@ public class CommunicatorHandler {
         }
     }
 
-    public static String readVersion() {
+    public String readVersion() {
         try {
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/version.php").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");

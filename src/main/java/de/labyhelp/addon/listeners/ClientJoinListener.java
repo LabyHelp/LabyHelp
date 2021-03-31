@@ -49,6 +49,8 @@ public class ClientJoinListener implements Consumer<ServerData> {
 
                     sendBetaMessage();
                     sendFirstJoinMessage();
+                    LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
+                    LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
 
                     checkIfPartnerServer(serverData.getIp());
 

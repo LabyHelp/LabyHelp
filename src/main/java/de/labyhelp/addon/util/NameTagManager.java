@@ -22,6 +22,7 @@ public class NameTagManager {
 
     public NameTags currentNameTag = NameTags.RANK;
     private Boolean updateNameTagFinish = false;
+    private Boolean updateSubtilesFinish = false;
 
 
     public void readNameTags() {
@@ -77,10 +78,7 @@ public class NameTagManager {
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
-                    return;
-                }
-
-                if (name != null) {
+                } else if (name != null && !name.equals("")) {
                     String finalTag = name.replace("&", "§");
                     String rainbow = finalTag.replace("!r", "" + getInstance().getGroupManager().randomColor(false));
 
@@ -119,6 +117,12 @@ public class NameTagManager {
             return;
         }
 
+        if (updateSubtilesFinish) {
+            return;
+        }
+
+        updateSubtilesFinish = true;
+
         if (!getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
@@ -138,11 +142,14 @@ public class NameTagManager {
             LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()).setSubTitle("LabyHelp");
         }
 
+        updateSubtilesFinish = false;
+
     }
 
     private void readNameTag() {
         try {
 
+            getInstance().getCommunicatorHandler().userNameTags.clear();
             getInstance().sendDeveloperMessage("called method: readNameTag first");
 
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG").openConnection();
@@ -172,6 +179,7 @@ public class NameTagManager {
         try {
 
             getInstance().sendDeveloperMessage("called method: readNameTag second");
+            getInstance().getCommunicatorHandler().userSecondNameTags.clear();
 
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG").openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -200,25 +208,31 @@ public class NameTagManager {
         if (currentNameTag == NameTags.RANK) {
             updateSubTitles(false);
             currentNameTag = NameTags.FIRST_NAMETAG;
+            LabyHelp.getInstance().sendDeveloperMessage("Rank");
+
             return NameTags.FIRST_NAMETAG;
 
         } else if (currentNameTag == NameTags.FIRST_NAMETAG) {
             updateNameTag(false, true);
+            LabyHelp.getInstance().sendDeveloperMessage("NameTag 1");
             currentNameTag = NameTags.SECOND_NAMETAG;
             return NameTags.SECOND_NAMETAG;
 
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
+            LabyHelp.getInstance().sendDeveloperMessage("NameTag 2");
             updateNameTag(false, false);
             currentNameTag = NameTags.RANK;
             return NameTags.RANK;
 
         } else {
+            LabyHelp.getInstance().sendDeveloperMessage("else");
             updateSubTitles(false);
             currentNameTag = NameTags.RANK;
             return NameTags.RANK;
         }
     }
 
+    //TODO: change this
     public void updateCurrentNameTagRealTime() {
         if (currentNameTag == NameTags.RANK) {
             updateSubTitles(false);

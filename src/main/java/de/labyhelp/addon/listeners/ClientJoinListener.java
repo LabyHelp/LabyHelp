@@ -7,6 +7,8 @@ import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Map;
+
 public class ClientJoinListener implements Consumer<ServerData> {
 
     @Override
@@ -31,9 +33,12 @@ public class ClientJoinListener implements Consumer<ServerData> {
     }
 
     private void checkIfPartnerServer(String serverIp) {
-        if (serverIp.equalsIgnoreCase("mcone.eu")) {
-            LabyHelp.getInstance().sendDeveloperMessage("try to connect to the partner server: " + serverIp);
-            //TODO: add Partner Server code
+        for (Map.Entry<String, String> partners : LabyHelp.getInstance().getPartnerHandler().getPartner().entrySet()) {
+            if (serverIp.endsWith(partners.getValue())) {
+                if (LabyHelp.getInstance().getSettingsManager().partnerNotify) {
+                    LabyHelp.getInstance().sendTranslMessage("main.partnerserver");
+                }
+            }
         }
     }
 
@@ -50,7 +55,6 @@ public class ClientJoinListener implements Consumer<ServerData> {
                     sendBetaMessage();
                     sendFirstJoinMessage();
                     LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
-                    LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
 
                     checkIfPartnerServer(serverData.getIp());
 

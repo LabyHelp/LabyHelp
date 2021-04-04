@@ -41,6 +41,7 @@ public class LabyHelpLikeCMD implements HelpCommand {
                                         } else {
                                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
                                         }
+
                                     }
                                 });
                             } else {

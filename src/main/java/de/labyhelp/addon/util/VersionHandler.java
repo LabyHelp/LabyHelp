@@ -12,6 +12,8 @@ public class VersionHandler {
     public void initGameVersion(String version) {
         if (version.startsWith("1.8")) {
             gameVersion = LabyVersion.ONE_EIGHTEEN;
+        } else if (version.startsWith("1.16")) {
+            gameVersion = LabyVersion.ONE_SIXTEEN;
         } else {
             gameVersion = LabyVersion.ONE_TWELVE;
         }
@@ -46,8 +48,9 @@ public class VersionHandler {
     }
 
     public void sendNewFeaturesMessage() {
-        if (LabyHelp.getInstance().getSettingsManager().newVersionMessage && LabyHelp.getInstance().getSettingsManager().translationLoaded) {
-            if (!LabyHelp.getInstance().getTranslationManager().getTranslation("main.newFeatures").equals("")) {
+        if (LabyHelp.getInstance().getSettingsManager().newVersionMessage && !LabyHelp.getInstance().getSettingsManager().isInitLoading) {
+            if (!LabyHelp.getInstance().getTranslationManager().getTranslation("main.newFeatures").equals("")
+                    && !LabyHelp.getInstance().getTranslationManager().getTranslation("main.newFeatures").equals("main.newFeatures")) {
                 if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
                     LabyHelp.getInstance().sendSpecficTranslMessage(EnumChatFormatting.RED + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("info.new") + ":" + EnumChatFormatting.WHITE, "main.newFeatures");
 

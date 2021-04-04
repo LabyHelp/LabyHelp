@@ -20,11 +20,10 @@ public enum HelpGroups {
     FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " ", true, true,false, true, "rank.friend"),
     PREMIUM_("PREMIUM_", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " PREMIUM+", true, true, false, false,null),
 
-    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " ", true, true,false, true, "rank.creator"),
-    LABYTEAM("LABYTEAM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.BOLD + " LABYMOD " + EnumChatFormatting.BOLD + "TEAM", true,true, false, true, null),
-    PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + " ", true, true,false, true, "rank.partner"),
+    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + " ", true, true,false, true, "rank.creator"),
+    PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + " ", true, true,false, true, "rank.partner"),
 
-    TRANSLATOR("TRANSLATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " TRANSLATOR", true, true,false, true, null),
+    TRANSLATOR("TRANSLATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,false, true, null),
 
     JRCONTENT("JRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,false, true, null),
     CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,true, true, null),
@@ -84,7 +83,6 @@ public enum HelpGroups {
                 HelpGroups.CREATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.JRSUPPORTER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.SUPPORTER.getName().equalsIgnoreCase(name) ||
-                HelpGroups.LABYTEAM.getName().equalsIgnoreCase(name) ||
                 HelpGroups.PARTNER.getName().equalsIgnoreCase(name) ||
                 HelpGroups.TRANSLATOR.getName().equalsIgnoreCase(name) ||
                 HelpGroups.JRCONTENT.getName().equalsIgnoreCase(name) ||

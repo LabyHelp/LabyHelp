@@ -9,6 +9,7 @@ import de.labyhelp.addon.commands.team.LabyHelpWebCMD;
 import de.labyhelp.addon.enums.LabyVersion;
 import de.labyhelp.addon.enums.Languages;
 import de.labyhelp.addon.enums.SocialMediaType;
+import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.listeners.ClientJoinListener;
 import de.labyhelp.addon.listeners.ClientQuitListener;
 import de.labyhelp.addon.listeners.ClientTickListener;
@@ -16,6 +17,7 @@ import de.labyhelp.addon.listeners.MessageSendListener;
 import de.labyhelp.addon.menu.*;
 import de.labyhelp.addon.module.DegreeModule;
 import de.labyhelp.addon.module.TexturePackModule;
+import de.labyhelp.addon.store.PartnerHandler;
 import de.labyhelp.addon.store.StoreHandler;
 import de.labyhelp.addon.util.*;
 import de.labyhelp.addon.util.commands.CommandHandler;
@@ -32,6 +34,7 @@ import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 import java.util.UUID;
@@ -74,6 +77,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final NameTagManager nameTagManager;
     @Getter
     private final VoiceChatManager voiceChatManager;
+    @Getter
+    private final PartnerHandler partnerHandler;
 
     public LabyHelp() {
         instance = this;
@@ -101,6 +106,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         nameTagManager = new NameTagManager();
         voiceChatManager = new VoiceChatManager();
+
+        partnerHandler = new PartnerHandler();
 
     }
 
@@ -136,7 +143,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new SupportCMD(),
                 new LabyHelpBanCMD(),
                 new LabyHelpWebCMD(),
-                new VoiceChatCMD()
+                new VoiceChatCMD(),
+                new LabyHelpPartnerCMD(),
+                new LabyHelpBadgeCMD()
         );
 
 
@@ -224,6 +233,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new SocialMediaMenu());
             LabyMod.getInstance().getChatToolManager().getPlayerMenu().add(new ReportMenu());
         }
+
     }
 
     public void changeFirstJoin(Boolean bool) {
@@ -249,12 +259,18 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().newVersionMessage = !this.getConfig().has("newVersionMessage") || this.getConfig().get("newVersionMessage").getAsBoolean();
 
         LabyHelp.getInstance().getSettingsManager().seeNameTags = !this.getConfig().has("seeNameTags") || this.getConfig().get("seeNameTags").getAsBoolean();
+        LabyHelp.getInstance().getSettingsManager().partnerNotify = !this.getConfig().has("partnerNotify") || this.getConfig().get("partnerNotify").getAsBoolean();
 
         LabyHelp.getInstance().getTranslationManager().chooseLanguage = this.getConfig().has("translation") ? this.getConfig().get("translation").getAsString() : "DEUTSCH";
 
         LabyHelp.getInstance().getSocialMediaManager().statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
 
+        LabyHelp.getInstance().getSocialMediaManager().statusName = this.getConfig().has("status") ? this.getConfig().get("status").getAsString() : "status";
+
         LabyHelp.getInstance().getStoreHandler().getStoreSettings().storeAddons = !this.getConfig().has("storeAddons") || this.getConfig().get("storeAddons").getAsBoolean();
+
+        LabyHelp.getInstance().getSettingsManager().rightTag = this.getConfig().has("rightTag") ? this.getConfig().get("rightTag").getAsString() : "NOTHING";
+        LabyHelp.getInstance().getSettingsManager().leftTag = this.getConfig().has("leftTag") ? this.getConfig().get("leftTag").getAsString() : "NOTHING";
 
         LabyHelp.getInstance().getSocialMediaManager().instaName = this.getConfig().has("instaname") ? this.getConfig().get("instaname").getAsString() : "username";
         LabyHelp.getInstance().getSocialMediaManager().discordName = this.getConfig().has("discordname") ? this.getConfig().get("discordname").getAsString() : "user#0000";
@@ -349,6 +365,21 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(settingsPlayerMenu);
 
         settingsElements.add(new HeaderElement("§7See the LabyHelp PlayerMenu items"));
+
+        final BooleanElement settingsPartner = new BooleanElement("Partner notify", new ControlElement.IconData(Material.FURNACE), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstance().getSettingsManager().partnerNotify = enable;
+                changePlayerMenuItems();
+
+
+                LabyHelp.this.getConfig().addProperty("partnerNotify", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstance().getSettingsManager().partnerNotify);
+        settingsElements.add(settingsPartner);
+
+        settingsElements.add(new HeaderElement("§7Get messages or features at partner servers"));
         settingsElements.add(new HeaderElement(" "));
 
         final BooleanElement settingAdversting = new BooleanElement("Chat Adversting", new ControlElement.IconData(Material.ITEM_FRAME), new Consumer<Boolean>() {
@@ -598,6 +629,90 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             }
         });
         settingsElements.add(status);
+
+        settingsElements.add(new HeaderElement(" "));
+
+        final DropDownMenu<Tags> leftTag = new DropDownMenu<Tags>("Badge left:" /* Display name */, 0, 0, 0, 0)
+                .fill(Tags.values());
+        DropDownElement<Tags> leftTagElement = new DropDownElement<Tags>("Badge left:", leftTag);
+
+
+        leftTag.setSelected(Tags.valueOf(getSettingsManager().leftTag) != null ? Tags.valueOf(getSettingsManager().leftTag) : Tags.NOTHING);
+
+        leftTagElement.setChangeListener(alignment -> {
+
+            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+
+            if (getTagManager().hasPermissionToTag(LabyMod.getInstance().getPlayerUUID(), alignment)) {
+                if (!getTagManager().hasAlreadySet(LabyMod.getInstance().getPlayerUUID(), alignment, true)) {
+                    getSettingsManager().leftTag = alignment.name();
+
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    getTagManager().sendSpecificTag(false, LabyMod.getInstance().getPlayerUUID(), alignment);
+                    getTagManager().initTagManager();
+
+                    LabyHelp.this.getConfig().addProperty("leftTag", alignment.name());
+                    LabyHelp.this.saveConfig();
+                } else {
+                    labyPlayer.sendAlertTranslMessage("main.badges.alreadyset");
+                }
+            } else {
+                if (!getSettingsManager().leftTag.equals(alignment.name())) {
+                    labyPlayer.sendAlertTranslMessage("main.tag.noperms");
+                }
+            }
+
+        });
+
+        leftTag.setEntryDrawer((object, x, y, trimmedEntry) -> {
+            String entry = object.toString().toLowerCase();
+            LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
+
+        });
+
+        settingsElements.add(leftTagElement);
+
+        final DropDownMenu<Tags> rightTag = new DropDownMenu<Tags>("Badge right:" /* Display name */, 0, 0, 0, 0)
+                .fill(Tags.values());
+        DropDownElement<Tags> rightTagElement = new DropDownElement<Tags>("Badge right:", rightTag);
+
+
+        rightTag.setSelected(Tags.valueOf(getSettingsManager().rightTag) != null ? Tags.valueOf(getSettingsManager().rightTag) : Tags.NOTHING);
+
+        rightTagElement.setChangeListener(alignment -> {
+
+            LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+
+            if (getTagManager().hasPermissionToTag(LabyMod.getInstance().getPlayerUUID(), alignment)) {
+                if (!getTagManager().hasAlreadySet(LabyMod.getInstance().getPlayerUUID(), alignment, false)) {
+                    getSettingsManager().rightTag = alignment.name();
+
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    getTagManager().sendSpecificTag(true, LabyMod.getInstance().getPlayerUUID(), alignment);
+                    getTagManager().initTagManager();
+
+                    LabyHelp.this.getConfig().addProperty("rightTag", alignment.name());
+                    LabyHelp.this.saveConfig();
+                } else {
+                    labyPlayer.sendAlertTranslMessage("main.badges.alreadyset");
+                }
+            } else {
+                if (!getSettingsManager().rightTag.equals(alignment.name())) {
+                    labyPlayer.sendAlertTranslMessage("main.tag.noperms");
+                }
+            }
+
+        });
+
+        rightTag.setEntryDrawer((object, x, y, trimmedEntry) -> {
+            String entry = object.toString().toLowerCase();
+            LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
+
+        });
+
+        settingsElements.add(rightTagElement);
+        settingsElements.add(new HeaderElement("§7A global badge next to your rank, more informations:"));
+        settingsElements.add(new HeaderElement("§ehttps://labyhelp.de/badges"));
 
         settingsElements.add(new HeaderElement(" "));
 

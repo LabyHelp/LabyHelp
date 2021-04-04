@@ -18,7 +18,6 @@ public class ClientTickListener {
     @SubscribeEvent
     public void onTick(final TickEvent.ClientTickEvent event) {
 
-
         /* ADVERSTING */
         if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
             if (!adverdStage) {
@@ -27,6 +26,7 @@ public class ClientTickListener {
                     labyPlayer.sendAdversting(true);
                     adverstingTick = 0;
                     adverdStage = true;
+
                 }
             } else {
                 if (adverstingTick > 23900) {
@@ -43,6 +43,8 @@ public class ClientTickListener {
                 @Override
                 public void run() {
                     try {
+
+                        LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
                         LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
                         LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
                     } catch (Exception ignored) {

@@ -1,30 +1,36 @@
 package de.labyhelp.addon.enums;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import de.labyhelp.addon.LabyHelp;
 import lombok.Getter;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
 public enum Tags {
 
-    DISCORD_NORMAL_TAG(EnumChatFormatting.GRAY + "✪ ", false, LabyHelp.getInstance().getTagManager().discordTagList, "NORMAL"),
-    DISCORD_RAINBOW_TAG( "✪ ", true, LabyHelp.getInstance().getTagManager().discordTagList, "CHROME"),
+    NOTHING("", false, "Nothing", "none", null, false),
+    DISCORD_NORMAL_TAG(EnumChatFormatting.GRAY + " ✪ ", false, "NORMAL", "tag", LabyHelp.getInstance().getTagManager().normalDiscordTag, true),
+    DISCORD_RAINBOW_TAG( " ✪ ", true, "CHROME", "tag", LabyHelp.getInstance().getTagManager().chromeDiscordTag, true),
 
-    SERVER_TAG(EnumChatFormatting.DARK_AQUA + " Ⓢ", false, LabyHelp.getInstance().getTagManager().serverTagList, "SERVER");
+    SERVER_TAG(EnumChatFormatting.DARK_AQUA + " Ⓢ ", false,"SERVER", "serverPartner", LabyHelp.getInstance().getTagManager().serverTag, true),
+    EASTER_2021_TAG(EnumChatFormatting.GREEN + " ⚘ ",  false,"EASTER2021", "easter", LabyHelp.getInstance().getTagManager().easterDiscordTag, false);
 
     private final String tagDisplayed;
     private final Boolean isRainbow;
-    private final HashMap<UUID, Tags> mapName;
     private final String requestName;
+    private final String dataName;
+    private final ArrayList<UUID> array;
+    private final boolean isSpecial;
 
-    Tags(String tagDisplayed, Boolean isRainbow, HashMap<UUID, Tags> mapName, String requestName) {
+    Tags(String tagDisplayed, Boolean isRainbow, String requestName, String dataName, ArrayList<UUID> array, Boolean isSpecial) {
         this.tagDisplayed = tagDisplayed;
         this.isRainbow = isRainbow;
-        this.mapName = mapName;
         this.requestName = requestName;
+        this.dataName = dataName;
+        this.array = array;
+        this.isSpecial = isSpecial;
     }
 }

@@ -131,6 +131,13 @@ public class LabyPlayer {
         return false;
     }
 
+    public String getCurrentServer() {
+        if (LabyHelp.getInstance().getSettingsManager().isOnServer()) {
+            return LabyMod.getInstance().getCurrentServerData().getIp();
+        }
+        return null;
+    }
+
     public void sendNoPermsMessage() {
         sendTranslMessage("main.premium");
     }
@@ -158,6 +165,19 @@ public class LabyPlayer {
     public void sendAlertTranslMessage(String key) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
             LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.RED + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+        }
+    }
+
+    public void sendWarningTranslMessage(String key) {
+        if (LabyHelp.getInstance().getSettingsManager().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.YELLOW + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+        }
+    }
+
+
+    public void sendSuccessTranslMessage(String key) {
+        if (LabyHelp.getInstance().getSettingsManager().onServer) {
+            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.GREEN + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
         }
     }
 

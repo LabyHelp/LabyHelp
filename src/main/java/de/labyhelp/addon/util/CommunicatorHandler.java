@@ -54,7 +54,6 @@ public class CommunicatorHandler {
                 request.addProperty("serverId", SERVER_ID);
                 httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
 
-
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
                     LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8"));
@@ -158,7 +157,7 @@ public class CommunicatorHandler {
         LabyHelp.getInstance().getNameTagManager().readNameTags();
 
         LabyHelp.getInstance().getTagManager().readServerPartner();
-        LabyHelp.getInstance().getTagManager().readTagList();
+        LabyHelp.getInstance().getTagManager().initTagManager();
 
         readUserInformations(true);
         LabyHelp.getInstance().sendDeveloperMessage("readFast finish");
@@ -188,7 +187,8 @@ public class CommunicatorHandler {
             LabyHelp.getInstance().getInviteManager().readUserInvites();
 
             LabyHelp.getInstance().getTagManager().readServerPartner();
-            LabyHelp.getInstance().getTagManager().readTagList();
+            LabyHelp.getInstance().getTagManager().initTagManager();
+            LabyHelp.getInstance().getPartnerHandler().readPartner();
 
             LabyHelp.getInstance().getInviteManager().readOldPlayer();
             readGroups();

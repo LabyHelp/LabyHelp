@@ -33,6 +33,8 @@ public class LabyHelpCMD implements HelpCommand {
                         labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + newestVersion);
                         labyPlayer.sendAlertTranslMessage("info.restart");
                     }
+
+                    LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
                 }
             });
         } catch (Exception ignored) {

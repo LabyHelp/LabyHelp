@@ -9,13 +9,14 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.32";
+    public static String currentVersion = "2.6.51";
     public String versionTag = null;
 
     public boolean firstPlay = true;
     public boolean newVersionMessage = false;
 
     public boolean translationLoaded = false;
+    public boolean partnerNotify = true;
 
     public Boolean isNewerVersion = false;
     public String newestVersion;
@@ -32,6 +33,9 @@ public class SettingsManager {
     public boolean isInitLoading = true;
 
     public boolean seePlayerMenu = true;
+
+    public String rightTag;
+    public String leftTag;
 
     public String nameTagSettings;
     public int nameTagSwitchingSetting;

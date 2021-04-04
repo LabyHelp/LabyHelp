@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -124,6 +123,7 @@ public class NameTagManager {
         updateSubtilesFinish = true;
 
         if (!getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
                 HelpGroups group = getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
@@ -139,7 +139,7 @@ public class NameTagManager {
 
             }
         } else {
-            LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()).setSubTitle("LabyHelp");
+            LabyMod.getInstance().getUserManager().getUser(LabyMod.getInstance().getPlayerUUID()).setSubTitle("LabyHelp UNDEFINED");
         }
 
         updateSubtilesFinish = false;
@@ -248,8 +248,6 @@ public class NameTagManager {
     public boolean updateNameTags(Integer currentValue) {
 
         if (getInstance().getSettingsManager().translationLoaded) {
-            updateCurrentNameTagRealTime();
-
             Integer chooseSeconds = getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
 
             if (getInstance().getSettingsManager().isOnServer()) {
@@ -257,6 +255,8 @@ public class NameTagManager {
                     return true;
                 } else if (currentValue == 1) {
                     moveNameTags();
+                } else {
+                    updateCurrentNameTagRealTime();
                 }
 
             }

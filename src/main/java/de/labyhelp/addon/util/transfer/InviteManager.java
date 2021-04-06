@@ -2,12 +2,7 @@ package de.labyhelp.addon.util.transfer;
 
 import de.labyhelp.addon.LabyHelp;
 import net.labymod.main.LabyMod;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static java.util.Collections.reverseOrder;

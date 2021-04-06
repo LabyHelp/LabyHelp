@@ -2,14 +2,28 @@ package de.labyhelp.addon.util;
 
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
+import net.labymod.user.group.LabyGroup;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 public class GroupManager {
 
     public boolean rainbow = false;
+
+    public ArrayList<UUID> getAllPremiumPlayers() {
+        ArrayList<UUID> premiumPlayer = new ArrayList<>();
+        for (Map.Entry<UUID, HelpGroups> playerInList : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+            if (!playerInList.getValue().equals(HelpGroups.BANNED) &&
+                    !playerInList.getValue().equals(HelpGroups.USER)) {
+                premiumPlayer.add(playerInList.getKey());
+            }
+        }
+        return premiumPlayer;
+    }
 
     public boolean isPremium(final UUID uuid) {
         return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getPremium();

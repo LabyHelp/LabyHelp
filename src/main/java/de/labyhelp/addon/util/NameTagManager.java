@@ -56,7 +56,7 @@ public class NameTagManager {
 
                 String name = firstNameTag
                         ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
-                        :  getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
+                        : getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
 
                         ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
                         : getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null);
@@ -141,11 +141,9 @@ public class NameTagManager {
 
 
     private void readSecondNameTag() {
-
-
-            getInstance().sendDeveloperMessage("called method: readNameTag second");
-            getInstance().getCommunicatorHandler().userSecondNameTags.clear();
-           LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userSecondNameTags);
+        getInstance().sendDeveloperMessage("called method: readNameTag second");
+        getInstance().getCommunicatorHandler().userSecondNameTags.clear();
+        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userSecondNameTags);
     }
 
     private void moveNameTags() {
@@ -172,7 +170,6 @@ public class NameTagManager {
         }
     }
 
-    //TODO: change this
     public void updateCurrentNameTagRealTime() {
         if (currentNameTag == NameTags.RANK) {
             updateSubTitles(false);
@@ -186,7 +183,6 @@ public class NameTagManager {
     }
 
     public boolean updateNameTags(Integer currentValue) {
-
         if (getInstance().getSettingsManager().translationLoaded) {
             Integer chooseSeconds = getInstance().getSettingsManager().nameTagSwitchingSetting * 16;
 

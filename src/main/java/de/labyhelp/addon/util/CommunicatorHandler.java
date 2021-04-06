@@ -186,11 +186,11 @@ public class CommunicatorHandler {
             LabyHelp.getInstance().getInviteManager().readUserInvites();
 
             LabyHelp.getInstance().getTagManager().readServerPartner();
-            LabyHelp.getInstance().getTagManager().initTagManager();
             LabyHelp.getInstance().getPartnerHandler().readPartner();
 
             LabyHelp.getInstance().getInviteManager().readOldPlayer();
             readGroups();
+            LabyHelp.getInstance().getTagManager().initTagManager();
 
             TranslationManager translationManager = LabyHelp.getInstance().getTranslationManager();
 

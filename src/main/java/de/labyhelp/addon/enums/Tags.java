@@ -15,6 +15,8 @@ public enum Tags {
     DISCORD_NORMAL_TAG(EnumChatFormatting.GRAY + " ✪ ", false, "NORMAL", "tag", LabyHelp.getInstance().getTagManager().normalDiscordTag, true),
     DISCORD_RAINBOW_TAG( " ✪ ", true, "CHROME", "tag", LabyHelp.getInstance().getTagManager().chromeDiscordTag, true),
 
+    PREMIUM_TAG( EnumChatFormatting.GOLD + " Ⓟ ", false, "PREMIUM", "premium", LabyHelp.getInstance().getGroupManager().getAllPremiumPlayers(), false),
+
     SERVER_TAG(EnumChatFormatting.DARK_AQUA + " Ⓢ ", false,"SERVER", "serverPartner", LabyHelp.getInstance().getTagManager().serverTag, true),
     EASTER_2021_TAG(EnumChatFormatting.GREEN + " ⚘ ",  false,"EASTER2021", "easter", LabyHelp.getInstance().getTagManager().easterDiscordTag, false);
 

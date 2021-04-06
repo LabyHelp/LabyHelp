@@ -39,7 +39,7 @@ public class TagManager {
         for (Tags tag : Tags.values()) {
             if (!tag.equals(Tags.NOTHING)) {
                 tag.getArray().clear();
-                if (!tag.equals(Tags.SERVER_TAG)) {
+                if (!tag.equals(Tags.SERVER_TAG) && !tag.equals(Tags.PREMIUM_TAG)) {
                     readSpecificTag(tag);
                 }
             }
@@ -66,7 +66,8 @@ public class TagManager {
      * Read the the player with the badges
      */
     private void readSpecificTag(Tags tag) {
-      LabyHelp.getInstance().getRequestManager().getStandardArrayList("https://labyhelp.de/tags.php?ex=" + tag.getRequestName(), tag.getArray());
+        tag.getArray().clear();
+        LabyHelp.getInstance().getRequestManager().getStandardArrayList("https://labyhelp.de/tags.php?ex=" + tag.getRequestName(), tag.getArray());
     }
 
 
@@ -154,8 +155,7 @@ public class TagManager {
      *
      * @param uuid        To set the Tag with the UUID
      * @param defaultSide This means if it is right or left
-     *                    <p>
-     *                    Note* defaultSide = right
+     *  Note* defaultSide = right
      */
     private String getSideTag(UUID uuid, boolean defaultSide) {
         if (defaultSide) {
@@ -180,7 +180,7 @@ public class TagManager {
      * @param tag  To set the special Tag for the player
      */
     private String getTag(UUID uuid, Tags tag) {
-        if (tag.getArray().contains(uuid)) {
+        if (hasPermissionToTag(uuid, tag)) {
             if (tag.getIsRainbow() && colorCache == null || LabyHelp.getInstance().getGroupManager().rainbow) {
                 colorCache = LabyHelp.getInstance().getGroupManager().randomColor(false);
                 LabyHelp.getInstance().getGroupManager().rainbow = false;

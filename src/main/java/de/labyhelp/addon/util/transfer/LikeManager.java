@@ -15,8 +15,8 @@ import static java.util.stream.Collectors.toList;
 
 public class LikeManager {
 
-    public final Map<UUID, String> userLikes = new HashMap<UUID, String>();
-    public final Map<UUID, String> oldLikes = new HashMap<UUID, String>();
+    public final Map<UUID, String> userLikes = new HashMap<>();
+    public final Map<UUID, String> oldLikes = new HashMap<>();
     public final ArrayList<UUID> isLiked = new ArrayList<>();
 
 

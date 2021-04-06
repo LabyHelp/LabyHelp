@@ -1,5 +1,6 @@
 package de.labyhelp.addon.util.transfer;
 
+import de.labyhelp.addon.LabyHelp;
 import net.labymod.main.LabyMod;
 import org.apache.commons.io.IOUtils;
 
@@ -32,7 +33,7 @@ public class LikeManager {
 
     public UUID getFamousLikePlayer() {
 
-        HashMap<UUID, Integer> likeList = new HashMap<UUID, Integer>();
+        HashMap<UUID, Integer> likeList = new HashMap<>();
 
         if (!userLikes.isEmpty()) {
             for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
@@ -86,68 +87,15 @@ public class LikeManager {
     }
 
     public void readLikes() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/likes.php?uuid=" + LabyMod.getInstance().getPlayerUUID()).openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            final String[] entries = result.split(",");
-
-            for (String liked : entries) {
-                if (liked.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                    UUID uuid = UUID.fromString(liked);
-                    isLiked.add(uuid);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read socialmedia!", e);
-        }
+        LabyHelp.getInstance().getRequestManager().getStandardArrayList("https://marvhuelsmann.de/likes.php?uuid=" + LabyMod.getInstance().getPlayerUUID(), isLiked);
     }
 
-    public String sendLike(final UUID uuid, UUID likeUuid) {
-        try {
-            if (uuid != null) {
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendLikes.php?uuid=" + uuid.toString() + "&likeUuid=" + likeUuid).openConnection();
-                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                con.setConnectTimeout(3000);
-                con.setReadTimeout(3000);
-                con.connect();
-                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            }
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch sendLikes!", e);
-        }
+    public void sendLike(final UUID uuid, UUID likeUuid) {
+         LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendLikes.php?uuid=" + uuid.toString() + "&likeUuid=" + likeUuid);
     }
 
     public void readUserLikes() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/userLikes.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            final String[] entries;
-            final String[] array;
-            final String[] split = array = (entries = result.split(","));
-            for (final String entry : array) {
-                final String[] data = entry.split(":");
-                if (data.length == 2) {
-                    String uuid = data[0];
-                    if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                        userLikes.put(UUID.fromString(data[0]), data[1]);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read NameTag!", e);
-        }
+        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/userLikes.php", (HashMap<UUID, String>) userLikes);
     }
 
 

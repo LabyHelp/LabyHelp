@@ -150,7 +150,6 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
 
         if (getVersionHandler().getGameVersion().equals(LabyVersion.ONE_EIGHTEEN)) {
-            getSettingsManager().oldVersion = true;
             this.getApi().registerModule(new DegreeModule());
             this.getApi().registerModule(new TexturePackModule());
         }

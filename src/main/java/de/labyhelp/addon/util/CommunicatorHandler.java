@@ -8,7 +8,6 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.LabyVersion;
 import de.labyhelp.addon.util.settings.SettingsManager;
 import net.labymod.main.LabyMod;
-import net.labymod.main.Source;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import org.apache.commons.io.IOUtils;
@@ -220,7 +219,7 @@ public class CommunicatorHandler {
     }
 
     public String sendBanned(final UUID uuid, String reason) {
-        try {
+
             if (uuid != null) {
                 reason = reason.replace(",", "").replace(":", "");
 
@@ -229,19 +228,10 @@ public class CommunicatorHandler {
                 LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
                 LabyHelp.getInstance().sendDeveloperMessage("reason: " + reason);
 
+                return LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + reason);
 
-                final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + URLEncoder.encode(reason, "UTF-8")).openConnection();
-                con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                con.setConnectTimeout(3000);
-                con.setReadTimeout(3000);
-                con.connect();
-                return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
             }
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch ban!", e);
-        }
+        return null;
     }
 
     public HelpGroups getBeforeRanked() {

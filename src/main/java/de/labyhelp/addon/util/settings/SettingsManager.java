@@ -41,8 +41,6 @@ public class SettingsManager {
     public int nameTagSwitchingSetting;
     public int nameTagRainbwSwitching;
     public int nameTagSize;
-
-    public boolean oldVersion = false;
     public boolean addonEnabled = false;
 
     public boolean commentChat = false;

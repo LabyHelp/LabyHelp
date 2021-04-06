@@ -4,7 +4,6 @@ import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
@@ -73,7 +72,6 @@ public class GroupManager {
                 return color;
             } else if (chooseColor != null) {
                 return chooseColor;
-
             } else {
                 chooseColor = color;
                 return color;

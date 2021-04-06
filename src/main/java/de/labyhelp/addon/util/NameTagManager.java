@@ -6,12 +6,8 @@ import de.labyhelp.addon.enums.NameTags;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
 import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,9 +21,8 @@ public class NameTagManager {
 
 
     public void readNameTags() {
-        readNameTag();
         readSecondNameTag();
-
+        readNameTag();
         getInstance().sendDeveloperMessage("method: readNameTags in NameTagManager");
     }
 
@@ -48,11 +43,9 @@ public class NameTagManager {
             }
             return;
         }
-
         if (!getInstance().getSettingsManager().seeNameTags) {
             return;
         }
-
         if (updateNameTagFinish) {
             return;
         }
@@ -90,7 +83,6 @@ public class NameTagManager {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + disco);
                     }
 
-
                     if (getInstance().getSettingsManager().nameTagSize != 0) {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(getInstance().getSettingsManager().nameTagSize);
                     } else {
@@ -110,21 +102,17 @@ public class NameTagManager {
             }
             return;
         }
-
         if (!getInstance().getSettingsManager().seeNameTags) {
             return;
         }
-
         if (updateSubtilesFinish) {
             return;
         }
-
         updateSubtilesFinish = true;
 
         if (!getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
 
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-
                 HelpGroups group = getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
                     getInstance().getTagManager().setNormalTag(uuidUserEntry.getKey(), group);
@@ -146,88 +134,41 @@ public class NameTagManager {
     }
 
     private void readNameTag() {
-        try {
-
-            getInstance().getCommunicatorHandler().userNameTags.clear();
-            getInstance().sendDeveloperMessage("called method: readNameTag first");
-
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            final String[] entries;
-            final String[] array;
-            final String[] split = array = (entries = result.split(","));
-
-            for (final String entry : array) {
-                final String[] data = entry.split(":");
-                if (data.length == 2) {
-                    getInstance().getCommunicatorHandler().userNameTags.put(UUID.fromString(data[0]), data[1]);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read NameTag!", e);
-        }
+        getInstance().sendDeveloperMessage("called method: readNameTag first");
+        getInstance().getCommunicatorHandler().userNameTags.clear();
+        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userNameTags);
     }
 
 
     private void readSecondNameTag() {
-        try {
+
 
             getInstance().sendDeveloperMessage("called method: readNameTag second");
             getInstance().getCommunicatorHandler().userSecondNameTags.clear();
-
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            final String[] entries;
-            final String[] array;
-            final String[] split = array = (entries = result.split(","));
-
-            for (final String entry : array) {
-                final String[] data = entry.split(":");
-                if (data.length == 2) {
-                    getInstance().getCommunicatorHandler().userSecondNameTags.put(UUID.fromString(data[0]), data[1]);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read second NameTag!", e);
-        }
+           LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userSecondNameTags);
     }
 
-    private NameTags moveNameTags() {
+    private void moveNameTags() {
 
         if (currentNameTag == NameTags.RANK) {
             updateSubTitles(false);
             currentNameTag = NameTags.FIRST_NAMETAG;
             LabyHelp.getInstance().sendDeveloperMessage("Rank");
 
-            return NameTags.FIRST_NAMETAG;
-
         } else if (currentNameTag == NameTags.FIRST_NAMETAG) {
             updateNameTag(false, true);
             LabyHelp.getInstance().sendDeveloperMessage("NameTag 1");
             currentNameTag = NameTags.SECOND_NAMETAG;
-            return NameTags.SECOND_NAMETAG;
 
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
             LabyHelp.getInstance().sendDeveloperMessage("NameTag 2");
             updateNameTag(false, false);
             currentNameTag = NameTags.RANK;
-            return NameTags.RANK;
 
         } else {
             LabyHelp.getInstance().sendDeveloperMessage("else");
             updateSubTitles(false);
             currentNameTag = NameTags.RANK;
-            return NameTags.RANK;
         }
     }
 

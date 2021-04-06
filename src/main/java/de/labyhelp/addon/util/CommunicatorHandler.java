@@ -49,7 +49,7 @@ public class CommunicatorHandler {
                 httpPost.setHeader("Content-Type", "application/json");
 
                 JsonObject request = new JsonObject();
-                request.addProperty("accessToken", LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken());
+                request.addProperty("accessToken",  LabyMod.getInstance().getAccountManager().getUserAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken() /*LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken() */);
                 request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
                 request.addProperty("serverId", SERVER_ID);
                 httpPost.setEntity(new StringEntity(new Gson().toJson(request)));

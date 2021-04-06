@@ -1,21 +1,19 @@
 package de.labyhelp.addon.listeners;
 
 import de.labyhelp.addon.LabyHelp;
-import net.labymod.main.LabyMod;
-import net.labymod.user.cosmetic.cosmetics.partner.CosmeticStegi;
-import net.labymod.utils.Consumer;
+import net.labymod.api.event.Subscribe;
+import net.labymod.api.event.events.network.server.LoginServerEvent;
 import net.labymod.utils.ServerData;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;
 
-public class ClientJoinListener implements Consumer<ServerData> {
+public class ClientJoinListener {
 
-    @Override
-    public void accept(ServerData serverData) {
+    @Subscribe
+    public void ServerJoinListener(final LoginServerEvent event) {
         LabyHelp.getInstance().getSettingsManager().onServer = true;
 
-        postJoin(serverData);
+        postJoin(event.getServerData());
     }
 
     private void sendBetaMessage() {
@@ -42,7 +40,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
         }
     }
 
-    public void postJoin(ServerData serverData) {
+    private void postJoin(ServerData serverData) {
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
             @Override
             public void run() {

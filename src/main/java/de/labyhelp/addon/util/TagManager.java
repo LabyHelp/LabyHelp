@@ -193,7 +193,7 @@ public class TagManager {
      *
      * @param uuid        To set the Tag with the UUID
      * @param defaultSide This means if it is right or left
-     *                    <p>
+     *
      *                    Note* defaultSide = right
      */
     private String getSideTag(UUID uuid, boolean defaultSide) {

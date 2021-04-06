@@ -46,7 +46,7 @@ public class DegreeModule extends SimpleModule {
 
     @Override
     public ControlElement.IconData getIconData() {
-        return new ControlElement.IconData(Material.INK_SACK);
+        return new ControlElement.IconData(Material.ARROW);
     }
 
     @Override

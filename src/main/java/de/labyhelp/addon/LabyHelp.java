@@ -1,20 +1,20 @@
 package de.labyhelp.addon;
 
-import de.labyhelp.addon.commands.socialmedia.SocialCMD;
 import de.labyhelp.addon.commands.addon.*;
 import de.labyhelp.addon.commands.feature.*;
 import de.labyhelp.addon.commands.socialmedia.*;
 import de.labyhelp.addon.commands.team.LabyHelpBanCMD;
 import de.labyhelp.addon.commands.team.LabyHelpWebCMD;
 import de.labyhelp.addon.enums.LabyVersion;
-import de.labyhelp.addon.enums.Languages;
 import de.labyhelp.addon.enums.SocialMediaType;
 import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.listeners.ClientJoinListener;
 import de.labyhelp.addon.listeners.ClientQuitListener;
-import de.labyhelp.addon.listeners.ClientTickListener;
 import de.labyhelp.addon.listeners.MessageSendListener;
-import de.labyhelp.addon.menu.*;
+import de.labyhelp.addon.menu.LikeMenu;
+import de.labyhelp.addon.menu.ReportMenu;
+import de.labyhelp.addon.menu.ServerMenu;
+import de.labyhelp.addon.menu.SocialMediaMenu;
 import de.labyhelp.addon.module.DegreeModule;
 import de.labyhelp.addon.module.TexturePackModule;
 import de.labyhelp.addon.store.PartnerHandler;
@@ -29,7 +29,6 @@ import lombok.Getter;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
 import net.labymod.main.Source;
-import net.labymod.main.lang.LanguageManager;
 import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
@@ -113,12 +112,20 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     @Override
     public void onEnable() {
-       getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
+        getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
 
-        this.getApi().registerForgeListener(new ClientTickListener());
-        this.getApi().getEventManager().register(new MessageSendListener());
-        this.getApi().getEventManager().registerOnJoin(new ClientJoinListener());
-        this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
+
+  //    if (getVersionHandler().getGameVersion().equals(LabyVersion.ONE_SIXTEEN)) {
+            this.getApi().getEventService().registerListener((Object) new ClientJoinListener());
+            this.getApi().getEventService().registerListener((Object)new ClientQuitListener());
+        //  this.getApi().getEventService().registerListener((Object)new MessageSendListener());
+            //this.getApi().getEventService().registerListener((Object) new ClientTickListener());
+      //  } else {
+      //     this.getApi().registerForgeListener(new ClientTickListener());
+         //   this.getApi().getEventManager().register(new MessageSendListener());
+         //   this.getApi().getEventManager().registerOnJoin(new ClientJoinListener());
+        //    this.getApi().getEventManager().registerOnQuit(new ClientQuitListener());
+    //    }
 
         getCommandHandler().registerCommand(
                 new LabyHelpHelpCMD(),
@@ -169,9 +176,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
 
-    changePlayerMenuItems();
+        changePlayerMenuItems();
 
-     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
 
             LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
@@ -292,7 +299,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     @Override
     protected void fillSettings(List<SettingsElement> settingsElements) {
-        final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.GOLD_BARDING), enable -> {
+        final BooleanElement settingsEnabled = new BooleanElement("Enabled", new ControlElement.IconData(Material.LEVER), enable -> {
             LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable = enable;
             LabyHelp.this.getConfig().addProperty("enable", enable);
             LabyHelp.this.saveConfig();
@@ -301,7 +308,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(new HeaderElement("§7Activate or disable the Addon"));
         /* */
 
-        final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" /* Display name */, 0, 0, 0, 0)
+     /*   final DropDownMenu<Languages> alignmentDropDownMenu = new DropDownMenu<Languages>("Your Language" , 0, 0, 0, 0)
                 .fill(Languages.values());
         DropDownElement<Languages> alignmentDropDown = new DropDownElement<Languages>("Your Language:", alignmentDropDownMenu);
 
@@ -327,14 +334,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.this.saveConfig();
         });
 
-        alignmentDropDownMenu.setEntryDrawer((object, x, y, trimmedEntry) -> {
+       alignmentDropDownMenu.setEntryDrawer((object, x, y, trimmedEntry) -> {
             String entry = object.toString().toLowerCase();
             LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
 
         });
-
+     */
         settingsElements.add(new HeaderElement(" "));
-        settingsElements.add(alignmentDropDown);
+        //   settingsElements.add(alignmentDropDown);
         settingsElements.add(new HeaderElement(" "));
 
         final BooleanElement settingsStore = new BooleanElement("Other LabyHelp Addons", new ControlElement.IconData(Material.REDSTONE), new Consumer<Boolean>() {
@@ -632,8 +639,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         settingsElements.add(new HeaderElement(" "));
 
-        final DropDownMenu<Tags> leftTag = new DropDownMenu<Tags>("Badge left:" /* Display name */, 0, 0, 0, 0)
-                .fill(Tags.values());
+      final DropDownMenu<Tags> leftTag = new DropDownMenu<Tags>("Badge left:", 0, 0, 0, 0);
         DropDownElement<Tags> leftTagElement = new DropDownElement<Tags>("Badge left:", leftTag);
 
 
@@ -666,16 +672,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         });
 
-        leftTag.setEntryDrawer((object, x, y, trimmedEntry) -> {
-            String entry = object.toString().toLowerCase();
-            LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
-
-        });
-
         settingsElements.add(leftTagElement);
 
-        final DropDownMenu<Tags> rightTag = new DropDownMenu<Tags>("Badge right:" /* Display name */, 0, 0, 0, 0)
-                .fill(Tags.values());
+      /*  final DropDownMenu<Tags> rightTag = new DropDownMenu<Tags>("Badge right:", 0, 0, 0, 0).fill(Tags.values());
         DropDownElement<Tags> rightTagElement = new DropDownElement<Tags>("Badge right:", rightTag);
 
 
@@ -708,13 +707,14 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         });
 
-        rightTag.setEntryDrawer((object, x, y, trimmedEntry) -> {
+      /*  rightTag.setEntryDrawer((object, x, y, trimmedEntry) -> {
             String entry = object.toString().toLowerCase();
             LabyMod.getInstance().getDrawUtils().drawString(LanguageManager.translate(entry), x, y);
 
         });
+       */
 
-        settingsElements.add(rightTagElement);
+        //     settingsElements.add(rightTagElement);
         settingsElements.add(new HeaderElement("§7A global badge next to your rank, more informations:"));
         settingsElements.add(new HeaderElement("§ehttps://labyhelp.de/badges"));
 

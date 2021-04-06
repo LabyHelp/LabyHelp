@@ -1,15 +1,11 @@
 package de.labyhelp.addon.listeners;
 
 import de.labyhelp.addon.LabyHelp;
-import de.labyhelp.addon.LabyPlayer;
-import net.labymod.api.events.MessageSendEvent;
-import net.labymod.main.LabyMod;
+import net.labymod.api.event.Subscribe;
 
-import java.util.UUID;
+public class MessageSendListener {
 
-public class MessageSendListener implements MessageSendEvent {
-
-    @Override
+    @Subscribe
     public boolean onSend(String message) {
         if (LabyHelp.getInstance().getSettingsManager().AddonSettingsEnable) {
             return LabyHelp.getInstance().getCommandHandler().executeCommand(message);

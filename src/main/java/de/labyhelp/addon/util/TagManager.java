@@ -174,8 +174,12 @@ public class TagManager {
      */
     public boolean hasPermissionToTag(UUID uuid, Tags tag) {
         if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
-            if (!tag.equals(Tags.NOTHING) || !LabyHelp.getInstance().getGroupManager().isTeam(uuid) && !tag.isSpecial()) {
-                return tag.getArray().contains(uuid);
+            if (!tag.equals(Tags.NOTHING)) {
+                if (LabyHelp.getInstance().getGroupManager().isTeam(uuid) && !tag.isSpecial()) {
+                    return true;
+                } else {
+                    return tag.getArray().contains(uuid);
+                }
             } else {
                 return true;
             }

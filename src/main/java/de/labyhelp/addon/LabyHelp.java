@@ -113,7 +113,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
     @Override
     public void onEnable() {
-        getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
+       getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
 
         this.getApi().registerForgeListener(new ClientTickListener());
         this.getApi().getEventManager().register(new MessageSendListener());
@@ -169,9 +169,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
 
-        changePlayerMenuItems();
+    changePlayerMenuItems();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
 
             LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
@@ -647,9 +647,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 if (!getTagManager().hasAlreadySet(LabyMod.getInstance().getPlayerUUID(), alignment, true)) {
                     getSettingsManager().leftTag = alignment.name();
 
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
-                    getTagManager().sendSpecificTag(false, LabyMod.getInstance().getPlayerUUID(), alignment);
-                    getTagManager().initTagManager();
+                    LabyHelp.getInstance().getExecutor().submit(() -> {
+                        getTagManager().sendSpecificTag(false, LabyMod.getInstance().getPlayerUUID(), alignment);
+                        getTagManager().initTagManager();
+                        labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    });
 
                     LabyHelp.this.getConfig().addProperty("leftTag", alignment.name());
                     LabyHelp.this.saveConfig();
@@ -658,7 +660,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 }
             } else {
                 if (!getSettingsManager().leftTag.equals(alignment.name())) {
-                    labyPlayer.sendAlertTranslMessage("main.tag.noperms");
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
                 }
             }
 
@@ -687,9 +689,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 if (!getTagManager().hasAlreadySet(LabyMod.getInstance().getPlayerUUID(), alignment, false)) {
                     getSettingsManager().rightTag = alignment.name();
 
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
-                    getTagManager().sendSpecificTag(true, LabyMod.getInstance().getPlayerUUID(), alignment);
-                    getTagManager().initTagManager();
+                    LabyHelp.getInstance().getExecutor().submit(() -> {
+                        getTagManager().sendSpecificTag(true, LabyMod.getInstance().getPlayerUUID(), alignment);
+                        getTagManager().initTagManager();
+                        labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    });
 
                     LabyHelp.this.getConfig().addProperty("rightTag", alignment.name());
                     LabyHelp.this.saveConfig();
@@ -698,7 +702,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 }
             } else {
                 if (!getSettingsManager().rightTag.equals(alignment.name())) {
-                    labyPlayer.sendAlertTranslMessage("main.tag.noperms");
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
                 }
             }
 

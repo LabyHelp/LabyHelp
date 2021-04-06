@@ -56,7 +56,6 @@ public class NameTagManager {
         if (updateNameTagFinish) {
             return;
         }
-
         updateNameTagFinish = true;
 
         if (!getInstance().getCommunicatorHandler().userNameTags.isEmpty() || !getInstance().getCommunicatorHandler().userSecondNameTags.isEmpty()) {
@@ -248,7 +247,7 @@ public class NameTagManager {
     public boolean updateNameTags(Integer currentValue) {
 
         if (getInstance().getSettingsManager().translationLoaded) {
-            Integer chooseSeconds = getInstance().getSettingsManager().nameTagSwitchingSetting * 15;
+            Integer chooseSeconds = getInstance().getSettingsManager().nameTagSwitchingSetting * 16;
 
             if (getInstance().getSettingsManager().isOnServer()) {
                 if (currentValue > chooseSeconds) {

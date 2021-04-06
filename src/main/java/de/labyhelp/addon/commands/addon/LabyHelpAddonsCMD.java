@@ -15,17 +15,14 @@ public class LabyHelpAddonsCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
+        LabyHelp.getInstance().getExecutor().submit(() -> {
 
-                LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-                labyPlayer.sendDefaultMessage(EnumChatFormatting.BLUE + "LabyHelp Addons:");
-                for (Map.Entry<String, String> addons : LabyHelp.getInstance().getStoreHandler().getAddonsList().entrySet()) {
+            LabyHelp.getInstance().getStoreHandler().readHelpAddons();
+            labyPlayer.sendDefaultMessage(EnumChatFormatting.BLUE + "LabyHelp Addons:");
+            for (Map.Entry<String, String> addons : LabyHelp.getInstance().getStoreHandler().getAddonsList().entrySet()) {
 
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.BOLD + addons.getKey() +  EnumChatFormatting.GRAY + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.from") + " " + EnumChatFormatting.BOLD + LabyHelp.getInstance().getStoreHandler().getAddonAuthor(addons.getKey()));
+                labyPlayer.sendDefaultMessage(EnumChatFormatting.BOLD + addons.getKey() +  EnumChatFormatting.GRAY + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.from") + " " + EnumChatFormatting.BOLD + LabyHelp.getInstance().getStoreHandler().getAddonAuthor(addons.getKey()));
 
-                }
             }
         });
     }

@@ -85,8 +85,6 @@ public class LikeManager {
         return null;
     }
 
-
-
     public void readLikes() {
         try {
             final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/likes.php?uuid=" + LabyMod.getInstance().getPlayerUUID()).openConnection();
@@ -125,8 +123,6 @@ public class LikeManager {
             throw new IllegalStateException("Could not fetch sendLikes!", e);
         }
     }
-
-
 
     public void readUserLikes() {
         try {

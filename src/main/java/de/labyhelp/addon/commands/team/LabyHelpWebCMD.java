@@ -1,6 +1,5 @@
 package de.labyhelp.addon.commands.team;
 
-import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.main.LabyMod;

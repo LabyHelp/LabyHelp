@@ -40,15 +40,15 @@ public class CommunicatorHandler {
 
     public void sendClient(String sip) {
         try {
-
-            if (LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE)) {
-
                 HttpClient httpClient = HttpClients.createDefault();
                 HttpPost httpPost = new HttpPost("https://sessionserver.mojang.com/session/minecraft/join");
                 httpPost.setHeader("Content-Type", "application/json");
 
                 JsonObject request = new JsonObject();
-                request.addProperty("accessToken", LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken());
+                request.addProperty("accessToken",
+                        LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE) ?
+                        LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken()
+                        : Minecraft.getMinecraft().getSession().getToken());
                 request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
                 request.addProperty("serverId", SERVER_ID);
                 httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
@@ -59,40 +59,13 @@ public class CommunicatorHandler {
                     LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.12");
 
                 } else {
-                    LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
-                    labyPlayer.sendTranslMessage("main.verify");
-                    System.out.println(response);
-                    throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
-                }
-
-            } else {
-
-                HttpClient httpClient = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost("https://sessionserver.mojang.com/session/minecraft/join");
-                httpPost.setHeader("Content-Type", "application/json");
-
-                JsonObject request = new JsonObject();
-                request.addProperty("accessToken", Minecraft.getMinecraft().getSession().getToken());
-                request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
-                request.addProperty("serverId", SERVER_ID);
-                httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
-
-
-                HttpResponse response = httpClient.execute(httpPost);
-                if (response.getStatusLine().getStatusCode() == 204) {
-                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8"));
-                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.8");
-
-                } else {
                     if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
                         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                         labyPlayer.sendTranslMessage("main.verify");
+                        System.out.println(response);
+                        throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                     }
-                    System.out.println(response);
-                    throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                 }
-
-            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not fetch client!", e);
@@ -100,54 +73,38 @@ public class CommunicatorHandler {
     }
 
     public void readGroups() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/database.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            if (result != null) {
-                final String[] split;
-                final String[] entries = split = result.split(",");
-                for (final String entry : split) {
-                    final String[] data = entry.split(":");
-                    if (data.length == 2 && HelpGroups.isExist(data[1])) {
-                        String uuid = data[0];
-                        if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+        for (final String entry : LabyHelp.getInstance().getRequestManager().getRequest("https://marvhuelsmann.de/database.php")) {
+            final String[] data = entry.split(":");
+            if (data.length == 2 && HelpGroups.isExist(data[1])) {
+                String uuid = data[0];
+                if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
 
-                            userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
+                    userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
+                    if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid))
+                            && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))
+                            && !LabyHelp.getInstance().getGroupManager().isBanned(UUID.fromString(uuid))) {
+                        if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
+                            userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
+                        } else if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
+                            userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
+                        }
 
-                            if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid))
-                                    && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))
-                                    && !LabyHelp.getInstance().getGroupManager().isBanned(UUID.fromString(uuid))) {
-                                if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
-                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
-                                } else if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
-                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
-                                }
-
-                                if (LabyHelp.getInstance().getLikeManager().getFamousLikePlayer().toString().equals(uuid)) {
-                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
-                                } else {
-                                    List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getLikeManager().getTops5();
-                                    for (Map.Entry<String, Integer> uuidStringEntry : list) {
-                                        if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
-                                            userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
-                                        }
-                                    }
+                        if (LabyHelp.getInstance().getLikeManager().getFamousLikePlayer().toString().equals(uuid)) {
+                            userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
+                        } else {
+                            List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getLikeManager().getTops5();
+                            for (Map.Entry<String, Integer> uuidStringEntry : list) {
+                                if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
+                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
                                 }
                             }
                         }
                     }
                 }
-
-                LabyHelp.getInstance().sendDeveloperMessage("called method: readGroups");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch groups!", e);
+
+            LabyHelp.getInstance().sendDeveloperMessage("called method: readGroups");
         }
     }
 
@@ -206,12 +163,12 @@ public class CommunicatorHandler {
                 }
             }
 
-            if (!    LabyHelp.getInstance().getLikeManager().getBeforeLikes().equalsIgnoreCase(    LabyHelp.getInstance().getLikeManager().getNowLikes())) {
+            if (!LabyHelp.getInstance().getLikeManager().getBeforeLikes().equalsIgnoreCase(LabyHelp.getInstance().getLikeManager().getNowLikes())) {
                 LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.profilelike") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getLikeManager().getNowLikes() + EnumChatFormatting.GREEN + ")");
             }
 
             if (!LabyHelp.getInstance().getInviteManager().getBeforeInvites().equalsIgnoreCase(LabyHelp.getInstance().getInviteManager().getNowInvites())) {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN +  translationManager.getTranslation("main.predeemedcode") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.predeemedcode") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
             }
 
         }
@@ -220,17 +177,17 @@ public class CommunicatorHandler {
 
     public String sendBanned(final UUID uuid, String reason) {
 
-            if (uuid != null) {
-                reason = reason.replace(",", "").replace(":", "");
+        if (uuid != null) {
+            reason = reason.replace(",", "").replace(":", "");
 
-                LabyHelp.getInstance().sendDeveloperMessage("called method: sendBanned");
-                LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
-                LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
-                LabyHelp.getInstance().sendDeveloperMessage("reason: " + reason);
+            LabyHelp.getInstance().sendDeveloperMessage("called method: sendBanned");
+            LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
+            LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
+            LabyHelp.getInstance().sendDeveloperMessage("reason: " + reason);
 
-                return LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + reason);
+            return LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + reason);
 
-            }
+        }
         return null;
     }
 
@@ -256,57 +213,9 @@ public class CommunicatorHandler {
         return null;
     }
 
-    public void readIsOnline() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/online.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-            if (result != null) {
-                final String[] split;
-                final String[] entries = split = result.split(",");
-                for (final String entry : split) {
-                    final String[] data = entry.split(":");
-                    if (data.length == 2) {
-                        String uuid = data[0];
-                        if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                            isOnline.put(UUID.fromString(data[0]), data[1]);
-                        }
-                    }
-                }
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch online state!", e);
-        }
-    }
-
-    public String sendOnline(final UUID uuid, boolean isOnline) {
-        try {
-            if (uuid != null) {
-                if (isOnline) {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=ONLINE").openConnection();
-                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                    con.setConnectTimeout(3000);
-                    con.setReadTimeout(3000);
-                    con.connect();
-                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-                } else {
-                    final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=OFFLINE").openConnection();
-                    con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-                    con.setConnectTimeout(3000);
-                    con.setReadTimeout(3000);
-                    con.connect();
-                    return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-                }
-            }
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not fetch onlinemode!", e);
+    public void sendOnline(final UUID uuid, boolean isOnline) {
+        if (uuid != null) {
+            LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=" + (isOnline ? "ONLINE" : "OFFLINE"));
         }
     }
 

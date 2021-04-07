@@ -26,13 +26,7 @@ public class LabyHelpBanCMD implements HelpCommand {
                 if (!LabyHelp.getInstance().getGroupManager().isTeam(uuid)) {
                     if (uuid != null) {
                         clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("player") + " " + EnumChatFormatting.WHITE + args[1] + "" + EnumChatFormatting.WHITE + transManager.getTranslation("staff.banned.nametag"));
-
-                        if (LabyHelp.getInstance().getCommunicatorHandler().sendBanned(uuid, "NAMETAG") != null) {
-                            clientLabyPlayer.sendDefaultMessage("");
-                        } else {
-                            clientLabyPlayer.sendDefaultMessage("Oups error");
-                        }
-
+                        sendBanned(uuid);
                     } else {
                         clientLabyPlayer.sendTranslMessage("main.not.exist");
                     }
@@ -45,5 +39,12 @@ public class LabyHelpBanCMD implements HelpCommand {
         } else {
             clientLabyPlayer.sendNoPerms();
         }
+    }
+
+    private void sendBanned(UUID uuid) {
+        LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
+        LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
+        LabyHelp.getInstance().sendDeveloperMessage("reason: NAMETAG");
+        LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=NAMETAG" );
     }
 }

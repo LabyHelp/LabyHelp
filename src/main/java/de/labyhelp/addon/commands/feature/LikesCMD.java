@@ -25,7 +25,7 @@ public class LikesCMD implements HelpCommand {
                 public void run() {
                     final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
-                    if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid)) {
+                    if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
                         if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase()+  transManager.getTranslation("likes.has.only") +LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
                         } else {

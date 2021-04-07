@@ -51,15 +51,15 @@ public class NameTagManager {
         }
         updateNameTagFinish = true;
 
-        if (!getInstance().getCommunicatorHandler().userNameTags.isEmpty() || !getInstance().getCommunicatorHandler().userSecondNameTags.isEmpty()) {
+        if (!getInstance().getGroupManager().userNameTags.isEmpty() || !getInstance().getGroupManager().userSecondNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
                 String name = firstNameTag
-                        ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
-                        : getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
+                        ? getInstance().getGroupManager().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
+                        : getInstance().getGroupManager().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
 
-                        ? getInstance().getCommunicatorHandler().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
-                        : getInstance().getCommunicatorHandler().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null);
+                        ? getInstance().getGroupManager().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
+                        : getInstance().getGroupManager().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null);
 
 
                 if (getInstance().getGroupManager().isBanned(uuidUserEntry.getKey(), false)) {
@@ -110,10 +110,10 @@ public class NameTagManager {
         }
         updateSubtilesFinish = true;
 
-        if (!getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+        if (!getInstance().getGroupManager().userGroups.isEmpty()) {
 
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
-                HelpGroups group = getInstance().getCommunicatorHandler().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
+                HelpGroups group = getInstance().getGroupManager().userGroups.getOrDefault(uuidUserEntry.getKey(), null);
                 if (group != null) {
                     getInstance().getTagManager().setNormalTag(uuidUserEntry.getKey(), group);
 
@@ -135,15 +135,15 @@ public class NameTagManager {
 
     private void readNameTag() {
         getInstance().sendDeveloperMessage("called method: readNameTag first");
-        getInstance().getCommunicatorHandler().userNameTags.clear();
-        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userNameTags);
+        getInstance().getGroupManager().userNameTags.clear();
+        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userNameTags);
     }
 
 
     private void readSecondNameTag() {
         getInstance().sendDeveloperMessage("called method: readNameTag second");
-        getInstance().getCommunicatorHandler().userSecondNameTags.clear();
-        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getCommunicatorHandler().userSecondNameTags);
+        getInstance().getGroupManager().userSecondNameTags.clear();
+        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userSecondNameTags);
     }
 
     private void moveNameTags() {

@@ -30,7 +30,7 @@ public class VersionHandler {
     public String checkNewestLabyHelpVersion() {
         LabyHelp.getInstance().sendDeveloperMessage("called: checkNewestLabyHelpVersion");
 
-        String webVersion = LabyHelp.getInstance().getCommunicatorHandler().readVersion();
+        String webVersion = LabyHelp.getInstance().getRequestManager().getVanillaRequest("https://marvhuelsmann.de/version.php");
         LabyHelp.getInstance().getSettingsManager().newestVersion = webVersion;
         if (!webVersion.equalsIgnoreCase(SettingsManager.currentVersion)) {
             LabyHelp.getInstance().getSettingsManager().isNewerVersion = true;

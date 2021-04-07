@@ -25,7 +25,7 @@ public class LabyHelpLikeCMD implements HelpCommand {
                 if (!LabyHelp.getInstance().getLikeManager().isLiked.contains(uuid)) {
                     if (uuid != null) {
                         if (uuid.toString().matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                            if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid)) {
+                            if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
                                 LabyHelp.getInstance().getExecutor().submit(new Runnable() {
                                     @Override
                                     public void run() {

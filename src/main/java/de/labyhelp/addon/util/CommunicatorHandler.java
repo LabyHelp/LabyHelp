@@ -31,12 +31,7 @@ public class CommunicatorHandler {
 
     public final String SERVER_ID = "4ed1f46bbe04bc756bcb17c0c7ce3e4632f06a48";
 
-    public final Map<UUID, HelpGroups> userGroups = new HashMap<UUID, HelpGroups>();
-    public final Map<UUID, HelpGroups> oldGroups = new HashMap<UUID, HelpGroups>();
-    public final Map<UUID, String> userNameTags = new HashMap<UUID, String>();
-    public final Map<UUID, String> userSecondNameTags = new HashMap<UUID, String>();
-
-    public final Map<UUID, String> isOnline = new HashMap<UUID, String>();
+    public final Map<UUID, String> isOnline = new HashMap<>();
 
     public void sendClient(String sip) {
         try {
@@ -56,13 +51,12 @@ public class CommunicatorHandler {
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
                     LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/authenticate.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8"));
-                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version 1.12");
+                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
 
                 } else {
                     if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
                         LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
                         labyPlayer.sendTranslMessage("main.verify");
-                        System.out.println(response);
                         throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                     }
                 }
@@ -79,51 +73,50 @@ public class CommunicatorHandler {
                 String uuid = data[0];
                 if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
 
-                    userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
+                    LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.valueOf(data[1]));
 
                     if (!LabyHelp.getInstance().getGroupManager().isTeam(UUID.fromString(uuid))
                             && !LabyHelp.getInstance().getGroupManager().isPremiumExtra(UUID.fromString(uuid))
                             && !LabyHelp.getInstance().getGroupManager().isBanned(UUID.fromString(uuid))) {
                         if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 25) {
-                            userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
+                            LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.PREMIUM_);
                         } else if (Integer.parseInt(LabyHelp.getInstance().getInviteManager().getInvites(UUID.fromString(uuid))) >= 10) {
-                            userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
+                            LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.INVITER);
                         }
 
                         if (LabyHelp.getInstance().getLikeManager().getFamousLikePlayer().toString().equals(uuid)) {
-                            userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
+                            LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.FAMOUS);
                         } else {
                             List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getLikeManager().getTops5();
                             for (Map.Entry<String, Integer> uuidStringEntry : list) {
                                 if (uuidStringEntry.getKey().equalsIgnoreCase(uuid)) {
-                                    userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
+                                    LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.FAME);
                                 }
                             }
                         }
                     }
                 }
             }
-
-            LabyHelp.getInstance().sendDeveloperMessage("called method: readGroups");
         }
+        LabyHelp.getInstance().sendDeveloperMessage("called method: readGroups");
     }
 
     public void readFastStart() {
 
         LabyHelp.getInstance().getNameTagManager().readNameTags();
-
         LabyHelp.getInstance().getTagManager().readServerPartner();
-        LabyHelp.getInstance().getTagManager().initTagManager();
 
         readUserInformations(true);
+        LabyHelp.getInstance().getTagManager().initTagManager();
+
         LabyHelp.getInstance().sendDeveloperMessage("readFast finish");
     }
 
     public void readUserInformations(boolean groups) {
         if (groups) {
 
-            for (Map.Entry<UUID, HelpGroups> group : userGroups.entrySet()) {
-                oldGroups.put(group.getKey(), group.getValue());
+            for (Map.Entry<UUID, HelpGroups> group : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
+                LabyHelp.getInstance().getGroupManager().oldGroups.put(group.getKey(), group.getValue());
             }
 
             for (Map.Entry<UUID, String> likes : LabyHelp.getInstance().getLikeManager().userLikes.entrySet()) {
@@ -151,15 +144,15 @@ public class CommunicatorHandler {
 
             TranslationManager translationManager = LabyHelp.getInstance().getTranslationManager();
 
-            if (!getNowRanked().getName().equalsIgnoreCase(getBeforeRanked().getName())) {
-                if (getNowRanked().equals(HelpGroups.BANNED)) {
+            if (!LabyHelp.getInstance().getGroupManager().getNowRanked().getName().equalsIgnoreCase(LabyHelp.getInstance().getGroupManager().getBeforeRanked().getName())) {
+                if (LabyHelp.getInstance().getGroupManager().getNowRanked().equals(HelpGroups.BANNED)) {
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Your NameTag has been banned for one day");
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + translationManager.getTranslation("main.rules") + ": https://labyhelp.de/tag-rules");
                     LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
 
                 } else {
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.rankchange") + " (" + EnumChatFormatting.WHITE + getNowRanked().getName() + EnumChatFormatting.GREEN + ")");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.rankchange") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getGroupManager().getNowRanked().getName() + EnumChatFormatting.GREEN + ")");
                 }
             }
 
@@ -173,64 +166,5 @@ public class CommunicatorHandler {
 
         }
         LabyHelp.getInstance().getNameTagManager().readNameTags();
-    }
-
-    public String sendBanned(final UUID uuid, String reason) {
-
-        if (uuid != null) {
-            reason = reason.replace(",", "").replace(":", "");
-
-            LabyHelp.getInstance().sendDeveloperMessage("called method: sendBanned");
-            LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
-            LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
-            LabyHelp.getInstance().sendDeveloperMessage("reason: " + reason);
-
-            return LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=" + reason);
-
-        }
-        return null;
-    }
-
-    public HelpGroups getBeforeRanked() {
-        if (!oldGroups.isEmpty()) {
-            for (Map.Entry<UUID, HelpGroups> groups : oldGroups.entrySet()) {
-                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
-                    return oldGroups.get(groups.getKey());
-                }
-            }
-        }
-        return null;
-    }
-
-    public HelpGroups getNowRanked() {
-        if (!userGroups.isEmpty()) {
-            for (Map.Entry<UUID, HelpGroups> groups : userGroups.entrySet()) {
-                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
-                    return userGroups.get(groups.getKey());
-                }
-            }
-        }
-        return null;
-    }
-
-    public void sendOnline(final UUID uuid, boolean isOnline) {
-        if (uuid != null) {
-            LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendOnline.php?uuid=" + uuid.toString() + "&isOnline=" + (isOnline ? "ONLINE" : "OFFLINE"));
-        }
-    }
-
-    public String readVersion() {
-        try {
-            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/version.php").openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            con.setConnectTimeout(3000);
-            con.setReadTimeout(3000);
-            con.connect();
-
-            return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not read version!", e);
-        }
     }
 }

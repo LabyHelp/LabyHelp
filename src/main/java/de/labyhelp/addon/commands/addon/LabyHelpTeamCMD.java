@@ -26,7 +26,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
         LabyHelp.getInstance().getExecutor().submit(new Runnable() {
             @Override
             public void run() {
-                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
                     if (LabyHelp.getInstance().getGroupManager().isTeam(groupsEntry.getKey())) {
                         if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.ADMIN) || LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.OWNER)) {
                             if (!groupsEntry.getKey().toString().equals("d4389488-2692-436b-bc10-fce879f7441d")) {
@@ -36,7 +36,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
                     }
                 }
                 clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Developers");
-                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
                     if (LabyHelp.getInstance().getGroupManager().isTeam(groupsEntry.getKey())) {
                         if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.DEVELOPER) || LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRDEVELOPER)) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -44,7 +44,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
                     }
                 }
                 clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Moderation");
-                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
                     if (LabyHelp.getInstance().getGroupManager().isTeam(groupsEntry.getKey())) {
                         if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.MODERATOR) || LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRMODERATOR)) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -52,7 +52,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
                     }
                 }
                 clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Contents");
-                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
                     if (LabyHelp.getInstance().getGroupManager().isTeam(groupsEntry.getKey())) {
                         if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.CONTENT) || LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SRCONTENT)) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
@@ -60,7 +60,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
                     }
                 }
                 clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Addon Supporter");
-                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+                for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {
                         if (LabyHelp.getInstance().getGroupManager().getRanked(groupsEntry.getKey()).equals(HelpGroups.SUPPORTER)) {
                             clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "- " + UUIDFetcher.getName(groupsEntry.getKey()));
                         }

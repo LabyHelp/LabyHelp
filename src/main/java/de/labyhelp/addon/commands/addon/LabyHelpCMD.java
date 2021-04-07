@@ -18,24 +18,21 @@ public class LabyHelpCMD implements HelpCommand {
     public void execute(LabyPlayer labyPlayer, String[] args) {
         TranslationManager transManager = LabyHelp.getInstance().getTranslationManager();
         try {
-            LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                @Override
-                public void run() {
-                    LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
+            LabyHelp.getInstance().getExecutor().submit(() -> {
+                LabyHelp.getInstance().getSettingsManager().addonEnabled = true;
 
-                    String newestVersion = LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
+                String newestVersion = LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
 
-                    if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("new"));
-                    }
-                    if (LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("old"));
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + newestVersion);
-                        labyPlayer.sendAlertTranslMessage("info.restart");
-                    }
-
-                    LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
+                if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("new"));
                 }
+                if (LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("old"));
+                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + newestVersion);
+                    labyPlayer.sendAlertTranslMessage("info.restart");
+                }
+
+                LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
             });
         } catch (Exception ignored) {
             labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.responding") + EnumChatFormatting.BOLD + "909");

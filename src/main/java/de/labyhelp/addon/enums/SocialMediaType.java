@@ -15,7 +15,7 @@ public enum SocialMediaType {
     TWTICH(null, LabyHelp.getInstance().getSocialMediaManager().twitchName, "Twitch"),
     GITHUB(null, LabyHelp.getInstance().getSocialMediaManager().twitchName, "GitHub"),
     DISCORD(null, LabyHelp.getInstance().getSocialMediaManager().discordName, "Discord"),
-    STATUS(LabyHelp.getInstance().getCommunicatorHandler().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
+    STATUS(LabyHelp.getInstance().getGroupManager().userNameTags, LabyHelp.getInstance().getSocialMediaManager().statusName, "Status"),
     SERVER(LabyHelp.getInstance().getTagManager().hasServer, null, "Server"),
     NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().nameTagName, "NameTag"),
     SECOND_NAMETAG(null, LabyHelp.getInstance().getSocialMediaManager().secondNameTagName, "SecondNameTag");

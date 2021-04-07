@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class RequestManager {
@@ -38,8 +39,22 @@ public class RequestManager {
         }
     }
 
+    public String getVanillaRequest(String getRequest) {
+        try {
+            final HttpURLConnection con = (HttpURLConnection) new URL(getRequest).openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+            con.setConnectTimeout(3000);
+            con.setReadTimeout(3000);
+            con.connect();
+            return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not read getVanilla Request!" + getRequest, e);
+        }
+    }
+
     public void getStandardHashMap(String getRequest, HashMap<UUID, String> insertList) {
-        for (final String entry :  getRequest(getRequest)) {
+        for (final String entry : getRequest(getRequest)) {
             final String[] args = entry.split(":");
             if (args.length == 2) {
                 String uuid = args[0];
@@ -60,19 +75,16 @@ public class RequestManager {
                 }
             }
         }
-
     }
 
     private String request(String urlRequest) {
         try {
+            LabyHelp.getInstance().sendDeveloperMessage("requesting url: " + urlRequest);
             final HttpURLConnection con = (HttpURLConnection) new URL(urlRequest).openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
             con.setConnectTimeout(3000);
             con.setReadTimeout(3000);
             con.connect();
-
-            LabyHelp.getInstance().sendDeveloperMessage("requesting url: " + urlRequest);
-
             return IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,4 +92,5 @@ public class RequestManager {
             throw new IllegalStateException("Could not fetch request with url:" + urlRequest, e);
         }
     }
+
 }

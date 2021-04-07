@@ -25,7 +25,7 @@ public class InvitesCMD implements HelpCommand {
                 public void run() {
                     final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
-                    if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid)) {
+                    if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
                         if (LabyHelp.getInstance().getInviteManager().getNowInvites().equalsIgnoreCase("1")) {
                             labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getInviteManager().getInvites(uuid) + transManager.getTranslation("invite.points") + "!");
                         } else {

@@ -46,6 +46,7 @@ public class TagManager {
         }
 
         readServerPartner();
+        LabyHelp.getInstance().getGroupManager().getAllPremiumPlayers();
         for (TagsSide side : TagsSide.values()) {
             readSideTags(side);
         }
@@ -135,7 +136,7 @@ public class TagManager {
      * @return if the player has the permission
      */
     public boolean hasPermissionToTag(UUID uuid, Tags tag) {
-        if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+        if (!LabyHelp.getInstance().getGroupManager().userGroups.isEmpty()) {
             if (!tag.equals(Tags.NOTHING)) {
                 if (LabyHelp.getInstance().getGroupManager().isTeam(uuid) && !tag.isSpecial()) {
                     return true;

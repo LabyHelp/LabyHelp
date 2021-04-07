@@ -2,54 +2,81 @@ package de.labyhelp.addon.util;
 
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
+import net.labymod.main.LabyMod;
 import net.labymod.user.group.LabyGroup;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class GroupManager {
 
     public boolean rainbow = false;
 
+    public final Map<UUID, HelpGroups> userGroups = new HashMap<>();
+    public final Map<UUID, HelpGroups> oldGroups = new HashMap<>();
+    public final Map<UUID, String> userNameTags = new HashMap<>();
+    public final Map<UUID, String> userSecondNameTags = new HashMap<>();
+
+    private final ArrayList<UUID> allPremiumPlayers = new ArrayList<>();
+
     public ArrayList<UUID> getAllPremiumPlayers() {
-        ArrayList<UUID> premiumPlayer = new ArrayList<>();
-        for (Map.Entry<UUID, HelpGroups> playerInList : LabyHelp.getInstance().getCommunicatorHandler().userGroups.entrySet()) {
+        allPremiumPlayers.clear();
+        for (Map.Entry<UUID, HelpGroups> playerInList : userGroups.entrySet()) {
             if (!playerInList.getValue().equals(HelpGroups.BANNED) &&
                     !playerInList.getValue().equals(HelpGroups.USER)) {
-                premiumPlayer.add(playerInList.getKey());
+                allPremiumPlayers.add(playerInList.getKey());
             }
         }
-        return premiumPlayer;
+        return allPremiumPlayers;
+    }
+
+    public HelpGroups getBeforeRanked() {
+        if (!oldGroups.isEmpty()) {
+            for (Map.Entry<UUID, HelpGroups> groups : oldGroups.entrySet()) {
+                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
+                    return oldGroups.get(groups.getKey());
+                }
+            }
+        }
+        return null;
+    }
+
+    public HelpGroups getNowRanked() {
+        if (!userGroups.isEmpty()) {
+            for (Map.Entry<UUID, HelpGroups> groups : userGroups.entrySet()) {
+                if (groups.getKey().equals(LabyMod.getInstance().getPlayerUUID())) {
+                    return userGroups.get(groups.getKey());
+                }
+            }
+        }
+        return null;
     }
 
     public boolean isPremium(final UUID uuid) {
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getPremium();
+        return userGroups.containsKey(uuid) && userGroups.get(uuid).getPremium();
     }
 
     public boolean isPremiumExtra(final UUID uuid) {
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getPremiumExtra();
+        return userGroups.containsKey(uuid) && userGroups.get(uuid).getPremiumExtra();
     }
 
     public boolean isBanned(final UUID uuid) {
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid) == HelpGroups.BANNED;
+        return userGroups.containsKey(uuid) && userGroups.get(uuid) == HelpGroups.BANNED;
     }
 
     public boolean isTeam(final UUID uuid) {
-        if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
+        if (userGroups.isEmpty()) {
             LabyHelp.getInstance().getCommunicatorHandler().readGroups();
         }
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getTeam();
+        return userGroups.containsKey(uuid) && userGroups.get(uuid).getTeam();
     }
 
     public HelpGroups getRanked(final UUID uuid) {
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid);
+        return userGroups.get(uuid);
     }
 
     public boolean isTag(final UUID uuid) {
-        return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).getTag();
+        return userGroups.containsKey(uuid) && userGroups.get(uuid).getTag();
     }
 
     public boolean isBanned(final UUID uuid, Boolean database) {
@@ -57,8 +84,8 @@ public class GroupManager {
             LabyHelp.getInstance().getCommunicatorHandler().readUserInformations(true);
         }
 
-        if (!LabyHelp.getInstance().getCommunicatorHandler().userGroups.isEmpty()) {
-            return LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(uuid) && LabyHelp.getInstance().getCommunicatorHandler().userGroups.get(uuid).equals(HelpGroups.BANNED);
+        if (!userGroups.isEmpty()) {
+            return userGroups.containsKey(uuid) && userGroups.get(uuid).equals(HelpGroups.BANNED);
         }
         return false;
     }

@@ -43,37 +43,34 @@ public class ClientJoinListener implements Consumer<ServerData> {
     }
 
     public void postJoin(ServerData serverData) {
-        LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
+        LabyHelp.getInstance().getExecutor().submit(() -> {
+            try {
+                LabyHelp.getInstance().getTranslationManager().initTranslation(LabyHelp.getInstance().getTranslationManager().getChooseTranslation(LabyHelp.getInstance().getTranslationManager().chooseLanguage));
 
-                    if (LabyHelp.getInstance().getSettingsManager().isAddonEnabled()) {
-                    LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
+                if (LabyHelp.getInstance().getSettingsManager().isAddonEnabled()) {
+                LabyHelp.getInstance().getCommunicatorHandler().sendClient(serverData.getIp());
 
-                    sendBetaMessage();
-                    sendFirstJoinMessage();
-                    LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
+                sendBetaMessage();
+                sendFirstJoinMessage();
+                LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
 
-                    checkIfPartnerServer(serverData.getIp());
+                checkIfPartnerServer(serverData.getIp());
 
-                    if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
-                        LabyHelp.getInstance().getCommunicatorHandler().readFastStart();
-                    }
-
-                    LabyHelp.getInstance().sendDeveloperMessage("updating join user list");
-
-                    LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-
-                    } else {
-                        LabyHelp.getInstance().sendDefaultMessage("The LabyHelp Server are currently in maintenance mode.");
-                        LabyHelp.getInstance().sendDefaultMessage("You can see here more: https://stats.uptimerobot.com/ZrV89sM1jA");
-                    }
-                    LabyHelp.getInstance().getSettingsManager().isInitLoading = false;
-                } catch (Exception ignored) {
-                    LabyHelp.getInstance().getSettingsManager().addonEnabled = false;
+                if (LabyHelp.getInstance().getSettingsManager().translationLoaded) {
+                    LabyHelp.getInstance().getCommunicatorHandler().readFastStart();
                 }
+
+                LabyHelp.getInstance().sendDeveloperMessage("updating join user list");
+
+                LabyHelp.getInstance().getStoreHandler().readHelpAddons();
+
+                } else {
+                    LabyHelp.getInstance().sendDefaultMessage("The LabyHelp Server are currently in maintenance mode.");
+                    LabyHelp.getInstance().sendDefaultMessage("You can see here more: https://stats.uptimerobot.com/ZrV89sM1jA");
+                }
+                LabyHelp.getInstance().getSettingsManager().isInitLoading = false;
+            } catch (Exception ignored) {
+                LabyHelp.getInstance().getSettingsManager().addonEnabled = false;
             }
         });
     }

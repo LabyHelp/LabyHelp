@@ -156,7 +156,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         try {
             LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-            String webVersion = getStoreHandler().getFileDownloader().readAddonVersion("https://marvhuelsmann.de/version.php");
+            String webVersion = getStoreHandler().getFileDownloader().readAddonVersion();
             getSettingsManager().newestVersion = webVersion;
             if (!webVersion.equalsIgnoreCase(SettingsManager.currentVersion)) {
                 getSettingsManager().isNewerVersion = true;
@@ -171,12 +171,10 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     changePlayerMenuItems();
 
      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            LabyHelp.getInstance().getCommunicatorHandler().sendOnline(LabyMod.getInstance().getPlayerUUID(), false);
-
-            LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
+         LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendOnline.php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&isOnline=OFFLINE");
+         LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
 
             if (getSettingsManager().isNewerVersion || getSettingsManager().versionTag != null) {
-
                 LabyHelp.getInstance().getStoreHandler().getFileDownloader().updateLabyHelp();
             }
         }));

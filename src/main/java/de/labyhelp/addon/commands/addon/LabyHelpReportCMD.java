@@ -23,7 +23,7 @@ public class LabyHelpReportCMD implements HelpCommand {
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
         if (args.length == 2) {
-            if (LabyHelp.getInstance().getCommunicatorHandler().userGroups.containsKey(UUIDFetcher.getUUID(args[1]))) {
+            if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(UUIDFetcher.getUUID(args[1]))) {
 
                 UUID playerUUID = UUIDFetcher.getUUID(args[1]);
 
@@ -38,8 +38,8 @@ public class LabyHelpReportCMD implements HelpCommand {
                     return;
                 }
 
-                String nameTag = LabyHelp.getInstance().getCommunicatorHandler().userNameTags.get(playerUUID) != null ? LabyHelp.getInstance().getCommunicatorHandler().userNameTags.get(playerUUID) : "ERROR";
-                String secondNameTag = LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.get(playerUUID) != null ? LabyHelp.getInstance().getCommunicatorHandler().userSecondNameTags.get(playerUUID) : "ERROR";
+                String nameTag = LabyHelp.getInstance().getGroupManager().userNameTags.get(playerUUID) != null ? LabyHelp.getInstance().getGroupManager().userNameTags.get(playerUUID) : "ERROR";
+                String secondNameTag = LabyHelp.getInstance().getGroupManager().userSecondNameTags.get(playerUUID) != null ? LabyHelp.getInstance().getGroupManager().userSecondNameTags.get(playerUUID) : "ERROR";
 
                 try {
                     LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendReport.php?uuid=" + playerUUID + "&name=" + args[1] + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&nametag=" + URLEncoder.encode(nameTag, "UTF-8") + "&secondNameTag=" + URLEncoder.encode(secondNameTag, "UTF-8"));

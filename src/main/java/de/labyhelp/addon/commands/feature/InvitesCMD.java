@@ -20,20 +20,17 @@ public class InvitesCMD implements HelpCommand {
         TranslationManager transManager = LabyHelp.getInstance().getTranslationManager();
         if (args.length == 2) {
 
-            LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                @Override
-                public void run() {
-                    final UUID uuid = UUIDFetcher.getUUID(args[1]);
+            LabyHelp.getInstance().getExecutor().submit(() -> {
+                final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
-                    if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
-                        if (LabyHelp.getInstance().getInviteManager().getNowInvites().equalsIgnoreCase("1")) {
-                            labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getInviteManager().getInvites(uuid) + transManager.getTranslation("invite.points") + "!");
-                        } else {
-                            labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has")  + LabyHelp.getInstance().getInviteManager().getInvites(uuid) + transManager.getTranslation("invite.points") +"!");
-                        }
+                if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
+                    if (LabyHelp.getInstance().getInviteManager().getNowInvites().equalsIgnoreCase("1")) {
+                        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getInviteManager().getInvites(uuid) + transManager.getTranslation("invite.points") + "!");
                     } else {
-                        labyPlayer.sendTranslMessage("main.hasnot");
+                        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has")  + LabyHelp.getInstance().getInviteManager().getInvites(uuid) + transManager.getTranslation("invite.points") +"!");
                     }
+                } else {
+                    labyPlayer.sendTranslMessage("main.hasnot");
                 }
             });
 

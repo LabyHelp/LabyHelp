@@ -22,7 +22,6 @@ public class LabyHelpAddonsCMD implements HelpCommand {
             for (Map.Entry<String, String> addons : LabyHelp.getInstance().getStoreHandler().getAddonsList().entrySet()) {
 
                 labyPlayer.sendDefaultMessage(EnumChatFormatting.BOLD + addons.getKey() +  EnumChatFormatting.GRAY + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.from") + " " + EnumChatFormatting.BOLD + LabyHelp.getInstance().getStoreHandler().getAddonAuthor(addons.getKey()));
-
             }
         });
     }

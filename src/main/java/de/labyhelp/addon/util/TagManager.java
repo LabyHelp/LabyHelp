@@ -85,8 +85,10 @@ public class TagManager {
             if (data.length == 2) {
                 String uuid = data[0];
                 if (uuid.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
-                    if (hasPermissionToTag(UUID.fromString(data[0]), Tags.valueOf(data[1]))) {
-                        tag.getMap().put(UUID.fromString(data[0]), Tags.valueOf(data[1]));
+                    if (Tags.isExist(data[1])) {
+                        if (hasPermissionToTag(UUID.fromString(data[0]), Tags.valueOf(data[1]))) {
+                            tag.getMap().put(UUID.fromString(data[0]), Tags.valueOf(data[1]));
+                        }
                     }
                 }
             }
@@ -156,7 +158,7 @@ public class TagManager {
      *
      * @param uuid        To set the Tag with the UUID
      * @param defaultSide This means if it is right or left
-     *  Note* defaultSide = right
+     *                    Note* defaultSide = right
      */
     private String getSideTag(UUID uuid, boolean defaultSide) {
         if (defaultSide) {

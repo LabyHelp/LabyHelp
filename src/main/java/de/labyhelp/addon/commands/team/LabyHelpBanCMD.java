@@ -45,6 +45,6 @@ public class LabyHelpBanCMD implements HelpCommand {
         LabyHelp.getInstance().sendDeveloperMessage("banned user uuid: " + uuid.toString());
         LabyHelp.getInstance().sendDeveloperMessage("from user uuid: " + LabyMod.getInstance().getPlayerUUID());
         LabyHelp.getInstance().sendDeveloperMessage("reason: NAMETAG");
-        LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendBan.php?uuid=" + uuid.toString() + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=NAMETAG" );
+        LabyHelp.getInstance().getRequestManager().sendRequest("https://labyhelp.de/sendBan.php?uuid=" + uuid + "&fromUuid=" + LabyMod.getInstance().getPlayerUUID() + "&reason=NAMETAG" );
     }
 }

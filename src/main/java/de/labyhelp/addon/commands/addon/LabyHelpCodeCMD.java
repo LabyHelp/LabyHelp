@@ -20,20 +20,17 @@ public class LabyHelpCodeCMD implements HelpCommand {
         if (args.length == 2) {
             UUID uuid = UUIDFetcher.getUUID(args[1]);
             if (uuid != null) {
-                LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!args[1].equalsIgnoreCase(LabyMod.getInstance().getPlayerName())) {
-                            if (!LabyHelp.getInstance().getInviteManager().isOldPlayer(LabyMod.getInstance().getPlayerUUID())) {
-                                LabyHelp.getInstance().getInviteManager().sendInvite(LabyMod.getInstance().getPlayerUUID(), uuid);
-                                clientLabyPlayer.sendTranslMessage("code.enter");
+                LabyHelp.getInstance().getExecutor().submit(() -> {
+                    if (!args[1].equalsIgnoreCase(LabyMod.getInstance().getPlayerName())) {
+                        if (!LabyHelp.getInstance().getInviteManager().isOldPlayer(LabyMod.getInstance().getPlayerUUID())) {
+                            LabyHelp.getInstance().getInviteManager().sendInvite(LabyMod.getInstance().getPlayerUUID(), uuid);
+                            clientLabyPlayer.sendTranslMessage("code.enter");
 
-                            } else {
-                                clientLabyPlayer.sendTranslMessage("code.newplayer");
-                            }
                         } else {
-                            clientLabyPlayer.sendTranslMessage("code.redeem.self");
+                            clientLabyPlayer.sendTranslMessage("code.newplayer");
                         }
+                    } else {
+                        clientLabyPlayer.sendTranslMessage("code.redeem.self");
                     }
                 });
             } else {

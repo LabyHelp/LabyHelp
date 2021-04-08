@@ -2,12 +2,7 @@ package de.labyhelp.addon.util;
 
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.Languages;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -20,20 +20,17 @@ public class LikesCMD implements HelpCommand {
         TranslationManager transManager = LabyHelp.getInstance().getTranslationManager();
         if (args.length == 2) {
 
-            LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                @Override
-                public void run() {
-                    final UUID uuid = UUIDFetcher.getUUID(args[1]);
+            LabyHelp.getInstance().getExecutor().submit(() -> {
+                final UUID uuid = UUIDFetcher.getUUID(args[1]);
 
-                    if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
-                        if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
-                            clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase()+  transManager.getTranslation("likes.has.only") +LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
-                        } else {
-                            clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
-                        }
+                if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
+                    if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
+                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase()+  transManager.getTranslation("likes.has.only") +LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
                     } else {
-                        clientLabyPlayer.sendTranslMessage("main.hasnot");
+                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
                     }
+                } else {
+                    clientLabyPlayer.sendTranslMessage("main.hasnot");
                 }
             });
 

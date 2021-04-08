@@ -18,17 +18,14 @@ public class LikeListCMD implements HelpCommand {
 
     @Override
     public void execute(LabyPlayer labyPlayer, String[] args) {
-        LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getLikeManager().getTops5();
+        LabyHelp.getInstance().getExecutor().submit(() -> {
+            List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getLikeManager().getTops5();
 
-                int i = 1;
+            int i = 1;
 
-                for (Map.Entry<String, Integer> uuidStringEntry : list) {
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "" + i + EnumChatFormatting.WHITE + ": " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + EnumChatFormatting.WHITE + " with " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + uuidStringEntry.getValue() + EnumChatFormatting.WHITE + " Likes");
-                    i++;
-                }
+            for (Map.Entry<String, Integer> uuidStringEntry : list) {
+                labyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "" + i + EnumChatFormatting.WHITE + ": " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + EnumChatFormatting.WHITE + " with " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + uuidStringEntry.getValue() + EnumChatFormatting.WHITE + " Likes");
+                i++;
             }
         });
     }

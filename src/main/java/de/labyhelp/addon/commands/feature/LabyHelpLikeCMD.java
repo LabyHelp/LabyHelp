@@ -26,23 +26,20 @@ public class LabyHelpLikeCMD implements HelpCommand {
                     if (uuid != null) {
                         if (uuid.toString().matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
                             if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
-                                LabyHelp.getInstance().getExecutor().submit(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                LabyHelp.getInstance().getExecutor().submit(() -> {
 
-                                        LabyHelp.getInstance().getLikeManager().sendLike(LabyMod.getInstance().getPlayerUUID(), uuid);
+                                    LabyHelp.getInstance().getLikeManager().sendLike(LabyMod.getInstance().getPlayerUUID(), uuid);
 
-                                        LabyHelp.getInstance().getLikeManager().readUserLikes();
-                                        LabyHelp.getInstance().getLikeManager().readLikes();
+                                    LabyHelp.getInstance().getLikeManager().readUserLikes();
+                                    LabyHelp.getInstance().getLikeManager().readLikes();
 
-                                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("likes.like") + EnumChatFormatting.DARK_RED + args[1].toUpperCase() + EnumChatFormatting.RED + "!");
-                                        if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
-                                            clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
-                                        } else {
-                                            clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
-                                        }
-
+                                    clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("likes.like") + EnumChatFormatting.DARK_RED + args[1].toUpperCase() + EnumChatFormatting.RED + "!");
+                                    if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
+                                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
+                                    } else {
+                                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
                                     }
+
                                 });
                             } else {
                                 clientLabyPlayer.sendTranslMessage("main.hasnot");

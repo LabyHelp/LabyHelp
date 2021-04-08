@@ -3,7 +3,6 @@ package de.labyhelp.addon.util;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import net.labymod.main.LabyMod;
-import net.labymod.user.group.LabyGroup;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.*;

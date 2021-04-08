@@ -665,6 +665,26 @@
       <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="deobfDeps" />
+      <option name="name" value="deobfDeps" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/minecraft/deobfedDeps/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="forge" />
       <option name="name" value="forge" />
       <option name="url" value="http://files.minecraftforge.net/maven" />
@@ -1095,6 +1115,26 @@
       <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="BintrayJCenter" />
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
@@ -1115,6 +1155,68 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+  </component>
+  <component name="libraries-with-intellij-classes">
+    <option name="intellijApiContainingLibraries">
+      <list>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="ideaIU" />
+          <option name="groupId" value="com.jetbrains.intellij.idea" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="ideaIU" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="ideaIC" />
+          <option name="groupId" value="com.jetbrains.intellij.idea" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="ideaIC" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="pycharmPY" />
+          <option name="groupId" value="com.jetbrains.intellij.pycharm" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="pycharmPY" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="pycharmPC" />
+          <option name="groupId" value="com.jetbrains.intellij.pycharm" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="pycharmPC" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="clion" />
+          <option name="groupId" value="com.jetbrains.intellij.clion" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="clion" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="riderRD" />
+          <option name="groupId" value="com.jetbrains.intellij.rider" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="riderRD" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="goland" />
+          <option name="groupId" value="com.jetbrains.intellij.goland" />
+        </LibraryCoordinatesState>
+        <LibraryCoordinatesState>
+          <option name="artifactId" value="goland" />
+          <option name="groupId" value="com.jetbrains" />
+        </LibraryCoordinatesState>
+      </list>
+    </option>
   </component>
   <component name="libraryTable">
     <library name="Gradle: com.google.code.findbugs:jsr305:2.0.1">

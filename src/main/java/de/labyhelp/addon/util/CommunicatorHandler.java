@@ -50,7 +50,7 @@ public class CommunicatorHandler {
 
                 HttpResponse response = httpClient.execute(httpPost);
                 if (response.getStatusLine().getStatusCode() == 204) {
-                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion + "&mcversion=" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName(), "UTF-8"));
+                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion,"UTF-8") + "&mcversion=" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
                     LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
 
                 } else {

@@ -2,14 +2,13 @@ package de.labyhelp.addon.util.settings;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.59";
+    public static String currentVersion = "2.6.592";
     public String versionTag = null;
 
     public boolean firstPlay = true;

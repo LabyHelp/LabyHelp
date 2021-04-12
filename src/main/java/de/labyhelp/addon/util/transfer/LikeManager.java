@@ -87,11 +87,28 @@ public class LikeManager {
     }
 
     public void readLikes() {
-        LabyHelp.getInstance().getRequestManager().getStandardArrayList("https://marvhuelsmann.de/likes.php?uuid=" + LabyMod.getInstance().getPlayerUUID(), isLiked);
+        try {
+            final HttpURLConnection con = (HttpURLConnection) new URL("https://marvhuelsmann.de/likes.php?uuid=" + LabyMod.getInstance().getPlayerUUID()).openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+            con.setConnectTimeout(3000);
+            con.setReadTimeout(3000);
+            con.connect();
+            final String result = IOUtils.toString(con.getInputStream(), StandardCharsets.UTF_8);
+            final String[] entries = result.split(",");
+
+            for (String liked : entries) {
+                if (liked.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+                    UUID uuid = UUID.fromString(liked);
+                    isLiked.add(uuid);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendLike(final UUID uuid, UUID likeUuid) {
-         LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendLikes.php?uuid=" + uuid.toString() + "&likeUuid=" + likeUuid);
+         LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendLike.php?uuid=" + uuid.toString() + "&likeUuid=" + likeUuid);
     }
 
     public void readUserLikes() {

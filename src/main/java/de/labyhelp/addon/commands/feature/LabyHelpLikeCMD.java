@@ -19,6 +19,7 @@ public class LabyHelpLikeCMD implements HelpCommand {
     @Override
     public void execute(LabyPlayer clientLabyPlayer, String[] args) {
         TranslationManager transManager = LabyHelp.getInstance().getTranslationManager();
+        LabyHelp.getInstance().getLikeManager().readLikes();
         if (args.length == 2) {
             final UUID uuid = UUIDFetcher.getUUID(args[1]);
             if (!LabyMod.getInstance().getPlayerUUID().equals(uuid)) {
@@ -31,7 +32,6 @@ public class LabyHelpLikeCMD implements HelpCommand {
                                     LabyHelp.getInstance().getLikeManager().sendLike(LabyMod.getInstance().getPlayerUUID(), uuid);
 
                                     LabyHelp.getInstance().getLikeManager().readUserLikes();
-                                    LabyHelp.getInstance().getLikeManager().readLikes();
 
                                     clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("likes.like") + EnumChatFormatting.DARK_RED + args[1].toUpperCase() + EnumChatFormatting.RED + "!");
                                     if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {

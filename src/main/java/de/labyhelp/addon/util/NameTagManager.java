@@ -122,6 +122,10 @@ public class NameTagManager {
                     } else {
                         LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(1);
                     }
+
+                    if (group.equals(HelpGroups.TARGET)) {
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(5);
+                    }
                 }
 
             }

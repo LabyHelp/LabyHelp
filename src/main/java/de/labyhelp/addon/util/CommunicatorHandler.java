@@ -10,7 +10,6 @@ import de.labyhelp.addon.util.settings.SettingsManager;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -18,10 +17,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,31 +31,31 @@ public class CommunicatorHandler {
 
     public void sendClient(String sip) {
         try {
-                HttpClient httpClient = HttpClients.createDefault();
-                HttpPost httpPost = new HttpPost("https://sessionserver.mojang.com/session/minecraft/join");
-                httpPost.setHeader("Content-Type", "application/json");
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost("https://sessionserver.mojang.com/session/minecraft/join");
+            httpPost.setHeader("Content-Type", "application/json");
 
-                JsonObject request = new JsonObject();
-                request.addProperty("accessToken",
-                        LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE) ?
-                        LabyMod.getInstance().getAccountManager().getAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken()
-                        : Minecraft.getMinecraft().getSession().getToken());
-                request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
-                request.addProperty("serverId", SERVER_ID);
-                httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
+            JsonObject request = new JsonObject();
+            request.addProperty("accessToken",
+                    LabyHelp.getInstance().getVersionHandler().isGameVersion(LabyVersion.ONE_TWELVE) ?
+                            LabyMod.getInstance().getAccountManager().getUserAccount(LabyMod.getInstance().getPlayerUUID()).getAccessToken()
+                            : Minecraft.getMinecraft().getSession().getToken());
+            request.addProperty("selectedProfile", LabyMod.getInstance().getPlayerId());
+            request.addProperty("serverId", SERVER_ID);
+            httpPost.setEntity(new StringEntity(new Gson().toJson(request)));
 
-                HttpResponse response = httpClient.execute(httpPost);
-                if (response.getStatusLine().getStatusCode() == 204) {
-                    LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion,"UTF-8") + "&mcversion=" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
-                    LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
+            HttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 204) {
+                LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/auth.php?username=" + URLEncoder.encode(LabyMod.getInstance().getPlayerName(), "UTF-8") + "&sip=" + URLEncoder.encode(sip, "UTF-8") + "&clversion=" + URLEncoder.encode(SettingsManager.currentVersion, "UTF-8") + "&mcversion=" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
+                LabyHelp.getInstance().sendDeveloperMessage("register player: " + LabyMod.getInstance().getPlayerName() + " with sip: " + sip + " in version" + LabyHelp.getInstance().getVersionHandler().getGameVersion().getVersionName());
 
-                } else {
-                    if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
-                        LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
-                        labyPlayer.sendTranslMessage("main.verify");
-                        throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
-                    }
+            } else {
+                if (LabyHelp.getInstance().getSettingsManager().settingsAdversting) {
+                    LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
+                    labyPlayer.sendTranslMessage("main.verify");
+                    throw new IllegalStateException("Could not authenticate with mojang sessionserver!");
                 }
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not fetch client!", e);
@@ -95,6 +91,11 @@ public class CommunicatorHandler {
                             }
                         }
                     }
+
+                   if (LabyHelp.getInstance().getSettingsManager().getTargetPlayers().contains(UUID.fromString(data[0]))) {
+                       LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.TARGET);
+                   }
+
                 }
             }
         }
@@ -111,6 +112,7 @@ public class CommunicatorHandler {
 
         LabyHelp.getInstance().sendDeveloperMessage("readFast finish");
     }
+
 
     public void readUserInformations(boolean groups) {
         if (groups) {

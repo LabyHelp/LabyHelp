@@ -188,8 +188,10 @@ public class LabyPlayer {
     }
 
     public void sendDeveloperMessage(String message) {
-        if (LabyHelp.getInstance().getSettingsManager().onServer) {
-            LabyMod.getInstance().displayMessageInChat(developerPrefix + " " + message);
+        if (LabyHelp.getInstance().getSettingsManager().developerMode) {
+            if (LabyHelp.getInstance().getSettingsManager().onServer) {
+                LabyMod.getInstance().displayMessageInChat(developerPrefix + " " + message);
+            }
         }
     }
 

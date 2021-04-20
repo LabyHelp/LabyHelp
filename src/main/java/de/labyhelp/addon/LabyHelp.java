@@ -1,6 +1,7 @@
 package de.labyhelp.addon;
 
-import de.labyhelp.addon.commands.socialmedia.SocialCMD;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.labyhelp.addon.commands.addon.*;
 import de.labyhelp.addon.commands.feature.*;
 import de.labyhelp.addon.commands.socialmedia.*;
@@ -14,7 +15,10 @@ import de.labyhelp.addon.listeners.ClientJoinListener;
 import de.labyhelp.addon.listeners.ClientQuitListener;
 import de.labyhelp.addon.listeners.ClientTickListener;
 import de.labyhelp.addon.listeners.MessageSendListener;
-import de.labyhelp.addon.menu.*;
+import de.labyhelp.addon.menu.LikeMenu;
+import de.labyhelp.addon.menu.ReportMenu;
+import de.labyhelp.addon.menu.ServerMenu;
+import de.labyhelp.addon.menu.SocialMediaMenu;
 import de.labyhelp.addon.module.DegreeModule;
 import de.labyhelp.addon.module.TexturePackModule;
 import de.labyhelp.addon.store.PartnerHandler;
@@ -36,8 +40,7 @@ import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -145,7 +148,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new LabyHelpWebCMD(),
                 new VoiceChatCMD(),
                 new LabyHelpPartnerCMD(),
-                new LabyHelpBadgeCMD()
+                new LabyHelpBadgeCMD(),
+                new TargetCMD()
         );
 
 
@@ -284,6 +288,16 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().nameTagSettings = this.getConfig().has("nameTagSettings") ? this.getConfig().get("nameTagSettings").getAsString() : "SWITCHING";
         LabyHelp.getInstance().getSettingsManager().nameTagRainbwSwitching = this.getConfig().has("nameTagRainbwSwitching") ? this.getConfig().get("nameTagRainbwSwitching").getAsInt() : 1;
         LabyHelp.getInstance().getSettingsManager().nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
+        if (this.getConfig().has("targetPlayers")) {
+            final JsonObject object = this.getConfig().get("targetPlayers").getAsJsonObject();
+            final ArrayList<UUID> targetPlayers = new ArrayList<>();
+            for (final Map.Entry<String, JsonElement> entry : object.entrySet()) {
+                targetPlayers.add(UUID.fromString(entry.getKey()));
+            }
+            LabyHelp.getInstance().getSettingsManager().targetPlayers = targetPlayers;
+        } else {
+            LabyHelp.getInstance().getSettingsManager().targetPlayers = new ArrayList<>();
+        }
     }
 
 

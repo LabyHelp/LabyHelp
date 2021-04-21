@@ -2,15 +2,15 @@ package de.labyhelp.addon.util.settings;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.6";
-    public String versionTag = "LabyHelp SnapShot // Z";
+    public static String currentVersion = "2.6.593";
+    public String versionTag = null;
+    //LabyHelp SnapShot, Version: O | Build 4
 
     public boolean firstPlay = true;
     public boolean newVersionMessage = false;
@@ -46,6 +46,6 @@ public class SettingsManager {
     public boolean commentChat = false;
     public HashMap<UUID, UUID> commentMap = new HashMap<>();
 
-    public ArrayList<UUID> targetPlayers;
+    public HashMap<UUID, Integer> targetPlayers;
 
 }

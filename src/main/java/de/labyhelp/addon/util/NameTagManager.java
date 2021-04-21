@@ -54,6 +54,12 @@ public class NameTagManager {
         if (!getInstance().getGroupManager().userNameTags.isEmpty() || !getInstance().getGroupManager().userSecondNameTags.isEmpty()) {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
+
+                if (LabyHelp.getInstance().getSettingsManager().getTargetPlayers().containsKey(uuidUserEntry.getKey())) {
+                    LabyHelp.getInstance().getTargetManager().setTargetNameTag(uuidUserEntry.getKey());
+                    break;
+                }
+
                 String name = firstNameTag
                         ? getInstance().getGroupManager().userNameTags.getOrDefault(uuidUserEntry.getKey(), null)
                         : getInstance().getGroupManager().userSecondNameTags.getOrDefault(uuidUserEntry.getKey(), null) == null
@@ -124,7 +130,7 @@ public class NameTagManager {
                     }
 
                     if (group.equals(HelpGroups.TARGET)) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(5);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().getTargetPlayers().get(uuidUserEntry.getKey()));
                     }
                 }
 

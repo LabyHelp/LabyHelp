@@ -8,7 +8,7 @@ public enum HelpGroups {
     USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " ", false, false,false, false, "rank.user"),
 
     BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " ", false, false, false, false, "rank.user"),
-    TARGET("TARGET", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " ", false, false, false, false, "rank.target"),
+    TARGET("TARGET", EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + " ", false, false, false, false, "rank.target"),
 
     FAME("FAME", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " FAME", true, false, false, false, null),
     FAMOUS("FAMOUS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + " FAMOUS", false, true, false, false, null),

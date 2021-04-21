@@ -92,7 +92,8 @@ public class CommunicatorHandler {
                         }
                     }
 
-                   if (LabyHelp.getInstance().getSettingsManager().getTargetPlayers().contains(UUID.fromString(data[0]))) {
+                    //adding the targets to the Target Mode
+                   if (LabyHelp.getInstance().getSettingsManager().getTargetPlayers().containsKey(UUID.fromString(data[0]))) {
                        LabyHelp.getInstance().getGroupManager().userGroups.put(UUID.fromString(data[0]), HelpGroups.TARGET);
                    }
 

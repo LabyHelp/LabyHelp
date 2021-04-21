@@ -82,6 +82,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
     private final VoiceChatManager voiceChatManager;
     @Getter
     private final PartnerHandler partnerHandler;
+    @Getter
+    private final TargetManager targetManager;
 
     public LabyHelp() {
         instance = this;
@@ -111,12 +113,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         voiceChatManager = new VoiceChatManager();
 
         partnerHandler = new PartnerHandler();
+        targetManager = new TargetManager();
 
     }
 
     @Override
     public void onEnable() {
-       getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
+        getVersionHandler().initGameVersion(Source.ABOUT_MC_VERSION);
 
         this.getApi().registerForgeListener(new ClientTickListener());
         this.getApi().getEventManager().register(new MessageSendListener());
@@ -172,11 +175,11 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         }
 
 
-    changePlayerMenuItems();
+        changePlayerMenuItems();
 
-     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-         LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendOnline.php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&isOnline=OFFLINE");
-         LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LabyHelp.getInstance().getRequestManager().sendRequest("https://marvhuelsmann.de/sendOnline.php?uuid=" + LabyMod.getInstance().getPlayerUUID() + "&isOnline=OFFLINE");
+            LabyHelp.getInstance().getStoreHandler().getFileDownloader().installStoreAddons();
 
             if (getSettingsManager().isNewerVersion || getSettingsManager().versionTag != null) {
                 LabyHelp.getInstance().getStoreHandler().getFileDownloader().updateLabyHelp();
@@ -215,6 +218,19 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyPlayer labyPlayer = new LabyPlayer(LabyMod.getInstance().getPlayerUUID());
             labyPlayer.sendDeveloperMessage(message);
         }
+    }
+
+    public boolean isNumeric(String string) {
+        if (string == null || string.equals("")) {
+            return false;
+        }
+        try {
+            Integer.parseInt(string);
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Input String cannot be parsed to Integer.");
+        }
+        return false;
     }
 
     public void changePlayerMenuItems() {
@@ -290,13 +306,13 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         LabyHelp.getInstance().getSettingsManager().nameTagSize = this.getConfig().has("nameTagSize") ? this.getConfig().get("nameTagSize").getAsInt() : 1;
         if (this.getConfig().has("targetPlayers")) {
             final JsonObject object = this.getConfig().get("targetPlayers").getAsJsonObject();
-            final ArrayList<UUID> targetPlayers = new ArrayList<>();
+            final HashMap<UUID, Integer> targetPlayers = new HashMap<>();
             for (final Map.Entry<String, JsonElement> entry : object.entrySet()) {
-                targetPlayers.add(UUID.fromString(entry.getKey()));
+                targetPlayers.put(UUID.fromString(entry.getKey()), entry.getValue().getAsInt());
             }
             LabyHelp.getInstance().getSettingsManager().targetPlayers = targetPlayers;
         } else {
-            LabyHelp.getInstance().getSettingsManager().targetPlayers = new ArrayList<>();
+            LabyHelp.getInstance().getSettingsManager().targetPlayers = new HashMap<>();
         }
     }
 

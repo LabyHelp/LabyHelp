@@ -25,10 +25,10 @@ import de.labyhelp.addon.store.PartnerHandler;
 import de.labyhelp.addon.store.StoreHandler;
 import de.labyhelp.addon.util.*;
 import de.labyhelp.addon.util.commands.CommandHandler;
-import de.labyhelp.addon.util.settings.SettingsManager;
 import de.labyhelp.addon.util.transfer.InviteManager;
 import de.labyhelp.addon.util.transfer.LikeManager;
 import de.labyhelp.addon.util.transfer.SocialMediaManager;
+import de.labyhelp.addon.util.settings.SettingsManager;
 import lombok.Getter;
 import net.labymod.gui.elements.DropDownMenu;
 import net.labymod.main.LabyMod;
@@ -40,7 +40,10 @@ import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

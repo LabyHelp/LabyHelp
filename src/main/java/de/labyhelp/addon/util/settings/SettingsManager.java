@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.593";
+    public static String currentVersion = "2.6.594";
     public String versionTag = null;
     //LabyHelp SnapShot, Version: O | Build 4
 

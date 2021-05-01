@@ -4,7 +4,7 @@ import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class InviteListCMD implements HelpCommand {
             List<Map.Entry<String, Integer>> list = LabyHelp.getInstance().getInviteManager().getTops5();
             int i = 1;
             for (Map.Entry<String, Integer> uuidStringEntry : list) {
-                labyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "" + i + EnumChatFormatting.WHITE + ": " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + EnumChatFormatting.WHITE + " with " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + uuidStringEntry.getValue() + EnumChatFormatting.WHITE + LabyHelp.getInstance().getTranslationManager().getTranslation("invite.points"));
+                labyPlayer.sendDefaultMessage("§e" + "" + i + "§f" + ": " + "§e" + "§l" + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + "§f" + " with " + "§e" + "§l" + uuidStringEntry.getValue() + "§f" + LabyHelp.getInstance().getTranslationManager().getTranslation("invite.points"));
                 i++;
             }
         });

@@ -3,7 +3,7 @@ package de.labyhelp.addon.util;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.LabyVersion;
 import de.labyhelp.addon.util.settings.SettingsManager;
-import net.minecraft.util.EnumChatFormatting;
+
 
 public class VersionHandler {
 
@@ -52,7 +52,7 @@ public class VersionHandler {
             if (!LabyHelp.getInstance().getTranslationManager().getTranslation("main.newFeatures").equals("")
                     && !LabyHelp.getInstance().getTranslationManager().getTranslation("main.newFeatures").equals("main.newFeatures")) {
                 if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
-                    LabyHelp.getInstance().sendSpecficTranslMessage(EnumChatFormatting.RED + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("info.new") + ":" + EnumChatFormatting.WHITE, "main.newFeatures");
+                    LabyHelp.getInstance().sendSpecficTranslMessage("§c" + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("info.new") + ":" + "§f", "main.newFeatures");
 
                     LabyHelp.getInstance().getConfig().addProperty("newVersionMessage", false);
                     LabyHelp.getInstance().getSettingsManager().newVersionMessage = false;

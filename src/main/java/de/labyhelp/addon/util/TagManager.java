@@ -5,7 +5,6 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.enums.TagsSide;
 import net.labymod.main.LabyMod;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ public class TagManager {
     public ArrayList<UUID> chromeDiscordTag = new ArrayList<>();
 
     public ArrayList<UUID> easterDiscordTag = new ArrayList<>();
-    private EnumChatFormatting colorCache;
+    private String colorCache;
 
     public HashMap<UUID, Tags> rightPlayerList = new HashMap<>();
     public HashMap<UUID, Tags> leftPlayerList = new HashMap<>();
@@ -181,7 +180,7 @@ public class TagManager {
     private String getTag(UUID uuid, Tags tag) {
         if (hasPermissionToTag(uuid, tag)) {
             if (tag.getIsRainbow() && colorCache == null || LabyHelp.getInstance().getGroupManager().rainbow) {
-                colorCache = LabyHelp.getInstance().getGroupManager().randomColor(false);
+                colorCache = LabyHelp.getInstance().getGroupManager().randomColor();
                 LabyHelp.getInstance().getGroupManager().rainbow = false;
             }
             return tag.getIsRainbow() ? colorCache + tag.getTagDisplayed() : tag.getTagDisplayed();

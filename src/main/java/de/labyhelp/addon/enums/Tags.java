@@ -2,7 +2,7 @@ package de.labyhelp.addon.enums;
 
 import de.labyhelp.addon.LabyHelp;
 import lombok.Getter;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,15 +11,15 @@ import java.util.UUID;
 public enum Tags {
 
     NOTHING("", false, "Nothing", "none", null, false),
-    DISCORD_NORMAL_TAG(EnumChatFormatting.GRAY + " ✪ ", false, "NORMAL", "tag", LabyHelp.getInstance().getTagManager().normalDiscordTag, true),
+    DISCORD_NORMAL_TAG("§7" + " ✪ ", false, "NORMAL", "tag", LabyHelp.getInstance().getTagManager().normalDiscordTag, true),
     DISCORD_RAINBOW_TAG(" ✪ ", true, "CHROME", "tag", LabyHelp.getInstance().getTagManager().chromeDiscordTag, true),
 
-    PREMIUM_TAG(EnumChatFormatting.GOLD + " Ⓟ ", false, "PREMIUM", "premium", LabyHelp.getInstance().getGroupManager().getAllPremiumPlayers(), false),
+    PREMIUM_TAG("§6" + " Ⓟ ", false, "PREMIUM", "premium", LabyHelp.getInstance().getGroupManager().getAllPremiumPlayers(), false),
 
-    LABYHELP_TAG(EnumChatFormatting.RED + " ۩ ", false, "LABYHELP", "labyhelp", LabyHelp.getInstance().getTagManager().visitLabyHelpServer, false),
+    LABYHELP_TAG("§c"+ " ۩ ", false, "LABYHELP", "labyhelp", LabyHelp.getInstance().getTagManager().visitLabyHelpServer, false),
 
-    SERVER_TAG(EnumChatFormatting.DARK_AQUA + " Ⓢ ", false, "SERVER", "serverPartner", LabyHelp.getInstance().getTagManager().serverTag, true),
-    EASTER_2021_TAG(EnumChatFormatting.GREEN + " ⚘ ", false, "EASTER2021", "easter", LabyHelp.getInstance().getTagManager().easterDiscordTag, false);
+    SERVER_TAG("§3" + " Ⓢ ", false, "SERVER", "serverPartner", LabyHelp.getInstance().getTagManager().serverTag, true),
+    EASTER_2021_TAG("§a" + " ⚘ ", false, "EASTER2021", "easter", LabyHelp.getInstance().getTagManager().easterDiscordTag, false);
 
     private final String tagDisplayed;
     private final Boolean isRainbow;

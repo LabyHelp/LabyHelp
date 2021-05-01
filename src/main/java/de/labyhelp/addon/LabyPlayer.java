@@ -2,7 +2,6 @@ package de.labyhelp.addon;
 
 import de.labyhelp.addon.enums.SocialMediaType;
 import net.labymod.main.LabyMod;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -18,8 +17,8 @@ public class LabyPlayer {
         this.uuid = uuid;
     }
 
-    public static final String prefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.WHITE;
-    public final String developerPrefix = EnumChatFormatting.DARK_GRAY + "[" + EnumChatFormatting.YELLOW + "Dev-Helper" + EnumChatFormatting.DARK_GRAY + "]" + EnumChatFormatting.GRAY;
+    public static final String prefix = "§8[" + "§e" + "Helper" + "§8" + "]" + "§f";
+    public final String developerPrefix = "§8" + "[" + "§e" + "Dev-Helper" + "§8" + "]" + "§8";
 
 
     public String getSocialMedia(SocialMediaType socialMedia) {
@@ -57,19 +56,19 @@ public class LabyPlayer {
         clipboard.setContents(stringSelection, null);
 
         if (name != null && !name.equals("")) {
-            sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.server") + " " + EnumChatFormatting.RED + name + EnumChatFormatting.GRAY + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
+            sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("social.server") + " " + "§c" + name + "§7" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.clipboard"));
 
             LabyMod.getInstance().getLabyModAPI().connectToServer(name);
         } else {
-            LabyHelp.getInstance().sendDefaultMessage(EnumChatFormatting.RED + "No Server found! Error 404");
+            LabyHelp.getInstance().sendDefaultMessage("§c" + "No Server found! Error 404");
         }
     }
 
 
     public void sendAdversting(boolean tip) {
         sendTranslMessage("main.adversting");
-        sendDefaultMessage(EnumChatFormatting.YELLOW + "LabyHelp Teamspeak:" + EnumChatFormatting.BOLD + " https://labyhelp.de/teamspeak");
-        sendDefaultMessage(EnumChatFormatting.YELLOW + "LabyHelp Discord:" + EnumChatFormatting.BOLD + " https://labyhelp.de/discord");
+        sendDefaultMessage("§e" + "LabyHelp Teamspeak:" + "§l" + " https://labyhelp.de/teamspeak");
+        sendDefaultMessage("§e" + "LabyHelp Discord:" + "§l" + " https://labyhelp.de/discord");
 
         if (tip) {
             sendTranslMessage("adversting.turnoff");
@@ -164,20 +163,20 @@ public class LabyPlayer {
 
     public void sendAlertTranslMessage(String key) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
-            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.RED + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+            LabyMod.getInstance().displayMessageInChat(prefix + "§c" + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
         }
     }
 
     public void sendWarningTranslMessage(String key) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
-            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.YELLOW + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+            LabyMod.getInstance().displayMessageInChat(prefix + "§e" + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
         }
     }
 
 
     public void sendSuccessTranslMessage(String key) {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
-            LabyMod.getInstance().displayMessageInChat(prefix + EnumChatFormatting.GREEN + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
+            LabyMod.getInstance().displayMessageInChat(prefix + "§a" + " " + LabyHelp.getInstance().getTranslationManager().getTranslation(key));
         }
     }
 

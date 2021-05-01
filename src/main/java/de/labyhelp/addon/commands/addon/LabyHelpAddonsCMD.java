@@ -3,7 +3,7 @@ package de.labyhelp.addon.commands.addon;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.Map;
 
@@ -18,10 +18,10 @@ public class LabyHelpAddonsCMD implements HelpCommand {
         LabyHelp.getInstance().getExecutor().submit(() -> {
 
             LabyHelp.getInstance().getStoreHandler().readHelpAddons();
-            labyPlayer.sendDefaultMessage(EnumChatFormatting.BLUE + "LabyHelp Addons:");
+            labyPlayer.sendDefaultMessage("§9" + "LabyHelp Addons:");
             for (Map.Entry<String, String> addons : LabyHelp.getInstance().getStoreHandler().getAddonsList().entrySet()) {
 
-                labyPlayer.sendDefaultMessage(EnumChatFormatting.BOLD + addons.getKey() +  EnumChatFormatting.GRAY + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.from") + " " + EnumChatFormatting.BOLD + LabyHelp.getInstance().getStoreHandler().getAddonAuthor(addons.getKey()));
+                labyPlayer.sendDefaultMessage("§l" + addons.getKey() +  "§7" + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.from") + " " + "§l" + LabyHelp.getInstance().getStoreHandler().getAddonAuthor(addons.getKey()));
             }
         });
     }

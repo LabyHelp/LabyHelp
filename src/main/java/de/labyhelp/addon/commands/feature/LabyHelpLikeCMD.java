@@ -6,7 +6,7 @@ import de.labyhelp.addon.util.TranslationManager;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.UUID;
 
@@ -33,11 +33,11 @@ public class LabyHelpLikeCMD implements HelpCommand {
 
                                     LabyHelp.getInstance().getLikeManager().readUserLikes();
 
-                                    clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("likes.like") + EnumChatFormatting.DARK_RED + args[1].toUpperCase() + EnumChatFormatting.RED + "!");
+                                    clientLabyPlayer.sendDefaultMessage("§f" + transManager.getTranslation("likes.like") + "§4" + args[1].toUpperCase() + "§c" + "!");
                                     if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
-                                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
+                                        clientLabyPlayer.sendDefaultMessage("§f" + args[1].toUpperCase() + transManager.getTranslation("likes.has.only") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
                                     } else {
-                                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() + transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
+                                        clientLabyPlayer.sendDefaultMessage("§f" + args[1].toUpperCase() + transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
                                     }
 
                                 });
@@ -51,7 +51,7 @@ public class LabyHelpLikeCMD implements HelpCommand {
                         clientLabyPlayer.sendTranslMessage("main.not.exist");
                     }
                 } else {
-                    clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("likes.already") + EnumChatFormatting.WHITE + args[1]);
+                    clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("likes.already") + "§f" + args[1]);
                 }
             } else {
                 clientLabyPlayer.sendTranslMessage("likes.self");

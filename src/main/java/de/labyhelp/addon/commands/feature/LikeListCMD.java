@@ -4,7 +4,7 @@ import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class LikeListCMD implements HelpCommand {
             int i = 1;
 
             for (Map.Entry<String, Integer> uuidStringEntry : list) {
-                labyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "" + i + EnumChatFormatting.WHITE + ": " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + EnumChatFormatting.WHITE + " with " + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + uuidStringEntry.getValue() + EnumChatFormatting.WHITE + " Likes");
+                labyPlayer.sendDefaultMessage("§e" + "" + i + "§f" + ": " + "§e" + "§l" + UUIDFetcher.getName(UUID.fromString(uuidStringEntry.getKey())).toUpperCase() + "§f" + " with " + "§e" + "§l" + uuidStringEntry.getValue() + "§f" + " Likes");
                 i++;
             }
         });

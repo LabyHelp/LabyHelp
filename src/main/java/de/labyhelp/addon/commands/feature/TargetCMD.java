@@ -6,7 +6,7 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class TargetCMD implements HelpCommand {
 
                 if (!LabyHelp.getInstance().getSettingsManager().targetPlayers.isEmpty()) {
                     for (Map.Entry<UUID, Integer> targetPlayer : LabyHelp.getInstance().getSettingsManager().getTargetPlayers().entrySet()) {
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.YELLOW + "-" + UUIDFetcher.getName(targetPlayer.getKey()) + ", " + targetPlayer.getValue() + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.target.big"));
+                        labyPlayer.sendDefaultMessage("§e" + "-" + UUIDFetcher.getName(targetPlayer.getKey()) + ", " + targetPlayer.getValue() + " " + LabyHelp.getInstance().getTranslationManager().getTranslation("main.target.big"));
                     }
                 } else {
                     labyPlayer.sendAlertTranslMessage("main.target.null");

@@ -4,7 +4,7 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.NameTags;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class NameTagManager {
 
         StringBuilder finalEndTag = new StringBuilder();
         for (char ch : n.toCharArray()) {
-            finalEndTag.append(getInstance().getGroupManager().randomColor(true)).append(ch);
+            finalEndTag.append(getInstance().getGroupManager().randomColor()).append(ch);
         }
 
         return finalEndTag.toString();
@@ -76,16 +76,16 @@ public class NameTagManager {
                     }
                 } else if (name != null && !name.equals("")) {
                     String finalTag = name.replace("&", "§");
-                    String rainbow = finalTag.replace("!r", "" + getInstance().getGroupManager().randomColor(false));
+                    String rainbow = finalTag.replace("!r", "" + getInstance().getGroupManager().randomColor());
 
                     String disco = rainbow.replace("!d" + rainbow.replace("!d", ""),
                             getDiscoNameTag(rainbow.replace("!d", "")));
 
                     if (!getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
                         String finishFinalTag = disco.replace("LabyMod", "CENSORED");
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("§f" + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + disco);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("§f" + disco);
                     }
 
                     if (getInstance().getSettingsManager().nameTagSize != 0) {

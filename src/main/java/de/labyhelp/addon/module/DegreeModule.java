@@ -7,20 +7,20 @@ import net.labymod.ingamegui.moduletypes.SimpleModule;
 import net.labymod.settings.elements.ControlElement;
 import net.labymod.utils.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumChatFormatting;
+
 
 public class DegreeModule extends SimpleModule {
 
     private String getDegree() {
         if (LabyHelp.getInstance().getSettingsManager().onServer) {
             if (Minecraft.getMinecraft().thePlayer.rotationPitch == 90) {
-                return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+                return "§c" + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else if (Minecraft.getMinecraft().thePlayer.rotationPitch == -90) {
-                return EnumChatFormatting.RED + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+                return "§c" + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 1 && Minecraft.getMinecraft().thePlayer.rotationPitch > -1) {
-                return EnumChatFormatting.GREEN + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+                return "§a" + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else if (Minecraft.getMinecraft().thePlayer.rotationPitch < 81 && Minecraft.getMinecraft().thePlayer.rotationPitch > 74) {
-                return EnumChatFormatting.YELLOW + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
+                return "§e" + String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             } else {
                 return String.valueOf(Minecraft.getMinecraft().thePlayer.rotationPitch);
             }

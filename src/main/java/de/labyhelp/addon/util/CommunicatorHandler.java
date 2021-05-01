@@ -9,7 +9,7 @@ import de.labyhelp.addon.enums.LabyVersion;
 import de.labyhelp.addon.util.settings.SettingsManager;
 import net.labymod.main.LabyMod;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumChatFormatting;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -149,22 +149,22 @@ public class CommunicatorHandler {
 
             if (!LabyHelp.getInstance().getGroupManager().getNowRanked().getName().equalsIgnoreCase(LabyHelp.getInstance().getGroupManager().getBeforeRanked().getName())) {
                 if (LabyHelp.getInstance().getGroupManager().getNowRanked().equals(HelpGroups.BANNED)) {
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.RED + " Your NameTag has been banned for one day");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.YELLOW + translationManager.getTranslation("main.rules") + ": https://labyhelp.de/tag-rules");
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.WHITE + " ---------LabyHelp----------");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§f" + " ---------LabyHelp----------");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§c" + " Your NameTag has been banned for one day");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§e" + translationManager.getTranslation("main.rules") + ": https://labyhelp.de/tag-rules");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§f" + " ---------LabyHelp----------");
 
                 } else {
-                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.rankchange") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getGroupManager().getNowRanked().getName() + EnumChatFormatting.GREEN + ")");
+                    LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§a" + translationManager.getTranslation("main.rankchange") + " (" + "§f" + LabyHelp.getInstance().getGroupManager().getNowRanked().getName() + "§a" + ")");
                 }
             }
 
             if (!LabyHelp.getInstance().getLikeManager().getBeforeLikes().equalsIgnoreCase(LabyHelp.getInstance().getLikeManager().getNowLikes())) {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.profilelike") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getLikeManager().getNowLikes() + EnumChatFormatting.GREEN + ")");
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§a" + translationManager.getTranslation("main.profilelike") + " (" + "§f" + LabyHelp.getInstance().getLikeManager().getNowLikes() + "§a" + ")");
             }
 
             if (!LabyHelp.getInstance().getInviteManager().getBeforeInvites().equalsIgnoreCase(LabyHelp.getInstance().getInviteManager().getNowInvites())) {
-                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + EnumChatFormatting.GREEN + translationManager.getTranslation("main.predeemedcode") + " (" + EnumChatFormatting.WHITE + LabyHelp.getInstance().getInviteManager().getNowInvites() + EnumChatFormatting.GREEN + ")");
+                LabyMod.getInstance().displayMessageInChat(LabyPlayer.prefix + "§a" + translationManager.getTranslation("main.predeemedcode") + " (" + "§f" + LabyHelp.getInstance().getInviteManager().getNowInvites() + "§a" + ")");
             }
 
         }

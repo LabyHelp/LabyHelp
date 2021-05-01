@@ -5,7 +5,6 @@ import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.TranslationManager;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import de.labyhelp.addon.util.settings.SettingsManager;
-import net.minecraft.util.EnumChatFormatting;
 
 public class LabyHelpCMD implements HelpCommand {
 
@@ -24,20 +23,20 @@ public class LabyHelpCMD implements HelpCommand {
                 String newestVersion = LabyHelp.getInstance().getVersionHandler().checkNewestLabyHelpVersion();
 
                 if (!LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("new"));
+                    labyPlayer.sendDefaultMessage("§f" + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("new"));
                 }
                 if (LabyHelp.getInstance().getSettingsManager().isNewerVersion) {
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("old"));
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.new") + " " + newestVersion);
+                    labyPlayer.sendDefaultMessage("§f" + transManager.getTranslation("info.you") + " " + SettingsManager.currentVersion + transManager.getTranslation("old"));
+                    labyPlayer.sendDefaultMessage("§c" + transManager.getTranslation("info.new") + " " + newestVersion);
                     labyPlayer.sendAlertTranslMessage("info.restart");
                 }
 
                 LabyHelp.getInstance().getVersionHandler().sendNewFeaturesMessage();
             });
         } catch (Exception ignored) {
-            labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + transManager.getTranslation("info.responding") + EnumChatFormatting.BOLD + "909");
+            labyPlayer.sendDefaultMessage("§c" + transManager.getTranslation("info.responding") + "§l" + "909");
         }
-        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Teamspeak: https://labyhelp.de/teamspeak");
-        labyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + "Discord: https://labyhelp.de/discord");
+        labyPlayer.sendDefaultMessage("§f" + "Teamspeak: https://labyhelp.de/teamspeak");
+        labyPlayer.sendDefaultMessage("§f" + "Discord: https://labyhelp.de/discord");
     }
 }

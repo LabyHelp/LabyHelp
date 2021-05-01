@@ -3,7 +3,6 @@ package de.labyhelp.addon.commands.addon;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;
 
@@ -24,9 +23,9 @@ public class LabyHelpPartnerCMD implements HelpCommand {
         } else if (args.length == 1) {
             labyPlayer.sendTranslMessage("main.partner.list");
             for (Map.Entry<String, String> partnerList : LabyHelp.getInstance().getPartnerHandler().getPartner().entrySet()) {
-                labyPlayer.sendDefaultMessage(EnumChatFormatting.GOLD + partnerList.getKey() + EnumChatFormatting.WHITE + " - /lhpartner " + partnerList.getKey());
+                labyPlayer.sendDefaultMessage("§6" + partnerList.getKey() + "§f" + " - /lhpartner " + partnerList.getKey());
             }
-            labyPlayer.sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("main.moreat") + EnumChatFormatting.GOLD + " https://labyhelp.de/partner");
+            labyPlayer.sendDefaultMessage(LabyHelp.getInstance().getTranslationManager().getTranslation("main.moreat") + "§6" + " https://labyhelp.de/partner");
         } else {
             labyPlayer.sendDefaultMessage("/lhpartner || /lhpartner <Server>");
         }

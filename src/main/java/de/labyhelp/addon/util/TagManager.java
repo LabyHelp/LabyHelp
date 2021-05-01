@@ -6,7 +6,7 @@ import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.enums.TagsSide;
 import net.labymod.main.LabyMod;
 import net.labymod.user.group.LabyGroup;
-import net.minecraft.util.EnumChatFormatting;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class TagManager {
     public ArrayList<UUID> serverTag = new ArrayList<>();
     public ArrayList<UUID> chromeDiscordTag = new ArrayList<>();
     public ArrayList<UUID> easterDiscordTag = new ArrayList<>();
-    private EnumChatFormatting colorCache;
+    private String colorCache;
 
     public HashMap<UUID, Tags> rightPlayerList = new HashMap<>();
     public HashMap<UUID, Tags> leftPlayerList = new HashMap<>();

@@ -5,7 +5,7 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.NameTags;
 import net.labymod.main.LabyMod;
 import net.labymod.user.User;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,9 +84,9 @@ public class NameTagManager {
 
                     if (!getInstance().getGroupManager().isTag(uuidUserEntry.getKey())) {
                         String finishFinalTag = disco.replace("LabyMod", "CENSORED");
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + finishFinalTag);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("§f" + finishFinalTag);
                     } else {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle(EnumChatFormatting.WHITE + disco);
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitle("§f" + disco);
                     }
 
                     if (getInstance().getSettingsManager().nameTagSize != 0) {

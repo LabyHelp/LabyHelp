@@ -7,7 +7,7 @@ import de.labyhelp.addon.util.TranslationManager;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.main.LabyMod;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.UUID;
 
@@ -25,7 +25,7 @@ public class LabyHelpBanCMD implements HelpCommand {
                 final UUID uuid = UUIDFetcher.getUUID(args[1]);
                 if (!LabyHelp.getInstance().getGroupManager().isTeam(uuid)) {
                     if (uuid != null) {
-                        clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("player") + " " + EnumChatFormatting.WHITE + args[1] + "" + EnumChatFormatting.WHITE + transManager.getTranslation("staff.banned.nametag"));
+                        clientLabyPlayer.sendDefaultMessage(transManager.getTranslation("player") + " " + "§f" + args[1] + "" + "§f" + transManager.getTranslation("staff.banned.nametag"));
                         sendBanned(uuid);
                     } else {
                         clientLabyPlayer.sendTranslMessage("main.not.exist");

@@ -3,7 +3,7 @@ package de.labyhelp.addon.util;
 import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import net.labymod.main.LabyMod;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.*;
 
@@ -15,6 +15,17 @@ public class GroupManager {
     public final Map<UUID, HelpGroups> oldGroups = new HashMap<>();
     public final Map<UUID, String> userNameTags = new HashMap<>();
     public final Map<UUID, String> userSecondNameTags = new HashMap<>();
+
+    private final Random random = new Random();
+    private final String[] colorCodes;
+
+    public GroupManager()
+    {
+        final List<String> colorCodes = new ArrayList<>();
+        for(int i = 0; i < 16; i++)
+            colorCodes.add(Integer.toHexString(i));
+        this.colorCodes = colorCodes.toArray(new String[0]);
+    }
 
     private final ArrayList<UUID> allPremiumPlayers = new ArrayList<>();
 
@@ -89,34 +100,9 @@ public class GroupManager {
         return false;
     }
 
-
-    private EnumChatFormatting chooseColor;
-
-    public EnumChatFormatting randomColor(boolean disco) {
-        return chooseColor(EnumChatFormatting.values()[new Random().nextInt(16)], disco);
-    }
-
-    private EnumChatFormatting chooseColor(EnumChatFormatting color, boolean disco) {
-        if (rainbow) {
-
-            if (disco) {
-                return color;
-            }
-
-            chooseColor = color;
-            rainbow = false;
-
-            return color;
-        } else {
-            if (disco) {
-                return color;
-            } else if (chooseColor != null) {
-                return chooseColor;
-            } else {
-                chooseColor = color;
-                return color;
-
-            }
-        }
+    public String randomColor(boolean disco)
+    {
+        //What is disco supposed to do?
+        return colorCodes[random.nextInt(colorCodes.length)];
     }
 }

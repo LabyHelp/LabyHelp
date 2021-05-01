@@ -5,7 +5,7 @@ import net.labymod.main.LabyMod;
 import net.labymod.user.cosmetic.cosmetics.partner.CosmeticStegi;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.Map;
 

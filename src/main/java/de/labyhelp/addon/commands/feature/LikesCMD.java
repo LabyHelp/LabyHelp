@@ -5,7 +5,7 @@ import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.TranslationManager;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.utils.UUIDFetcher;
-import net.minecraft.util.EnumChatFormatting;
+
 
 import java.util.UUID;
 
@@ -25,9 +25,9 @@ public class LikesCMD implements HelpCommand {
 
                 if (LabyHelp.getInstance().getGroupManager().userGroups.containsKey(uuid)) {
                     if (LabyHelp.getInstance().getLikeManager().getLikes(uuid).equalsIgnoreCase("1")) {
-                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase()+  transManager.getTranslation("likes.has.only") +LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
+                        clientLabyPlayer.sendDefaultMessage("§f" + args[1].toUpperCase()+  transManager.getTranslation("likes.has.only") +LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Like!");
                     } else {
-                        clientLabyPlayer.sendDefaultMessage(EnumChatFormatting.WHITE + args[1].toUpperCase() +  transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
+                        clientLabyPlayer.sendDefaultMessage("§f" + args[1].toUpperCase() +  transManager.getTranslation("likes.has") + LabyHelp.getInstance().getLikeManager().getLikes(uuid) + " Likes!");
                     }
                 } else {
                     clientLabyPlayer.sendTranslMessage("main.hasnot");

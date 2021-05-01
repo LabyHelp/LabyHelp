@@ -38,7 +38,6 @@ import net.labymod.settings.elements.*;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.Material;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.HashMap;
 import java.util.List;
@@ -680,7 +679,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                     LabyHelp.getInstance().getExecutor().submit(() -> {
                         getTagManager().sendSpecificTag(false, LabyMod.getInstance().getPlayerUUID(), alignment);
                         getTagManager().initTagManager();
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                        labyPlayer.sendDefaultMessage("§a" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + "§f" + " (" + alignment.getRequestName() + ")");
                     });
 
                     LabyHelp.this.getConfig().addProperty("leftTag", alignment.name());
@@ -690,7 +689,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 }
             } else {
                 if (!getSettingsManager().leftTag.equals(alignment.name())) {
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    labyPlayer.sendDefaultMessage("§c" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + "§f" + " (" + alignment.getRequestName() + ")");
                 }
             }
 
@@ -722,7 +721,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                     LabyHelp.getInstance().getExecutor().submit(() -> {
                         getTagManager().sendSpecificTag(true, LabyMod.getInstance().getPlayerUUID(), alignment);
                         getTagManager().initTagManager();
-                        labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                        labyPlayer.sendDefaultMessage("§a" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.change") + "§f" + " (" + alignment.getRequestName() + ")");
                     });
 
                     LabyHelp.this.getConfig().addProperty("rightTag", alignment.name());
@@ -732,7 +731,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 }
             } else {
                 if (!getSettingsManager().rightTag.equals(alignment.name())) {
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.RED + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + EnumChatFormatting.WHITE + " (" + alignment.getRequestName() + ")");
+                    labyPlayer.sendDefaultMessage("§c" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.tag.noperms") + "§f" + " (" + alignment.getRequestName() + ")");
                 }
             }
 

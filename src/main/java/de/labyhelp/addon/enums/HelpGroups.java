@@ -1,48 +1,48 @@
 package de.labyhelp.addon.enums;
 
 import de.labyhelp.addon.LabyHelp;
-import net.minecraft.util.EnumChatFormatting;
+
 
 public enum HelpGroups {
 
-    USER("USER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " ", false, false,false, false, "rank.user"),
+    USER("USER", "§f" + "" + "§l" + "LabyHelp" + "§7" + " ", false, false,false, false, "rank.user"),
 
-    BANNED("BANNED", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GRAY + " ", false, false, false, false, "rank.user"),
-    TARGET("TARGET", EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.BOLD + " ", false, false, false, false, "rank.target"),
+    BANNED("BANNED", "§f" + "" + "§l" + "LabyHelp" + "§7" + " ", false, false, false, false, "rank.user"),
+    TARGET("TARGET", "§4" + "" + "§l" + " ", false, false, false, false, "rank.target"),
 
-    FAME("FAME", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + " FAME", true, false, false, false, null),
-    FAMOUS("FAMOUS", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD + " FAMOUS", false, true, false, false, null),
-    INVITER("INVITER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + " ", true, false, false, false, "rank.inviter"),
+    FAME("FAME", "§f" + "" + "§l" + "LabyHelp" + "§e" + " FAME", true, false, false, false, null),
+    FAMOUS("FAMOUS", "§f" + "" + "§l" + "LabyHelp" + "§e" + "§l" + " FAMOUS", false, true, false, false, null),
+    INVITER("INVITER", "§f" + "" + "§l" + "LabyHelp" + "§3" + " ", true, false, false, false, "rank.inviter"),
 
-    BOOSTER("BOOSTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.BOLD + " ", false, true, false, false, "rank.booster"),
+    BOOSTER("BOOSTER", "§f" + "" + "§l" + "LabyHelp" + "§d" + "" + "§l" + " ", false, true, false, false, "rank.booster"),
 
-    PREMIUM("PREMIUM", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_AQUA + " Premium", true, true, false, false, null),
-    DONATOR("DONATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " DONATOR", true, true, false, false,null),
-    FRIEND("FRIEND", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.GOLD + " ", true, true,false, true, "rank.friend"),
-    PREMIUM_("PREMIUM_", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.BOLD + " PREMIUM+", true, true, false, false,null),
+    PREMIUM("PREMIUM", "§f" + "" + "§l" + "LabyHelp" + "§3" + " Premium", true, true, false, false, null),
+    DONATOR("DONATOR", "§f" + "" + "§l" + "LabyHelp" + "§e" + "" + "§l" + " DONATOR", true, true, false, false,null),
+    FRIEND("FRIEND", "§f" + "" + "§l" + "LabyHelp" + "§6" + " ", true, true,false, true, "rank.friend"),
+    PREMIUM_("PREMIUM_", "§f" + "" + "§l" + "LabyHelp" + "§e" + "" + "§l" + " PREMIUM+", true, true, false, false,null),
 
-    CREATOR("CREATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + " ", true, true,false, true, "rank.creator"),
-    PARTNER("PARTNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.BOLD + " ", true, true,false, true, "rank.partner"),
+    CREATOR("CREATOR", "§f" + "" + "§l" + "LabyHelp" + "§5" + "§l" + " ", true, true,false, true, "rank.creator"),
+    PARTNER("PARTNER", "§f" + "" + "§l" + "LabyHelp" + "§5" + "§l" + " ", true, true,false, true, "rank.partner"),
 
-    TRANSLATOR("TRANSLATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,false, true, null),
+    TRANSLATOR("TRANSLATOR", "§f" + "" + "§l" + "LabyHelp" + "§d" + " CONTENT", true, true,false, true, null),
 
-    JRCONTENT("JRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,false, true, null),
-    CONTENT("CONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + " CONTENT", true, true,true, true, null),
+    JRCONTENT("JRCONTENT", "§f" + "" + "§l" + "LabyHelp" + "§d" + " CONTENT", true, true,false, true, null),
+    CONTENT("CONTENT", "§f" + "" + "§l" + "LabyHelp" + "§d" + " CONTENT", true, true,true, true, null),
 
-    SRCONTENT("SRCONTENT", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.LIGHT_PURPLE + EnumChatFormatting.BOLD + " SRCONTENT", true,true, true, true, null),
+    SRCONTENT("SRCONTENT", "§f" + "" + "§l" + "LabyHelp" + "§d" + "§l" + " SRCONTENT", true,true, true, true, null),
 
-    JRSUPPORTER("JRSUPPORTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " SUPPORTER", true, true,false, true, null),
-    SUPPORTER("SUPPORTER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " SUPPORTER", true, true,false, true, null),
+    JRSUPPORTER("JRSUPPORTER", "§f" + "" + "§l" + "LabyHelp" + "§c" + " SUPPORTER", true, true,false, true, null),
+    SUPPORTER("SUPPORTER", "§f" + "" + "§l" + "LabyHelp" + "§c" + " SUPPORTER", true, true,false, true, null),
 
-    JRMODERATOR("JRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " JRMODERATOR", true, true,false, true, null),
-    MODERATOR("MODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + " MODERATOR", true, true,true, true, null),
-    SRMODERATOR("SRMODERATOR", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + " SRMODERATOR", true,true, true, true, null),
+    JRMODERATOR("JRMODERATOR", "§f" + "" + "§l" + "LabyHelp" + "§c" + " JRMODERATOR", true, true,false, true, null),
+    MODERATOR("MODERATOR", "§f" + "" + "§l" + "LabyHelp" + "§c" + " MODERATOR", true, true,true, true, null),
+    SRMODERATOR("SRMODERATOR", "§f" + "" + "§l" + "LabyHelp" + "§c" + "§l" + " SRMODERATOR", true,true, true, true, null),
 
-    DEVELOPER("DEVELOPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + " Developer", true, true,true, true, null),
-    SRDEVELOPER("SRDEVELOPER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "LabyHelp" + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD + " SRDEVELOPER", true, true,true, true, null),
+    DEVELOPER("DEVELOPER", "§f" + "" + "§l" + "LabyHelp" + "§3" + " Developer", true, true,true, true, null),
+    SRDEVELOPER("SRDEVELOPER", "§f" + "" + "§l" + "LabyHelp" + "§3" + "§l" + " SRDEVELOPER", true, true,true, true, null),
 
-    ADMIN("ADMIN", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD +" ADMIN", true,true, true, true, null),
-    OWNER("OWNER", EnumChatFormatting.WHITE + "" + EnumChatFormatting.BOLD + "" + "LabyHelp" + EnumChatFormatting.DARK_RED + EnumChatFormatting.BOLD + " ADMIN", true,true, true, true, null);
+    ADMIN("ADMIN", "§f" + "" + "§l" + "" + "LabyHelp" + "§4" + "§l" +" ADMIN", true,true, true, true, null),
+    OWNER("OWNER", "§f" + "" + "§l" + "" + "LabyHelp" + "§4" + "§l" + " ADMIN", true,true, true, true, null);
 
 
     private final String name, prefix;

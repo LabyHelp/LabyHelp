@@ -3,7 +3,7 @@ package de.labyhelp.addon.commands.addon;
 import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.util.commands.HelpCommand;
-import net.minecraft.util.EnumChatFormatting;
+
 
 public class LabyHelpBadgeCMD implements HelpCommand {
     @Override
@@ -20,7 +20,7 @@ public class LabyHelpBadgeCMD implements HelpCommand {
             if (!tags.equals(Tags.NOTHING)) {
                 if (tags.getArray().contains(labyPlayer.getUuid())) {
                     i++;
-                    labyPlayer.sendDefaultMessage(EnumChatFormatting.GREEN + "- " + tags.getRequestName());
+                    labyPlayer.sendDefaultMessage("§a" + "- " + tags.getRequestName());
                 }
             }
         }

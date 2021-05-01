@@ -155,7 +155,9 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new VoiceChatCMD(),
                 new LabyHelpPartnerCMD(),
                 new LabyHelpBadgeCMD(),
-                new TargetCMD()
+                new TargetCMD(),
+                new IdCMD(),
+                new BadgeCMD()
         );
 
 

@@ -1,11 +1,8 @@
 package de.labyhelp.addon.listeners;
 
 import de.labyhelp.addon.LabyHelp;
-import net.labymod.main.LabyMod;
-import net.labymod.user.cosmetic.cosmetics.partner.CosmeticStegi;
 import net.labymod.utils.Consumer;
 import net.labymod.utils.ServerData;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;
 
@@ -14,6 +11,7 @@ public class ClientJoinListener implements Consumer<ServerData> {
     @Override
     public void accept(ServerData serverData) {
         LabyHelp.getInstance().getSettingsManager().onServer = true;
+        LabyHelp.getInstance().getSettingsManager().currentServer = serverData.getIp();
 
         postJoin(serverData);
     }

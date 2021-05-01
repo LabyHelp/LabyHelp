@@ -1,6 +1,5 @@
 package de.labyhelp.addon.util;
 
-import de.labyhelp.addon.LabyHelp;
 import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.NameTags;
 import net.labymod.main.LabyMod;
@@ -55,8 +54,8 @@ public class NameTagManager {
             for (Map.Entry<UUID, User> uuidUserEntry : LabyMod.getInstance().getUserManager().getUsers().entrySet()) {
 
 
-                if (LabyHelp.getInstance().getSettingsManager().getTargetPlayers().containsKey(uuidUserEntry.getKey())) {
-                    LabyHelp.getInstance().getTargetManager().setTargetNameTag(uuidUserEntry.getKey());
+                if (getInstance().getSettingsManager().getTargetPlayers().containsKey(uuidUserEntry.getKey())) {
+                    getInstance().getTargetManager().setTargetNameTag(uuidUserEntry.getKey());
                     break;
                 }
 
@@ -130,7 +129,7 @@ public class NameTagManager {
                     }
 
                     if (group.equals(HelpGroups.TARGET)) {
-                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(LabyHelp.getInstance().getSettingsManager().getTargetPlayers().get(uuidUserEntry.getKey()));
+                        LabyMod.getInstance().getUserManager().getUser(uuidUserEntry.getKey()).setSubTitleSize(getInstance().getSettingsManager().getTargetPlayers().get(uuidUserEntry.getKey()));
                     }
                 }
 
@@ -146,14 +145,14 @@ public class NameTagManager {
     private void readNameTag() {
         getInstance().sendDeveloperMessage("called method: readNameTag first");
         getInstance().getGroupManager().userNameTags.clear();
-        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userNameTags);
+        getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=FIRST_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userNameTags);
     }
 
 
     private void readSecondNameTag() {
         getInstance().sendDeveloperMessage("called method: readNameTag second");
         getInstance().getGroupManager().userSecondNameTags.clear();
-        LabyHelp.getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userSecondNameTags);
+        getInstance().getRequestManager().getStandardHashMap("https://marvhuelsmann.de/nametags.php?which=SECOND_NAMETAG", (HashMap<UUID, String>) getInstance().getGroupManager().userSecondNameTags);
     }
 
     private void moveNameTags() {
@@ -161,20 +160,20 @@ public class NameTagManager {
         if (currentNameTag == NameTags.RANK) {
             updateSubTitles(false);
             currentNameTag = NameTags.FIRST_NAMETAG;
-            LabyHelp.getInstance().sendDeveloperMessage("Rank");
+            getInstance().sendDeveloperMessage("Rank");
 
         } else if (currentNameTag == NameTags.FIRST_NAMETAG) {
             updateNameTag(false, true);
-            LabyHelp.getInstance().sendDeveloperMessage("NameTag 1");
+            getInstance().sendDeveloperMessage("NameTag 1");
             currentNameTag = NameTags.SECOND_NAMETAG;
 
         } else if (currentNameTag == NameTags.SECOND_NAMETAG) {
-            LabyHelp.getInstance().sendDeveloperMessage("NameTag 2");
+            getInstance().sendDeveloperMessage("NameTag 2");
             updateNameTag(false, false);
             currentNameTag = NameTags.RANK;
 
         } else {
-            LabyHelp.getInstance().sendDeveloperMessage("else");
+            getInstance().sendDeveloperMessage("else");
             updateSubTitles(false);
             currentNameTag = NameTags.RANK;
         }

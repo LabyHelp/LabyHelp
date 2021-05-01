@@ -5,7 +5,6 @@ import lombok.Getter;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
@@ -16,6 +15,8 @@ public enum Tags {
     DISCORD_RAINBOW_TAG(" ✪ ", true, "CHROME", "tag", LabyHelp.getInstance().getTagManager().chromeDiscordTag, true),
 
     PREMIUM_TAG(EnumChatFormatting.GOLD + " Ⓟ ", false, "PREMIUM", "premium", LabyHelp.getInstance().getGroupManager().getAllPremiumPlayers(), false),
+
+    LABYHELP_TAG(EnumChatFormatting.RED + " ۩ ", false, "LABYHELP", "labyhelp", LabyHelp.getInstance().getTagManager().visitLabyHelpServer, false),
 
     SERVER_TAG(EnumChatFormatting.DARK_AQUA + " Ⓢ ", false, "SERVER", "serverPartner", LabyHelp.getInstance().getTagManager().serverTag, true),
     EASTER_2021_TAG(EnumChatFormatting.GREEN + " ⚘ ", false, "EASTER2021", "easter", LabyHelp.getInstance().getTagManager().easterDiscordTag, false);
@@ -42,6 +43,7 @@ public enum Tags {
                 name.equalsIgnoreCase(Tags.DISCORD_NORMAL_TAG.name()) ||
                 name.equalsIgnoreCase(Tags.PREMIUM_TAG.name()) ||
                 name.equalsIgnoreCase(Tags.SERVER_TAG.name()) ||
+                name.equalsIgnoreCase(Tags.LABYHELP_TAG.name()) ||
                 name.equalsIgnoreCase(Tags.EASTER_2021_TAG.name());
     }
 }

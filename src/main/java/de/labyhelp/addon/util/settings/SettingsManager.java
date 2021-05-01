@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 public class SettingsManager {
 
-    public static String currentVersion = "2.6.594";
+    public static String currentVersion = "2.6.598";
     public String versionTag = null;
     //LabyHelp SnapShot, Version: O | Build 4
 
@@ -29,6 +29,7 @@ public class SettingsManager {
     public boolean seeNameTags = true;
 
     public boolean onServer = false;
+    public String currentServer = "";
 
     public boolean isInitLoading = true;
 

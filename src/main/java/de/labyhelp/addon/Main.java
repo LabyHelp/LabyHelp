@@ -30,7 +30,7 @@ public class Main {
                 if (!run.exists() || !run.isFile()) {
                     throw new IOException("Invalid path: " + run.getAbsolutePath());
                 }
-                final String[] versions = {"1.8", "1.12", "1.16"};
+                final String[] versions = {"1.8", "1.12"};
                 String[] array;
                 for (int length = (array = versions).length, i = 0; i < length; ++i) {
                     final String version = array[i];

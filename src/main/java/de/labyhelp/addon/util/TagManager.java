@@ -5,14 +5,8 @@ import de.labyhelp.addon.enums.HelpGroups;
 import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.enums.TagsSide;
 import net.labymod.main.LabyMod;
-import net.labymod.user.group.LabyGroup;
 import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +15,12 @@ import java.util.UUID;
 public class TagManager {
 
     public HashMap<UUID, String> hasServer = new HashMap<>();
+    public ArrayList<UUID> visitLabyHelpServer = new ArrayList<>();
 
     public ArrayList<UUID> normalDiscordTag = new ArrayList<>();
     public ArrayList<UUID> serverTag = new ArrayList<>();
     public ArrayList<UUID> chromeDiscordTag = new ArrayList<>();
+
     public ArrayList<UUID> easterDiscordTag = new ArrayList<>();
     private EnumChatFormatting colorCache;
 
@@ -211,7 +207,6 @@ public class TagManager {
             }
         }
     }
-
 }
 
 

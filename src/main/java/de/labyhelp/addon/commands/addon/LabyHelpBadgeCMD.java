@@ -4,7 +4,6 @@ import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.enums.Tags;
 import de.labyhelp.addon.util.commands.HelpCommand;
 
-
 public class LabyHelpBadgeCMD implements HelpCommand {
     @Override
     public String getName() {

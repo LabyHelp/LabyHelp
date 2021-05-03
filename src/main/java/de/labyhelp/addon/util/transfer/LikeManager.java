@@ -19,10 +19,8 @@ public class LikeManager {
     public final Map<UUID, String> oldLikes = new HashMap<>();
     public final ArrayList<UUID> isLiked = new ArrayList<>();
 
-
-    private static final Map<String, Integer> collectors = new HashMap<>();
-
     public List<Map.Entry<String, Integer>> getTops5() {
+        Map<String, Integer> collectors = new HashMap<>();
         if (!userLikes.isEmpty()) {
             for (Map.Entry<UUID, String> uuidStringEntry : userLikes.entrySet()) {
                 collectors.put(uuidStringEntry.getKey().toString(), Integer.parseInt(uuidStringEntry.getValue()));

@@ -3,6 +3,8 @@ package de.labyhelp.addon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.labyhelp.addon.commands.addon.*;
+import de.labyhelp.addon.commands.auth.IdCMD;
+import de.labyhelp.addon.commands.auth.OneGamingIDCMD;
 import de.labyhelp.addon.commands.feature.*;
 import de.labyhelp.addon.commands.socialmedia.*;
 import de.labyhelp.addon.commands.team.LabyHelpBanCMD;
@@ -156,7 +158,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
                 new LabyHelpBadgeCMD(),
                 new TargetCMD(),
                 new IdCMD(),
-                new BadgeCMD()
+                new BadgeCMD(),
+                new OneGamingIDCMD()
         );
 
 

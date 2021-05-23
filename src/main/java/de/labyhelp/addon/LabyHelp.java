@@ -293,6 +293,8 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
 
         LabyHelp.getInstance().getStoreHandler().getStoreSettings().storeAddons = !this.getConfig().has("storeAddons") || this.getConfig().get("storeAddons").getAsBoolean();
 
+        LabyHelp.getInstance().getSettingsManager().normalNameTagSwitch = !this.getConfig().has("normalNameTagSwitch") || this.getConfig().get("normalNameTagSwitch").getAsBoolean();
+
         LabyHelp.getInstance().getSettingsManager().rightTag = this.getConfig().has("rightTag") ? this.getConfig().get("rightTag").getAsString() : "NOTHING";
         LabyHelp.getInstance().getSettingsManager().leftTag = this.getConfig().has("leftTag") ? this.getConfig().get("leftTag").getAsString() : "NOTHING";
 
@@ -433,6 +435,17 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
         settingsElements.add(new HeaderElement(" "));
 
 
+        final BooleanElement settingOnlyNameTags = new BooleanElement("NameTag switching", new ControlElement.IconData(Material.PAPER), new Consumer<Boolean>() {
+            @Override
+            public void accept(final Boolean enable) {
+                LabyHelp.getInstance().getSettingsManager().normalNameTagSwitch = enable;
+                LabyHelp.this.getConfig().addProperty("normalNameTagSwitch", enable);
+                LabyHelp.this.saveConfig();
+            }
+        }, LabyHelp.getInstance().getSettingsManager().normalNameTagSwitch);
+
+        settingsElements.add(settingOnlyNameTags);
+
         final BooleanElement settingsNameTags = new BooleanElement("Show NameTags", new ControlElement.IconData(Material.STRING), enable -> {
             LabyHelp.getInstance().getSettingsManager().seeNameTags = enable;
 
@@ -443,6 +456,7 @@ public class LabyHelp extends net.labymod.api.LabyModAddon {
             LabyHelp.this.saveConfig();
         }, LabyHelp.getInstance().getSettingsManager().seeNameTags);
         settingsElements.add(settingsNameTags);
+
         settingsElements.add(new HeaderElement("§7Choose if you will see"));
         settingsElements.add(new HeaderElement("§7LabyHelp NameTags in the game"));
         settingsElements.add(new HeaderElement(" "));

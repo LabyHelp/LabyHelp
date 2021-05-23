@@ -21,7 +21,7 @@ public class LabyHelpTeamCMD implements HelpCommand {
     public void execute(LabyPlayer clientLabyPlayer, String[] args) {
         clientLabyPlayer.sendDefaultMessage("§c" + "LabyHelp Team:");
         clientLabyPlayer.sendDefaultMessage("§c" + "Position: " + LocalDate.now());
-        clientLabyPlayer.sendDefaultMessage("§f" + "Addon Adminstration");
+        clientLabyPlayer.sendDefaultMessage("§f" + "Addon Administration");
         clientLabyPlayer.sendDefaultMessage("§e" + "" + "§l" + "- marvhuel");
         LabyHelp.getInstance().getExecutor().submit(() -> {
             for (Map.Entry<UUID, HelpGroups> groupsEntry : LabyHelp.getInstance().getGroupManager().userGroups.entrySet()) {

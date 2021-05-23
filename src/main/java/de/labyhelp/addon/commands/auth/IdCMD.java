@@ -5,10 +5,6 @@ import de.labyhelp.addon.LabyPlayer;
 import de.labyhelp.addon.util.commands.HelpCommand;
 import net.labymod.main.LabyMod;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-
 public class IdCMD implements HelpCommand {
 
     @Override
@@ -21,14 +17,8 @@ public class IdCMD implements HelpCommand {
         LabyHelp.getInstance().getExecutor().submit(() -> {
             String code = LabyHelp.getInstance().getRequestManager().getVanillaRequest("https://labyhelp.de/idcode.php?uuid="  + LabyMod.getInstance().getPlayerUUID());
 
-            labyPlayer.sendDefaultMessage("§f" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.token.show") + "§l" + code);
-            labyPlayer.sendTranslMessage("main.token.info");
-
-            StringSelection stringSelection = new StringSelection(code);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(stringSelection, null);
-
-            labyPlayer.sendAlertTranslMessage("main.token.clipboard");
+            labyPlayer.sendTranslMessage("main.dashboard.open");
+            labyPlayer.openDashBoard(LabyMod.getInstance().getPlayerUUID(), code);
 
         });
 

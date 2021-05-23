@@ -89,6 +89,18 @@ public class LabyPlayer {
         }
     }
 
+    public void openDashBoard(UUID uuid, String token) {
+        if (uuid != null) {
+            try {
+                LabyMod.getInstance().openWebpage("https://labyhelp.de/account/dashboard?token=" + token, false);
+            } catch (Exception ignored) {
+                sendError();
+            }
+        } else {
+            sendTranslMessage("main.not.exist");
+        }
+    }
+
     public void openBandanaUrl(UUID uuid) {
         if (uuid != null) {
             try {

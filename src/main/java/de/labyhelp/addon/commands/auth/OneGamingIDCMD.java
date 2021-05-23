@@ -18,7 +18,7 @@ public class OneGamingIDCMD implements HelpCommand {
 
             labyPlayer.sendTranslMessage("main.onegamingid.thanks");
             labyPlayer.sendDefaultMessage("§7" + LabyHelp.getInstance().getTranslationManager().getTranslation("main.onegamingid.code") + "§c§l "+ code);
-            labyPlayer.sendTranslMessage("main.token.finish");
+            labyPlayer.sendTranslMessage("main.onegamingid.finish");
             labyPlayer.sendDefaultMessage("https://id.onegaming.group/link/minecraft");
 
         });
